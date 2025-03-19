@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/sidebar.jsx";
 
 import {
   BrowserRouter as Router,
@@ -9,7 +9,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import DesktopHome from "./pages/DesktopHome.jsx";
+import DesktopHome from "./pages/LandingPage.jsx";
 import DesktopPetProfile from "./pages/DesktopPetProfile.jsx"
 import DesktopReminder from "./pages/DesktopReminder.jsx"
 import DesktopMedicalInfo from "./pages/DesktopMedicalInfo.jsx"

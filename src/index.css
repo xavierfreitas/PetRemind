@@ -2,6 +2,7 @@
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  overflow: hidden;
 
   --primary-color: #8B5E3C; /* Brown */
   --secondary-color: #DDBEA9; /* Light Beige */
@@ -22,7 +23,7 @@ body {
   background-size: cover; /* image covers whole page */
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh; /* makes background cover entire viewport height */
+  height: 100vh;
   margin: 0;
   display: flex;
   flex-direction: column;
