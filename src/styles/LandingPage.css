@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Outfit:wght@300;400;500;600&display=swap');
+/* 'Pacifico' and 'Outfit' fonts */
+
+.landing-container {
+    text-align: center;
+    padding: 40px;
+    font-family: "Arial", sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 200px 300px 1fr 80px;
+    grid-template-areas: 
+    "leftimgs headers rightimgs"
+    "leftimgs maincont rightimgs"
+    "leftimgs maincont rightimgs";
+}
+
+.headers {
+    grid-area: headers;
+}
+
+.title {
+    font-family: 'Pacifico';
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.title span {
+    color: #000;
+}
+
+.subtitle {
+    font-family: 'Pacifico';
+    font-size: 1.8rem;
+    font-style: italic;
+    margin-top: 3px;
+    margin-bottom: 20px;
+}
+
+.content {
+    font-family: 'Outfit';
+    max-width: 600px;
+    margin: 0 auto;
+    grid-area: maincont;
+}
+
+#mainpitch {
+    font-size: 1.35rem;
+}
+
+#mainpitch span {
+    font-weight: bold;
+}
+
+#cta {
+    font-weight: bold;
+    font-size: 1.45rem;
+    margin-top: 20px;
+    color: white;
+}
+
+.images-grid {
+    display: inline-block;
+    position: relative;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.images-grid img {
+    width: 80%;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+}
+
+#left-images {
+    grid-area: leftimgs;
+}
+
+#right-images {
+    grid-area: rightimgs;
+}

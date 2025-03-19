@@ -18,6 +18,8 @@ import DesktopFeatures from "./pages/DesktopFeatures.jsx"
 import MobileReminder from './pages/MobileReminder.jsx';
 
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
     <Router>
       <Navbar />
@@ -32,4 +34,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
