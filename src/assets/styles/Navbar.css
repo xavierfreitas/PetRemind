@@ -1,0 +1,17 @@
+.navbar_container {
+    width: 1920px;
+    height: 70px;
+
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.navbar_link {
+    float: right;
+    text-decoration: none;
+    color: black;
+    margin-left: 20px;
+    margin-right: 20px;
+}

@@ -1,0 +1,107 @@
+#desktop_reminder_container {
+    width: 1920px;
+    height: 1080px;
+
+    background-color: #DDBEA9;
+    padding: 10px;
+    display: flex;
+}
+
+#pet_profile_container {
+    width: 834px;
+    height: 380px;
+
+    max-width: 834px;
+    max-height: 380px;
+
+    padding: 10px;
+    background-color: #F7E1D7;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+#pet_profile_wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#pet_profile_image {
+    width: 200px;
+    height: 200px;
+    border-radius: 28px;
+}
+
+#pet_profile_info {
+    width: 380px;
+    height: 202px;
+
+    min-width: 380px;
+    min-height: 202px;
+    
+    color: black;
+    text-align: left;
+    margin-left: 10px;
+}
+
+#pet_profile_info_additional_info {
+    overflow: scroll;
+}
+
+#enable_reminder_container {
+    display: flex;
+
+    flex-direction: column; 
+    color: black;
+}
+
+#enable_reminder_container {
+    color: black;
+}
+
+#additional_pet_container {
+    display: flex;
+
+    margin-top: 20px;
+}
+
+.additional_pet {
+    margin-right: 20px;
+}
+
+.additional_pet_img {
+    width: 100px;
+    height: 100px;
+}
+
+.reminder_header_container {
+    width: 834px;
+
+    margin-top: 20px;
+}
+
+.reminder_container {
+    width: 864px;
+    height: 550px;
+
+    border-radius: 32px;
+    background-color: #F7E1D7;
+}
+
+#new_reminder_button {
+
+}
+
+#Popup_id {
+    color: black;
+}
+
+#right_side_container {
+    width: 700px;
+    height: 1080px;
+
+    border-radius: 32px;
+    margin-left: 200px;
+    background-color: #F7E1D7;
+}
+

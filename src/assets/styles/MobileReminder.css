@@ -1,0 +1,156 @@
+.container {
+    width: 440px;
+    height: 956px;
+    background-color: #DDBEA9;
+}
+
+.back_container {
+    width: 440px;
+    height: 60px;
+    background-color: white;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#back_img {
+    margin-left: 10px;
+    width: 32px;
+    height: 32px;
+}
+
+#back_p {
+    margin-left: 15px;
+    color: #4A5759;
+    font-size: 22px;
+}
+
+.profile_container {
+    width: 418px;
+    height: 455px;
+    background-color: #F7E1D7;
+    border-radius: 32px;
+    padding: 6px;
+    margin: auto;
+}
+
+.pet_profile_container {
+    margin: auto;
+    display: flex;
+    align-items: flex-start;
+}
+
+#pet_info {
+    height: 202px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#pet_img {
+    width: 202px;
+    height: 202px;
+    min-height: 202px;
+    min-width: 202px;
+    border-radius: 28px;
+    background-color: black;
+    margin-right: 8px;
+}
+
+#dog_img {
+    width: 202px;
+    height: 202px;
+    object-fit: fill;
+    border-radius: 28px;
+}
+
+#pet_name {
+    width: auto;
+    color: black;
+    text-align: left;
+}
+
+#pet_name_h3 {
+    width: auto;
+    height: auto;
+}
+
+#pet_type {
+    color: black;
+    text-align: left;
+}
+
+#pet_information {
+    color: black;
+    text-align: left;
+    overflow: scroll;
+}
+
+.additional_pet_container {
+    width: 398px;
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    margin-top: 20px;
+}
+.additional_pet {
+    width: 80px;
+    height: auto;
+}
+
+.additional_pet_img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    background-color: black;
+}
+
+.additional_pet_name {
+    width: auto;
+    height: auto;
+    max-width: 80px;
+    max-height: 20px;
+
+    color: black;
+}
+
+.reminder_header_container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#reminder_header_h4 {
+    color: #4A5759;
+}
+
+#new_reminder {
+    width: 140px;
+    height: 40px;
+    background-color: #B0C4B1;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#new_reminder_img {
+    width: 24px;
+    height: 24px;
+}
+
+#edit_reminder {
+    width: 140px;
+    height: 40px;
+    background-color: #EDAFB8;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#edit_reminder_img {
+    width: 24px;
+    height: 24px;
+}
