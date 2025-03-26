@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Navbar from "./components/sidebar.jsx";
 
 import {
@@ -9,7 +11,9 @@ import {
   Route,
 } from "react-router-dom";
 
-import DesktopHome from "./pages/LandingPage.jsx";
+import DesktopLanding from "./pages/LandingPage.jsx";
+import DesktopHome from "./pages/AuthLanding.jsx"
+import DesktopPetCenter from "./pages/DesktopPetCenter.jsx"
 import DesktopPetProfile from "./pages/DesktopPetProfile.jsx"
 import DesktopReminder from "./pages/DesktopReminder.jsx"
 import DesktopMedicalInfo from "./pages/DesktopMedicalInfo.jsx"
@@ -22,7 +26,9 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<DesktopHome />} />
+        <Route path="/" element={<DesktopLanding />} />
+        <Route path="/authlanding" element={<DesktopHome />} />
+        <Route path="/petcenter" element={<DesktopPetCenter />} />
         <Route path="/petprofile" element={< DesktopPetProfile/>} /> 
         <Route path="/reminder" element={< DesktopReminder/>} />
         <Route path="/medicalinfo" element={< DesktopMedicalInfo/>} />

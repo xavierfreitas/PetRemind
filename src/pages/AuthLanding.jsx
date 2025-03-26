@@ -1,9 +1,10 @@
 import React from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../styles/LandingPage.css";
+import "../styles/AuthLanding.css";
+import StarIcon from "@mui/icons-material/Star";
 
-const LandingPage = () => {
+const AuthLanding = () => {
 
     /* function to dupe slider elements for longer track */
     function dupeSlides(sliderID) {
@@ -28,7 +29,7 @@ const LandingPage = () => {
     }, []);
 
     return (
-    <div className="landingpage-container container-fluid">
+    <div className="authlanding-container container-fluid">
 
         <div className="slider-container sliders" id="slider1">
             <div className="slider-track">
@@ -41,23 +42,27 @@ const LandingPage = () => {
         </div>
 
         <div className="headers">
-            <h1 className="title">Welcome to <span>PetRemind!</span></h1>
-            <h2 className="subtitle">Where pet needs are never forgotten</h2>
+            <h1 className="title">Welcome back <span>User</span>!</h1>
         </div>
 
         <div className="content">
-            <p id="mainpitch">
-            Life gets busy, but your pet's needs never stop. <span>PetRemind</span> helps you stay on 
-            top of important pet care tasks like feeding, vet visits, grooming, and exercise 
-            with smart reminders tailored to your pet's schedule. Whether you're a first-time 
-            pet owner or a seasoned pro, this simple and intuitive platform will ensure our little 
-            friends gets the love and care they deserve—on time, every time.
-            </p>
-            <p id="cta">
-                <Link to="/AuthLanding" style={{ textDecoration: "none", color: "inherit" }}>
-                Create an account or sign in!
-                </Link>
-            </p>
+            <nav className="bottom-navbar">
+                <ul>
+                    {[
+                    { path: "/reminder", label: "Reminders" },
+                    { path: "/petprofile", label: "Pet Profile" },
+                    { path: "/petcenter", label: "Pet Center" },
+                    { path: "/medicalinfo", label: "Medical Info" },
+                    { path: "/features", label: "Features" }
+                    ].map((tab) => (
+                    <li key={tab.path} className={location.pathname === tab.path ? "active" : ""}>
+                        <Link to={tab.path} style={{ textDecoration: "none", color: "inherit" }}>
+                        <StarIcon className="nav-icon" /><span>{tab.label}</span>
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
 
         <div className="slider-container sliders" id="slider2">
@@ -74,4 +79,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default AuthLanding;
