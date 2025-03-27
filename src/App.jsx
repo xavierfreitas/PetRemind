@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 import Navbar from "./components/Navbar.jsx";
+import Sidebar from "./components/sidebar.jsx";
 
 import {
   BrowserRouter as Router,
@@ -9,7 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import DesktopHome from "./pages/DesktopHome.jsx";
+import LandingPage from './pages/LandingPage.jsx';
 import DesktopPetProfile from "./pages/DesktopPetProfile.jsx"
 import DesktopReminder from "./pages/DesktopReminder.jsx"
 import DesktopMedicalInfo from "./pages/DesktopMedicalInfo.jsx"
@@ -21,8 +22,9 @@ function App() {
   return (
     <Router>
       <Navbar />
+      <Sidebar />
       <Routes>
-        <Route path="/" element={<DesktopHome />} />
+        <Route path="/" element={< LandingPage/>} />
         <Route path="/petprofile" element={< DesktopPetProfile/>} /> 
         <Route path="/reminder" element={< DesktopReminder/>} />
         <Route path="/medicalinfo" element={< DesktopMedicalInfo/>} />
