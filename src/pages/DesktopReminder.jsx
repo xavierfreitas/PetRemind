@@ -153,7 +153,7 @@ function DesktopReminder() {
 
   // Function that navigate to the add pet page
   const addPet = () => {
-    navigate('/petprofile');
+    navigate('/petcenter');
   }
 
   return (
@@ -219,7 +219,7 @@ function DesktopReminder() {
           </div>
           {/* Button for adding new reminder */}
           <Button variant="contained" id="new_reminder_button" startIcon={<AddIcon />} onClick={handleClickOpenNewReminder}>
-            New Reminder
+            Add
           </Button>
           <Dialog open={openNewReminder} onClose={handleCloseNewReminder}>
             <DialogTitle>New Reminder</DialogTitle>
@@ -273,7 +273,7 @@ function DesktopReminder() {
           </Dialog>
           {/* Button for editing reminder */}
           <Button variant="contained" id="edit_reminder_button" startIcon={<EditIcon />} onClick={handleClickOpenDeleteReminder}>
-            Edit Reminder
+            Edit
           </Button>
           <Dialog open={openDeleteReminder} onClose={handleCloseDeleteReminder} fullWidth={true} maxWidth="lg">
             <DialogTitle>Edit Reminder</DialogTitle>
@@ -293,7 +293,7 @@ function DesktopReminder() {
                       <span>Due Date: </span>
                       {dayjs(reminder.date).format('MM/DD/YYYY')}
                     </p>
-                    <IconButton class="edit_reminder_button" onClick={() => {setReminderTitle(reminder.title); setReminderDescription(reminder.description); setReminderDate(dayjs(dayjs(reminder.date))); handleClickOpenEditReminder(reminder.id);}}>
+                    <IconButton class="edit_reminder_button" onClick={() => { setReminderTitle(reminder.title); setReminderDescription(reminder.description); setReminderDate(dayjs(dayjs(reminder.date))); handleClickOpenEditReminder(reminder.id); }}>
                       <EditIcon />
                     </IconButton>
                     <Dialog open={openEditReminder} onClose={handleCloseEditReminder}>
@@ -377,47 +377,50 @@ function DesktopReminder() {
         </div>
       </div>
       <div id="right_side_container">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          {/* // I couldn't find a way to style the calander in css so I had to do it here */}
-          <StaticDatePicker
-            slotProps={{
-              layout: {
-                sx: {
-                  backgroundColor: '#F7E1D7',
-                  borderRadius: '32px',
+        <div id="calendar_container">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* // I couldn't find a way to style the calander in css so I had to do it here */}
+            <StaticDatePicker
+              slotProps={{
+                layout: {
+                  sx: {
+                    backgroundColor: '#F7E1D7',
+                    borderRadius: '32px',
+                  }
                 }
               }
-            }
-            }
-            orientation="landscape"
-            value={reminderDate}
-            onChange={(selectedDate) => {
-              filterReminderBasedOnDate(selectedDate);
-            }} />
-        </LocalizationProvider>
-        {/* Reminder list that is filtered based on the date the user selected */}
-        {/* This filtered reminder list will be displayed below the calendar on the right hand side of the page */}
-        <ul id="filtered_reminder_list">
-          {/* I had an error that that some reminder is returning null since I was implementing localstorage, so this is a go around for such errors */}
-          {filteredReminders.filter(reminder => reminder != null && reminder != undefined).map((reminder) => (
-            <li class="reminder_item_container" key={reminder.id}>
-              <div class="reminder_left_side_container">
-                <div class="reminder_title_container">
-                  <input type="checkbox" class="reminder_checkbox"></input>
-                  <span class="reminder_title">{reminder.title}</span>
+              }
+              orientation="landscape"
+              value={reminderDate}
+              onChange={(selectedDate) => {
+                filterReminderBasedOnDate(selectedDate);
+              }} />
+          </LocalizationProvider>
+          {/* Reminder list that is filtered based on the date the user selected */}
+          {/* This filtered reminder list will be displayed below the calendar on the right hand side of the page */}
+          <ul id="filtered_reminder_list">
+            {/* I had an error that that some reminder is returning null since I was implementing localstorage, so this is a go around for such errors */}
+            {filteredReminders.filter(reminder => reminder != null && reminder != undefined).map((reminder) => (
+              <li class="reminder_item_container" key={reminder.id}>
+                <div class="reminder_left_side_container">
+                  <div class="reminder_title_container">
+                    <input type="checkbox" class="reminder_checkbox"></input>
+                    <span class="reminder_title">{reminder.title}</span>
+                  </div>
+                  <p class="reminder_description">{reminder.description}</p>
                 </div>
-                <p class="reminder_description">{reminder.description}</p>
-              </div>
-              <p class="reminder_date">
-                <span>Due Date: </span>
-                {dayjs(reminder.date).format('MM/DD/YYYY')}
-              </p>
-            </li>
-          ))}
-        </ul>
+                <p class="reminder_date">
+                  <span>Due Date: </span>
+                  {dayjs(reminder.date).format('MM/DD/YYYY')}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
 }
 
 export default DesktopReminder;
+

@@ -24,10 +24,10 @@ body {
 }
 
 #pet_profile_container {
-    width: 840px;
-    height: 340px;
+    width: 880px;
+    height: 380px;
 
-    max-width: 840px;
+    max-width: 880px;
     max-height: 380px;
 
     border: 2px dotted white;
@@ -60,7 +60,7 @@ body {
 }
 
 #pet_profile_info_additional_info {
-    overflow: scroll;
+    overflow: auto;
 }
 
 #enable_reminder_container {
@@ -78,8 +78,8 @@ body {
     display: flex;
 
     margin-top: 20px;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .additional_pet {
@@ -118,12 +118,12 @@ body {
 .reminder_container {
     width: 880px;
     max-width: 880px;
-    height: 550px;
+    height: 450px;
 
     border: 2px dotted white;
     border-radius: 32px;
     background-color: #F7E1D7;
-    overflow-y: scroll;
+    overflow-y: auto;
 
 }
 
@@ -178,14 +178,21 @@ body {
 }
 
 #right_side_container {
-    width: 880px;
-    max-width: 880px;
-    height: 976px;
+    margin-right: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#calendar_container {
+    width: 780px;
+    max-width: 780px;
+    height: 936px;
 
     border-radius: 32px;
     background-color: #F7E1D7;
     border: 2px dotted white;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .reminder_item_container {
@@ -249,3 +256,4 @@ ul {
 li {
     margin-bottom: 20px;
 }
+
