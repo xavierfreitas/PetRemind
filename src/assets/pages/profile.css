@@ -1,0 +1,282 @@
+body {
+    background-color: #DDBEA9;
+    min-width: 1920px;
+    max-width: 1920px;
+    min-height: 978px;
+    max-height: 978px;
+}
+
+h2,
+p,
+h3 {
+    color: black;
+}
+
+
+
+button {
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    min-width: 100px;
+    max-width: 100px;
+    border-radius: 5px;
+}
+
+#rightSideContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 978px;
+    max-height: 978px;
+
+}
+
+#leftSideContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 978px;
+    max-height: 978px;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    min-width: 1920px;
+    max-width: 1920px;
+    min-height: 978px;
+    max-height: 978px;
+}
+
+#petProfile {
+    margin-top: 20px;
+    min-width: 800px;
+    max-width: 800px;
+    background-color: #F7E1D7;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#petProfile img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+
+#petInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+#petCareHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#weeklySchedHeader {
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+#weeklySchedule {
+    border-radius: 10px;
+}
+
+
+#taskListContainer {
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    min-width: 800px;
+    max-width: 800px;
+    max-height: 530px;
+    min-height: 530px;
+    background-color: #F7E1D7;
+}
+
+/*using list because easier to remove stuff*/
+ul.listOfTasks {
+    list-style-type: none;
+    padding: 0px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.listOfTasks {
+    max-height: 500px;
+}
+
+.taskItem {
+    display: flex;
+    align-items: center;
+    min-width: 700px;
+    max-width: 700px;
+    justify-content: space-between;
+    color: black;
+    background-color: whitesmoke;
+    border: 2px solid #B0C4B1;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.descPopupContainer {
+    margin-left: auto;
+    align-items: center;
+    display: flex;
+}
+
+#petCare {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #F7E1D7;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    min-width: 800px;
+    border-radius: 10px;
+}
+
+.addTaskContainer {
+    margin-left: auto;
+    align-items: center;
+    display: flex;
+}
+
+.addTaskDesc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.taskBoxes {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    min-width: 670px;
+    max-width: 670px;
+    border: 2px solid #B0C4B1;
+
+}
+
+.otherPets {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F7E1D7;
+    border-radius: 20px;
+    min-width: 800px;
+    max-width: 800px;
+
+}
+
+
+.otherPets img,
+#addPetBox {
+    border-radius: 10px;
+    margin: 10px;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+
+}
+
+#addPetBox {
+    color: black;
+    background-color: #B0C4B1;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+#bottomRowContainer {
+    display: flex;
+
+}
+
+
+#dateButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #F7E1D7;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/*THIS IS FOR POPUP*/
+
+/*set the button size and color so that they are all uniform*/
+#openMoreInfoButton,
+#openAddTaskButton,
+#subTaskButton {
+    text-transform: none;
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+#cancelButton {
+    text-transform: none;
+    color: antiquewhite;
+    background-color: #EDAFB8;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+#closeButton {
+    text-transform: none;
+    color: antiquewhite;
+    background-color: #EDAFB8;
+    min-width: 100%;
+}
+
+#taskDescriptionDialog .MuiDialog-paper {
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 400px;
+    max-height: 400px;
+}
+
+#askingQuestionDialog .MuiDialog-paper {
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 400px;
+    max-height: 400px;
+}
+
+#textFieldContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#descriptionTextField {
+    margin-top: 25px;
+}
