@@ -53,7 +53,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/profile" className="nav-link">
+            <Link to="/petprofile" className="nav-link">
               <i className="nav-icon">👤</i>
               <span>Profile</span>
             </Link>
