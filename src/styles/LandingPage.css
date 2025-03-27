@@ -1,83 +1,149 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Outfit:wght@300;400;500;600&display=swap');
 /* 'Pacifico' and 'Outfit' fonts */
 
-.landing-container {
+.landingpage-container {
     text-align: center;
-    padding: 40px;
+    padding: 0px 20px;
     font-family: "Arial", sans-serif;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 200px 300px 1fr 80px;
+    grid-template-rows: 2fr 2fr 1fr;
     grid-template-areas: 
-    "leftimgs headers rightimgs"
-    "leftimgs maincont rightimgs"
-    "leftimgs maincont rightimgs";
+    "leftslide headers rightslide"
+    "leftslide maincont rightslide"
+    "leftslide maincont rightslide";
+    --slide-count: 5;
+    --gap: 7px;
+    --time: 15s
 }
 
-.headers {
+.landingpage-container .headers {
     grid-area: headers;
+    justify-self: center;
+    align-self: center;
 }
 
-.title {
+.landingpage-container .title {
     font-family: 'Pacifico';
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: bold;
     margin-bottom: 0px;
 }
 
-.title span {
+.landingpage-container .title span {
+    font-size: 5.25rem;
     color: #000;
 }
 
-.subtitle {
+.landingpage-container .subtitle {
     font-family: 'Pacifico';
-    font-size: 1.8rem;
+    font-size: 2.25rem;
     font-style: italic;
     margin-top: 3px;
     margin-bottom: 20px;
 }
 
-.content {
+.landingpage-container .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-family: 'Outfit';
     max-width: 600px;
     margin: 0 auto;
     grid-area: maincont;
 }
 
+/* pitch to customer */
 #mainpitch {
-    font-size: 1.35rem;
+    font-size: 1.85rem;
+    padding: 20px;
+    width: 150%;
 }
 
 #mainpitch span {
     font-weight: bold;
 }
 
+/* sign-up text*/
 #cta {
     font-weight: bold;
-    font-size: 1.45rem;
+    font-size: 2.25rem;
     margin-top: 20px;
     color: white;
+    transition: 0.25s ease-in-out;
 }
 
-.images-grid {
-    display: inline-block;
+#cta:hover {
+    transform: scale(1.25);
+    cursor: pointer;
+    text-shadow: 0 0 10px white;
+}
+
+/* styling for the sliders on sides */
+#slider1 {
+    grid-area: leftslide;
+    transform: translate(-8vw, -200px);
+}
+
+#slider2 {
+    grid-area: rightslide;
+    transform: translate(8vw, -200px)
+}
+
+.sliders {
+    display: flex;
+    gap: 35px;
+}
+
+.slider-container {
     position: relative;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 30px;
 }
 
-.images-grid img {
-    width: 80%;
+.slider-track {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    animation: moveUp calc(32s * var(--slide-count)) linear infinite;
+}
+
+.slider-track img {
+    width: 90%;
     border-radius: 10px;
     object-fit: cover;
     display: block;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 2em white; /* glow effect on images */
 }
 
-#left-images {
-    grid-area: leftimgs;
+.slider-track img:hover {
+    box-shadow: 0 0 4em white; /* stronger glow for hover */
 }
 
-#right-images {
-    grid-area: rightimgs;
+.slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+/** COMMENT FOR TESTING PURPOSES **/
+/**
+.sidebar {
+}
+**/
+
+
+@keyframes moveUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(
+            calc(-1 * var(--slide-count) * 276px)
+        );
+    }
 }
