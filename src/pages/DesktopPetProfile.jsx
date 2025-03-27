@@ -38,13 +38,13 @@ const PetProfile = () => {
                         <h3 id="weeklySchedHeader">Weekly Schedule</h3>
                         <div id="calenderButtons">
                             <div id="dateButtonContainer">
-                                <button id="monday">MON</button>
-                                <button id="tuesday">TUE</button>
-                                <button id="wednesday">WED</button>
-                                <button id="thursday">THU</button>
-                                <button id="friday">FRI</button>
-                                <button id="saturday">SAT</button>
-                                <button id="sunday">SUN</button>
+                                <button className="dateButton" id="monday">MON</button>
+                                <button className="dateButton" id="tuesday">TUE</button>
+                                <button className="dateButton" id="wednesday">WED</button>
+                                <button className="dateButton"id="thursday">THU</button>
+                                <button className="dateButton" id="friday">FRI</button>
+                                <button className="dateButton" id="saturday">SAT</button>
+                                <button className="dateButton" id="sunday">SUN</button>
                             </div>
                         </div>
                         
@@ -132,7 +132,7 @@ const PetProfile = () => {
                         </div>
                         </div>
                         <div className="addTaskContainer">
-                        <button id="goToMed" onClick={()=> navigate("/medicalInfo")}>+</button>
+                        <button className="dateButton" id="goToMed" onClick={()=> navigate("/medicalInfo")}>+</button>
                         </div>
                     </div>
                 </div>

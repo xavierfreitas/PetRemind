@@ -12,9 +12,16 @@ h3 {
     color: black;
 }
 
+.dateButton {
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    min-width: 100px;
+    max-width: 100px;
+    border-radius: 5px;
+    border: none;
+}
 
-
-button {
+#goToMed {
     color: antiquewhite;
     background-color: #B0C4B1;
     min-width: 100px;

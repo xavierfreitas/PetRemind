@@ -219,7 +219,7 @@ function DesktopReminder() {
           </div>
           {/* Button for adding new reminder */}
           <Button variant="contained" id="new_reminder_button" startIcon={<AddIcon />} onClick={handleClickOpenNewReminder}>
-            Add
+            Add Reminder
           </Button>
           <Dialog open={openNewReminder} onClose={handleCloseNewReminder}>
             <DialogTitle>New Reminder</DialogTitle>
@@ -273,7 +273,7 @@ function DesktopReminder() {
           </Dialog>
           {/* Button for editing reminder */}
           <Button variant="contained" id="edit_reminder_button" startIcon={<EditIcon />} onClick={handleClickOpenDeleteReminder}>
-            Edit
+            Edit Reminder
           </Button>
           <Dialog open={openDeleteReminder} onClose={handleCloseDeleteReminder} fullWidth={true} maxWidth="lg">
             <DialogTitle>Edit Reminder</DialogTitle>
