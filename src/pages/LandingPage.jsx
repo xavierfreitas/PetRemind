@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LandingPage.css";
 import petImage1 from "../assets/images/bird.jpg";
@@ -13,7 +13,24 @@ import petImage8 from "../assets/images/dogandcat.jpg";
 import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
 
+import { auth, provider } from "../hosting/firebase"
+import { signInWithPopup } from "firebase/auth";
+
 const LandingPage = () => {
+    const [user, setUser] = useState(null);
+
+    // https://firebase.google.com/docs/auth/web/google-signin
+    const handleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            setUser(user);
+            
+            console.log("SUCCESSFULY SIGN IN WITH GOOGLE", user.displayName);
+        } catch (error) {
+            console.error("SIGN IN WITH GOOGLE ERROR: ", error);
+        }
+    }
 
     /* function to dupe slider elements for longer track */
     function dupeSlides(sliderID) {
@@ -68,6 +85,17 @@ const LandingPage = () => {
                 Create an account or sign in!
                 </Link>
             </p>
+
+            <div className="googleSignIn">
+                    { user ? (
+                        <div>
+                            <p>Welcome back, {user.displayName}</p>
+                            <img src={user.photoURL} />
+                        </div>
+                    ) : (
+                        <button onClick={handleSignIn}>Sign in with Google account</button>
+                    )}
+                </div>
         </div>
 
         <div className="slider-container sliders" id="slider2">

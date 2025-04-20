@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/AuthLanding.css";
@@ -17,7 +17,6 @@ import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
 
 const AuthLanding = () => {
-
     /* function to dupe slider elements for longer track */
     function dupeSlides(sliderID) {
         const sliderTrack = document.querySelector(`#${sliderID} .slider-track`);
