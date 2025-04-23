@@ -16,28 +16,28 @@ const DesktopPetCenter = () => {
         picture: "",
         name: "",
         age: "",
-        type: "",
+        species: "",
     });
     const [petList, setPetList] = useState([]);
 
-    // fetch pet count from localStorage and update state on component mount
+    // check if the form is complete (except for picture)
+    const isFormComplete = petInfo.name && petInfo.age && petInfo.species
+
+    // upon mount:
     useEffect(() => {
+        // fetch pet count from localStorage and update state on component mount
         const storedPetCount = parseInt(localStorage.getItem("petCount") || "0");
         setPetCount(storedPetCount);
-    }, []);
 
-
-    // fetch pet list from localStorage and update state on component mount
-    useEffect(() => {
+        // fetch pet list from localStorage and update state on component mount
         const storedPets = JSON.parse(localStorage.getItem("pets")) || [];
         setPetList(storedPets);
-    }, []);
 
-    // set and unset PetCenter background
-    useEffect(() => {
+        // set PetCenter background
         document.body.style.backgroundImage = `url(${petCenterBackground})`;
     
         return () => {
+            // unset PetCenter background
             document.body.style.backgroundImage = `url(${landingPageBackground})`;
         };
     }, []);
@@ -139,12 +139,12 @@ const DesktopPetCenter = () => {
                 open={open}
                 onClose={handleClose}
                 sx={{
-                    "& .MuiDialog-paper": {
-                        backgroundColor: "#ffffff", // custom background color
+                    "& .MuiDialog-paper": { // modal styling
+                        backgroundColor: "#ffffff",
                         borderRadius: "15px", // rounded corners
                         padding: "20px",
                         boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // slight shadow
-                        maxWidth: "500px", // Max width for the modal
+                        maxWidth: "500px", // max width for the modal
                         justifyContent: "center",
                         alignItems: "center",
                     }
@@ -156,9 +156,9 @@ const DesktopPetCenter = () => {
                 <DialogContent sx={{ padding: "10px 0" }}>
                     <input
                         type="file"
-                        accept="image/*" // Accept only images
+                        accept="image/*" // only accept images
                         onChange={handleImageChange}
-                        style={{ display: "none" }} // Hide the file input
+                        style={{ display: "none" }} // hide file input
                         id="pet-image-upload"
                     />
                     <label htmlFor="pet-image-upload" id="petimgselect-button">
@@ -168,7 +168,7 @@ const DesktopPetCenter = () => {
                     </label>
                     {petInfo.picture && (
                         <div className="image-preview" id="img-prev">
-                            <img src={petInfo.picture} alt="Pet Preview" style={{ width: "100%", borderRadius: "8px", marginTop: "10px" }} />
+                            <img src={petInfo.picture} alt="Pet Preview"/>
                         </div>
                     )}
                     <TextField
@@ -178,30 +178,42 @@ const DesktopPetCenter = () => {
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
+                        required
                     />
                     <TextField
-                        label="Pet Age"
+                        label="Pet Age (years)"
                         name="age"
                         value={petInfo.age}
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
                         type="number"
+                        required
                     />
                     <TextField
-                        label="Pet Type"
-                        name="type"
-                        value={petInfo.type}
+                        label="Pet Species"
+                        name="species"
+                        value={petInfo.species}
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
+                        required
                     />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button onClick={handleClose} color="primary" sx={{ padding: "10px 20px" }}>
+                    <Button 
+                        onClick={handleClose} 
+                        color="primary" 
+                        sx={{ padding: "10px 20px" }}
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleAddPet} color="primary" sx={{ padding: "10px 20px" }}>
+                    <Button 
+                        onClick={handleAddPet} 
+                        color="primary" 
+                        sx={{ padding: "10px 20px" }} 
+                        disabled={!isFormComplete}
+                    >
                         Add Pet
                     </Button>
                 </DialogActions>
