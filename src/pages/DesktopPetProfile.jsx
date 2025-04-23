@@ -7,6 +7,10 @@ import DescPopup from "./taskDescPopup";
 import { useNavigate } from "react-router-dom";
 import "./DesktopPetProfile.css"
 
+import petImage1 from "../assets/images/dog_2.jpg";
+import petImage2 from "../assets/images/dog_3.jpeg";
+import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
+
 const PetProfile = () => {
     const [taskList, setTaskList] = useState([]);
 
@@ -23,7 +27,7 @@ const PetProfile = () => {
                     <div id="profile">
                         <div id="petProfile">
                             <div>
-                                <img src="./src/assets/images/dog_2.jpg" alt="myPet" />
+                                <img src={petImage1} alt="myPet" />
                             </div>
                             <div id="petInfo">
                                 <div id="petNameContainer"><h2>Name of Pet</h2></div>
@@ -72,8 +76,8 @@ const PetProfile = () => {
 
             <div id="leftSideContainer">
                 <div className="otherPets">
-                    <img src="./src/assets/images/dog_3.jpeg" alt="morePet" />
-                    <img src="./src/assets/images/247c14e67e1d68913412f29d51559c3b.jpg" alt="morePet" />
+                    <img src={petImage2} alt="morePet" />
+                    <img src={petImage3} alt="morePet" />
                     <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={()=> navigate("/petcenter")}><AddIcon /> </IconButton>
                     
                 </div>

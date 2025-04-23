@@ -25,6 +25,12 @@ import { colors } from "@mui/material";
 import Switch from '@mui/material/Switch';
 import { useNavigate } from "react-router-dom";
 
+import dogImage2 from "../assets/images/dog_2.jpg";
+import petImage from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
+import petImage2 from "../assets/images/2c8fe8c0e2f4de97a1b61213d33190e1.jpg";
+import petImage3 from "../assets/images/cat_2.jpeg";
+import petImage4 from "../assets/images/dog_3.jpeg";
+
 localStorage.clear();
 
 function DesktopReminder() {
@@ -162,7 +168,7 @@ function DesktopReminder() {
         <div id="pet_profile_container">
           <div id="pet_profile_wrapper">
             <div id="pet_profile_img">
-              <img src="./src/assets/images/dog_2.jpg" id="dog_img"></img>
+              <img src={dogImage2} id="dog_img"></img>
             </div>
             <div id="pet_profile_info">
               <div id="pet_profile_info_name">
@@ -190,19 +196,19 @@ function DesktopReminder() {
           </div>
           <div id="additional_pet_container">
             <div class="additional_pet">
-              <img src="./src/assets/images/247c14e67e1d68913412f29d51559c3b.jpg" class="additional_pet_img"></img>
+              <img src={petImage} class="additional_pet_img"></img>
               <p class="additional_pet_name">Bella</p>
             </div>
             <div class="additional_pet">
-              <img src="./src/assets/images/2c8fe8c0e2f4de97a1b61213d33190e1.jpg" class="additional_pet_img"></img>
+              <img src={petImage2} class="additional_pet_img"></img>
               <p class="additional_pet_name">Luna</p>
             </div>
             <div class="additional_pet">
-              <img src="./src/assets/images/dog_3.jpeg" class="additional_pet_img"></img>
+              <img src={petImage3} class="additional_pet_img"></img>
               <p class="additional_pet_name">Felix</p>
             </div>
             <div class="additional_pet">
-              <img src="./src/assets/images/cat_2.jpeg" class="additional_pet_img"></img>
+              <img src={petImage4} class="additional_pet_img"></img>
               <p class="additional_pet_name">Zoe</p>
             </div>
             <div class="additional_pet">

@@ -1,9 +1,36 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LandingPage.css";
+import petImage1 from "../assets/images/bird.jpg";
+import petImage2 from "../assets/images/fish.jpg";
+import petImage3 from "../assets/images/dog.jpg";
+import petImage4 from "../assets/images/catplaying.jpg";
+import petImage5 from "../assets/images/rabbit.jpg";
+import petImage6 from "../assets/images/kitty.jpg";
+import petImage7 from "../assets/images/guineapig.jpg"
+import petImage8 from "../assets/images/dogandcat.jpg";
+import petImage9 from "../assets/images/lizard.jpg";
+import petImage10 from "../assets/images/2dogs.jpg";
+
+import { auth, provider } from "../hosting/firebase"
+import { signInWithPopup } from "firebase/auth";
 
 const LandingPage = () => {
+    const [user, setUser] = useState(null);
+
+    // https://firebase.google.com/docs/auth/web/google-signin
+    const handleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            setUser(user);
+            
+            console.log("SUCCESSFULY SIGN IN WITH GOOGLE", user.displayName);
+        } catch (error) {
+            console.error("SIGN IN WITH GOOGLE ERROR: ", error);
+        }
+    }
 
     /* function to dupe slider elements for longer track */
     function dupeSlides(sliderID) {
@@ -32,11 +59,11 @@ const LandingPage = () => {
 
         <div className="slider-container sliders" id="slider1">
             <div className="slider-track">
-                <div className="slide"><img src="src/assets/images/bird.jpg" alt="Bird" /></div>
-                <div className="slide"><img src="src/assets/images/fish.jpg" alt="Fish" /></div>
-                <div className="slide"><img src="src/assets/images/dog.jpg" alt="Dog" /></div>
-                <div className="slide"><img src="src/assets/images/catplaying.jpg" alt="Cat playing" /></div>
-                <div className="slide"><img src="src/assets/images/rabbit.jpg" alt="Rabbit" /></div>
+                <div className="slide"><img src={petImage1} alt="Bird" /></div>
+                <div className="slide"><img src={petImage2} alt="Fish" /></div>
+                <div className="slide"><img src={petImage3} alt="Dog" /></div>
+                <div className="slide"><img src={petImage4} alt="Cat playing" /></div>
+                <div className="slide"><img src={petImage5} alt="Rabbit" /></div>
             </div>
         </div>
 
@@ -58,15 +85,26 @@ const LandingPage = () => {
                 Create an account or sign in!
                 </Link>
             </p>
+
+            <div className="googleSignIn">
+                    { user ? (
+                        <div>
+                            <p>Welcome back, {user.displayName}</p>
+                            <img src={user.photoURL} />
+                        </div>
+                    ) : (
+                        <button onClick={handleSignIn}>Sign in with Google account</button>
+                    )}
+                </div>
         </div>
 
         <div className="slider-container sliders" id="slider2">
             <div className="slider-track">
-                <div className="slide"><img src="src/assets/images/kitty.jpg" alt="Kitty" /></div>
-                <div className="slide"><img src="src/assets/images/guineapig.jpg" alt="Guinea Pig" /></div>
-                <div className="slide"><img src="src/assets/images/dogandcat.jpg" alt="Dog and a cat" /></div>
-                <div className="slide"><img src="src/assets/images/lizard.jpg" alt="Lizard" /></div>
-                <div className="slide"><img src="src/assets/images/2dogs.jpg" alt="2 Dogs" /></div>
+                <div className="slide"><img src={petImage6} alt="Kitty" /></div>
+                <div className="slide"><img src={petImage7} alt="Guinea Pig" /></div>
+                <div className="slide"><img src={petImage8} alt="Dog and a cat" /></div>
+                <div className="slide"><img src={petImage9} alt="Lizard" /></div>
+                <div className="slide"><img src={petImage10} alt="2 Dogs" /></div>
             </div>
         </div>
 
