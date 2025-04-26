@@ -1,7 +1,13 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/LandingPage.css";
+
+import { db, auth, provider } from "../hosting/firebase"
+import { signInWithPopup } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+
+// pet images for the sliders
 import petImage1 from "../assets/images/bird.jpg";
 import petImage2 from "../assets/images/fish.jpg";
 import petImage3 from "../assets/images/dog.jpg";
@@ -13,20 +19,41 @@ import petImage8 from "../assets/images/dogandcat.jpg";
 import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
 
-import { auth, provider } from "../hosting/firebase"
-import { signInWithPopup } from "firebase/auth";
-
 const LandingPage = () => {
-    const [user, setUser] = useState(null);
+    const { user, setUser } = useUser();
+    const navigate = useNavigate();
 
     // https://firebase.google.com/docs/auth/web/google-signin
     const handleSignIn = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            setUser(user);
             
-            console.log("SUCCESSFULY SIGN IN WITH GOOGLE", user.displayName);
+            // make reference to users Firestore doc using their UID
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+
+            // checking if user already exists
+            if (userSnap.exists()) {
+                console.log("User document already exists.");
+                // update user document with any new data if needed
+                await setDoc(userRef, {
+                    name: user.displayName,
+                    photoURL: user.photoURL,
+                }, { merge: true });  // merge = true only updates fields instead of overwriting
+            } else {
+                // if a new user, create a new doc
+                await setDoc(userRef, {
+                    email: user.email,
+                    name: user.displayName,
+                    photoURL: user.photoURL,
+                    userID: user.uid,
+                });
+                console.log("User data saved to Firestore");
+            }
+
+            setUser(user); // set user in context
+            navigate("/authlanding"); // redirect to auth landing page
         } catch (error) {
             console.error("SIGN IN WITH GOOGLE ERROR: ", error);
         }
@@ -80,12 +107,6 @@ const LandingPage = () => {
             pet owner or a seasoned pro, this simple and intuitive platform will ensure our little 
             friends gets the love and care they deserve—on time, every time.
             </p>
-            <p id="cta">
-                <Link to="/AuthLanding" style={{ textDecoration: "none", color: "inherit" }}>
-                Create an account or sign in!
-                </Link>
-            </p>
-
             <div className="googleSignIn">
                     { user ? (
                         <div>
@@ -93,9 +114,16 @@ const LandingPage = () => {
                             <img src={user.photoURL} />
                         </div>
                     ) : (
-                        <button onClick={handleSignIn}>Sign in with Google account</button>
+                        <p id="cta">
+                            <span
+                            onClick={handleSignIn}
+                            style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                            >
+                            Create an account or sign in!
+                            </span>
+                        </p>
                     )}
-                </div>
+            </div>
         </div>
 
         <div className="slider-container sliders" id="slider2">

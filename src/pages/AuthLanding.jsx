@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../styles/AuthLanding.css";
+import { useUser } from "../context/UserContext";
 import StarIcon from "@mui/icons-material/Star";
+import "../styles/AuthLanding.css";
 
 import petImage1 from "../assets/images/bird.jpg";
 import petImage2 from "../assets/images/fish.jpg";
 import petImage3 from "../assets/images/dog.jpg";
 import petImage4 from "../assets/images/catplaying.jpg";
 import petImage5 from "../assets/images/rabbit.jpg";
-
 import petImage6 from "../assets/images/kitty.jpg";
 import petImage7 from "../assets/images/guineapig.jpg";
 import petImage8 from "../assets/images/dogandcat.jpg";
@@ -17,6 +17,8 @@ import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
 
 const AuthLanding = () => {
+    const { user } = useUser(); // get user from context
+
     /* function to dupe slider elements for longer track */
     function dupeSlides(sliderID) {
         const sliderTrack = document.querySelector(`#${sliderID} .slider-track`);
@@ -53,7 +55,7 @@ const AuthLanding = () => {
         </div>
 
         <div className="headers">
-            <h1 className="title">Welcome back <span>User</span>!</h1>
+            <h1 className="title">Welcome back <span>{user?.displayName || "User"}</span>!</h1>
         </div>
 
         <div className="content">
