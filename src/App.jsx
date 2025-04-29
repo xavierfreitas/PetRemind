@@ -3,12 +3,13 @@ import './App.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from "./components/sidebar.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useLocation,
 } from "react-router-dom";
 
 import DesktopLanding from "./pages/LandingPage.jsx";

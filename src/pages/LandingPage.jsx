@@ -52,7 +52,14 @@ const LandingPage = () => {
                 console.log("User data saved to Firestore");
             }
 
-            setUser(user); // set user in context
+            setUser({
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+            }); // set user in context
+
+            console.log(user.uid);
             navigate("/authlanding"); // redirect to auth landing page
         } catch (error) {
             console.error("SIGN IN WITH GOOGLE ERROR: ", error);

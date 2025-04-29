@@ -21,9 +21,14 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import { colors } from "@mui/material";
+import { colors, Select } from "@mui/material";
 import Switch from '@mui/material/Switch';
 import { useNavigate } from "react-router-dom";
+import { db } from "../hosting/firebase";
+import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import { useUser } from "../context/UserContext";
+import emailjs from "emailjs-com";
+import weekday from 'dayjs/plugin/weekday';
 
 import dogImage2 from "../assets/images/dog_2.jpg";
 import petImage from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
@@ -31,11 +36,14 @@ import petImage2 from "../assets/images/2c8fe8c0e2f4de97a1b61213d33190e1.jpg";
 import petImage3 from "../assets/images/cat_2.jpeg";
 import petImage4 from "../assets/images/dog_3.jpeg";
 
-localStorage.clear();
+emailjs.init("NDPI8T0TZIJkB0OGV");
+dayjs.extend(weekday);
 
 function DesktopReminder() {
   // Use for navigation to other pages
   const navigate = useNavigate();
+
+  const { user, setUser } = useUser();
 
   // https://react.dev/learn/updating-arrays-in-state
   // Storing reminders
@@ -44,7 +52,7 @@ function DesktopReminder() {
   const [reminderTitle, setReminderTitle] = useState("");
   const [reminderDescription, setReminderDescription] = useState("");
   const [reminderDate, setReminderDate] = useState(dayjs());
-
+  const [reminderRecurrence, setReminderRecurrence] = useState("none");
   // Storing the filtered reminders based on the ate the user selected
   const [filteredReminders, setFilteredReminders] = useState([]);
 
@@ -52,6 +60,143 @@ function DesktopReminder() {
   const [openNewReminder, setOpenNewReminder] = useState(false);
   const [openEditReminder, setOpenEditReminder] = useState(false);
   const [openDeleteReminder, setOpenDeleteReminder] = useState(false);
+
+  const [savedPet, setSavedPet] = useState([]);
+  const [selectedPetID, setSelectedPetID] = useState(null);
+
+  const checkIfReminderShouldBeSentToday = (reminder) => {
+    const todayDate = dayjs().startOf('day');
+    const reminderDate = dayjs(reminder.date).startOf('day');
+
+    if (reminderDate.isSame(todayDate) && (!reminder.lastEmailSentDate || dayjs(reminder.lastEmailSentDate).isBefore(todayDate))) {
+      return true;
+    }
+
+    if (reminder.recurrence === 'daily') {
+      return todayDate.isAfter(dayjs(reminder.date))
+    }
+
+    if (reminder.recurrence === 'weekly') {
+      return todayDate.weekday() === reminderDate.weekday() && todayDate.isAfter(dayjs(reminder.date));
+    }
+
+    if (reminder.recurrence === 'monthly') {
+      return todayDate.date() === reminderDate.date() && todayDate.isAfter(dayjs(reminder.date));
+    }
+
+    return false;
+  }
+
+  const sendReminderEmail = async (pet, reminders) => {
+    console.log("sendReminderEmail: ");
+
+    const serviceID = "service_sqb40x7";
+    const templateID = "template_ynl27vn";
+
+    const remindersList = reminders.map(reminder => {
+      return `
+        <p><strong>Title:</strong> ${reminder.title}</p>
+        <p><strong>Description:</strong> ${reminder.description}</p>
+        <p><strong>Due Date:</strong> ${reminder.date}</p>
+        <hr />
+      `;
+    }).join("");
+
+    const emailContent = {
+      reminders: remindersList,
+      email: user.email,
+      petName: pet.name,
+    };
+
+    try {
+      const response = await emailjs.send(serviceID, templateID, emailContent);
+      console.log("Email sent", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  }
+
+  const checkIfDailyReminderEmail = async () => {
+    if (!user?.uid) {
+      console.error("No user logged in");
+      return;
+    }
+
+    const todayDate = dayjs().format("YYYY-MM-DD");
+
+    const localStorageLastSentDate = localStorage.getItem('lastEmailSentDate');
+
+    if (localStorageLastSentDate === todayDate) {
+      console.log("DesktopReminder: checkIfDailyReminderEmail email already sent");
+
+      return;
+    }
+
+    const userDocRef = doc(db, 'reminders', user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      console.error('No user in firestore');
+
+      return;
+    }
+
+    const userDocData = userDoc.data();
+    const userLastEmailSentDate = userDocData.lastEmailSentDate;
+
+    if (userLastEmailSentDate === todayDate) {
+      console.log("Daily email already sent");
+
+      return;
+    }
+
+    if (!userLastEmailSentDate) {
+      console.log("Can't find lastEmailSentDate");
+    }
+
+    const petsCollection = collection(db, "reminders", user.uid, "pets");
+    const petsDocs = await getDocs(petsCollection);
+
+    const allRemindersBeingSentToday = [];
+    let emailsSentToday = false;
+
+    for (const petDoc of petsDocs.docs) {
+      const petData = petDoc.data();
+      const petId = petDoc.id;
+
+      const petRemindersCollection = collection(db, "reminders", user.uid, "pets", petId, "reminders");
+      const petReminderDocs = await getDocs(petRemindersCollection);
+
+      for (const petReminderDoc of petReminderDocs.docs) {
+        const petReminderData = petReminderDoc.data();
+
+        if (checkIfReminderShouldBeSentToday(petReminderData)) {
+          allRemindersBeingSentToday.push(petReminderData);
+        }
+      }
+
+      if (allRemindersBeingSentToday.length > 0) {
+        await sendReminderEmail(petData, allRemindersBeingSentToday);
+        emailsSentToday = true;
+      }
+    }
+
+    if (emailsSentToday) {
+      const updatedReminders = reminders.map(reminder => {
+        if (allRemindersBeingSentToday.some(r => r.id === reminder.id)) {
+          return { ...reminder, lastEmailSentDate: todayDate };
+        }
+
+        return reminder;
+      });
+
+      setReminders(updatedReminders);
+      localStorage.setItem("reminders", JSON.stringify(updatedReminders));
+
+      await setDoc(userDocRef, { lastEmailSentDate: todayDate }, { merge: true });
+      localStorage.setItem("lastEmailSentDate", todayDate);
+    }
+  }
 
   // Function which opens NewReminder dialog
   const handleClickOpenNewReminder = () => {
@@ -87,67 +232,189 @@ function DesktopReminder() {
     setOpenDeleteReminder(false);
   }
 
-  useEffect(() => {
-    localStorage.setItem("reminders", JSON.stringify(reminders));
-  }, [reminders]);
+  const handleDropdownChange = (event) => {
+    setReminderRecurrence(event.target.value);
+  };
 
   useEffect(() => {
     filterReminderBasedOnDate(reminderDate)
   }, [reminders, reminderDate]);
 
+  useEffect(() => {
+    if (user) {
+      checkIfDailyReminderEmail();
+    }
+  }, [user, reminders]);
+
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const petsCollection = collection(db, "reminders", user?.uid, "pets");
+        const petsDocs = await getDocs(petsCollection);
+
+        const petsList = [];
+        for (const document of petsDocs.docs) {
+          const petData = document.data();
+          const petId = document.id;
+
+          const petsInfoDoc = await getDoc(doc(db, "pets", petId));
+
+          if (petsInfoDoc.exists()) {
+            const petInfo = petsInfoDoc.data();
+
+            console.log("PETINFO ID", petInfo.ownerID);
+            if (petInfo.ownerID === user?.uid) {
+              petsList.push({
+                id: petId,
+                ...petData,
+                ...petInfo,
+              });
+            }
+          }
+        }
+
+        setSavedPet(petsList);
+
+        if (petsList.length > 0) {
+          console.log("PETSLIST MORE THAN 1")
+          setSelectedPetID(petsList[0].id);
+        }
+      } catch (error) {
+        console.log("Fetch pet error: ", error);
+      }
+    }
+
+    if (user?.uid) {
+      fetchPets();
+    }
+  }, [user?.uid], reminders);
+
+  useEffect(() => {
+    const fetchReminders = async () => {
+      try {
+        if (!user?.uid || !selectedPetID) {
+          return;
+        }
+
+        const remindersCollection = collection(db, "reminders", user?.uid, "pets", selectedPetID, "remindersList");
+        const remindersDocs = await getDocs(remindersCollection);
+
+        const remindersList = remindersDocs.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          date: dayjs(doc.data().date)
+        }));
+
+        setReminders(remindersList);
+      } catch (error) {
+        console.error("DesktopReminder: Error fetching reminders: ", error);
+      }
+    }
+
+    fetchReminders();
+  }, [user?.uid, selectedPetID]);
+
   // Function that add a new reminder based on what the user inputted
-  const addReminder = () => {
-    const newReminder = {
-      // Setting the reminder id so it's easier to keep track of each reminder if needed
-      id: reminders.length ? reminders[reminders.length - 1].id + 1 : 1,
-      title: reminderTitle,
-      description: reminderDescription,
-      date: reminderDate,
-    };
+  const addReminder = async () => {
+    try {
+      console.log("Hi: ", user?.uid, selectedPetID);
+      if (!user?.uid || !selectedPetID) {
+        return;
+      }
 
-    setReminders([...reminders, newReminder]);
-    setReminderTitle("");
-    setReminderDescription("");
-    setReminderDate(dayjs());
+      const newReminder = {
+        title: reminderTitle,
+        description: reminderDescription,
+        date: reminderDate.toISOString(),
+        recurrence: reminderRecurrence,
+        lastEmailSentDate: null,
+      }
 
-    localStorage.setItem("reminders", JSON.stringify([...reminders, newReminder]));
-    console.log(JSON.parse(localStorage.getItem("reminders")));
+      const remindersDocs = await addDoc(collection(db, "reminders", user?.uid, "pets", selectedPetID, "remindersList"), newReminder);
+
+      const updatedReminder = {
+        id: remindersDocs.id,
+        ...newReminder,
+        date: dayjs(newReminder.date),
+      };
+
+      setReminders([...reminders, updatedReminder]);
+
+      setReminderTitle("");
+      setReminderDescription("");
+      setReminderDate(dayjs());
+      setReminderRecurrence("none");
+    } catch (error) {
+      console.error("DesktopReminder: Error addReminder: ", error);
+    }
   }
 
   // Function that edit the selected reminder the user selected, and the reminder will be updated to what the user wants
-  const editReminder = (id) => {
-    // Search for the reminder that matched the id. The matching id means that's the reminder the user selected to be edited
-    const selectedReminder = reminders.map(reminder => {
-      if (reminder.id === id) {
-        return {
-          ...reminder,
-          title: reminderTitle,
-          description: reminderDescription,
-          date: reminderDate,
-        };
+  const editReminder = async (id) => {
+    try {
+      if (!user?.uid || !selectedPetID) {
+        return;
       }
-      return reminder;
-    });
 
-    setReminders(selectedReminder);
-    setReminderTitle("");
-    setReminderDescription("");
-    setReminderDate(dayjs());
+      const remindersDocs = doc(db, "reminders", user?.uid, "pets", selectedPetID, "remindersList", id);
 
-    localStorage.setItem("reminders", JSON.stringify(selectedReminder));
-    console.log(JSON.parse(localStorage.getItem("reminders")));
+      await updateDoc(remindersDocs, {
+        title: reminderTitle,
+        description: reminderDescription,
+        date: reminderDate.toISOString(),
+        recurrence: reminderRecurrence,
+        lastEmailSentDate: dayjs().toISOString(),
+      });
+
+      // Search for the reminder that matched the id. The matching id means that's the reminder the user selected to be edited
+      const selectedReminder = reminders.map(reminder => {
+        if (reminder.id === id) {
+          return {
+            ...reminder,
+            title: reminderTitle,
+            description: reminderDescription,
+            date: reminderDate.toISOString(),
+            recurrence: reminderRecurrence,
+            lastEmailSentDate: dayjs(),
+          };
+        }
+
+        return reminder;
+      });
+
+      const selectedReminderDayjs = selectedReminder.map(reminder => ({
+        ...reminder,
+        date: dayjs(reminder.date),
+      }));
+
+      setReminders(selectedReminderDayjs);
+      setReminderTitle("");
+      setReminderDescription("");
+      setReminderDate(dayjs());
+      setReminderRecurrence("none");
+    } catch (error) {
+      console.error("DesktopReminder: Error editReminder: ", error);
+    }
   }
 
   // Function that delete reminder based on the reminder the user selected
-  const deleteReminder = (id) => {
-    if (id != null) {
+  const deleteReminder = async (id) => {
+    try {
+      if (!user?.uid || !selectedPetID) {
+        return;
+      }
+
+      const remindersDocs = doc(db, "reminders", user?.uid, "pets", selectedPetID, "remindersList", id);
+      await deleteDoc(remindersDocs);
+
       const selectedReminder = reminders.filter(reminder => reminder.id !== id);
       setReminders(selectedReminder);
       setReminderTitle("");
       setReminderDescription("");
       setReminderDate(dayjs());
-
-      localStorage.setItem("reminders", JSON.stringify(selectedReminder));
+      setReminderRecurrence("none");
+    } catch (error) {
+      console.error("DesktopReminder: Error deleteReminder: ", error);
     }
   }
 
@@ -172,46 +439,53 @@ function DesktopReminder() {
             </div>
             <div id="pet_profile_info">
               <div id="pet_profile_info_name">
-                <h3 id="pet_profile_info_name_h3">Max</h3>
+                <h3 id="pet_profile_info_name_h3">{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3>
               </div>
               <div id="pet_profile_info_breed">
-                <p>Golden Retriever</p>
+                <p>{savedPet.find(pet => pet.id === selectedPetID)?.type || "Pet Type"}</p>
               </div>
               <div id="pet_profile_info_additional_info">
-                <p>Friendly, and playful. Max loves meeting new people and playing fetch</p>
+                <p>{savedPet.find(pet => pet.id === selectedPetID)?.description || "Pet Description"}</p>
               </div>
             </div>
             <div id="enable_reminder_container">
-              <div id="text_message_reminder_container">
-                <Switch defaultChecked id="text_message_reminder_switch"></Switch>
-                <label for="text_message_reminder_checkbox">Text Message Reminder</label>
-                <p>Send you a text message reminder.</p>
-              </div>
               <div id="email_reminder_container">
                 <Switch defaultChecked id="email_reminder_switch"></Switch>
                 <label for="email_reminder_checkbox">Email Reminder</label>
                 <p>Send you an email reminder.</p>
+                <p>{user?.email}</p>
               </div>
             </div>
           </div>
           <div id="additional_pet_container">
-            <div class="additional_pet">
-              <img src={petImage} class="additional_pet_img"></img>
-              <p class="additional_pet_name">Bella</p>
+            {savedPet.map((pet) => (
+              <div className={`additional_pet ${pet.id === selectedPetID ? 'selected' : ''}`}
+                key={pet.id}
+                onClick={() => setSelectedPetID(pet.id)}
+              >
+                <img src={petImage2} className="additional_pet_img"></img>
+                <p className="additional_pet_name">{pet.name}</p>
+              </div>
+            ))}
+            {/*
+            <div className="additional_pet">
+              <img src={petImage} className="additional_pet_img"></img>
+              <p className="additional_pet_name">Bella</p>
             </div>
-            <div class="additional_pet">
-              <img src={petImage2} class="additional_pet_img"></img>
-              <p class="additional_pet_name">Luna</p>
+            <div className="additional_pet">
+              <img src={petImage2} className="additional_pet_img"></img>
+              <p className="additional_pet_name">Luna</p>
             </div>
-            <div class="additional_pet">
-              <img src={petImage3} class="additional_pet_img"></img>
-              <p class="additional_pet_name">Felix</p>
+            <div className="additional_pet">
+              <img src={petImage3} className="additional_pet_img"></img>
+              <p className="additional_pet_name">Felix</p>
             </div>
-            <div class="additional_pet">
-              <img src={petImage4} class="additional_pet_img"></img>
-              <p class="additional_pet_name">Zoe</p>
+            <div className="additional_pet">
+              <img src={petImage4} className="additional_pet_img"></img>
+              <p className="additional_pet_name">Zoe</p>
             </div>
-            <div class="additional_pet">
+            */}
+            <div className="additional_pet">
               <IconButton id="add_pet_button" onClick={addPet}>
                 <AddIcon id="add_pet_icon" />
               </IconButton>
@@ -219,7 +493,7 @@ function DesktopReminder() {
           </div>
         </div>
         {/* All for Reminder */}
-        <div class="reminder_header_container">
+        <div className="reminder_header_container">
           <div id="reminder_header">
             <h4 id="reminder_header_h4">Reminder</h4>
           </div>
@@ -265,12 +539,22 @@ function DesktopReminder() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Date"
-                  value={reminderDate}
+                  value={reminderDate ? dayjs(reminderDate) : null}
                   onChange={(newValue) => {
                     setReminderDate(newValue);
                   }}
                 />
               </LocalizationProvider>
+              <DialogContentText>
+                Recurrence
+              </DialogContentText>
+              <select
+                value={reminderRecurrence} onChange={handleDropdownChange}>
+                <option value="none">Select Reminder Recurrence</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
               <DialogActions>
                 <Button onClick={handleCloseNewReminder}>Cancel</Button>
                 <Button onClick={() => { addReminder(); handleCloseNewReminder(); }}>Save</Button>
@@ -287,19 +571,19 @@ function DesktopReminder() {
               <ul id="edit_reminder_list">
                 {/* // I had an error that that some reminder is returning null since I was implementing localstorage, so this is a go around for such errors */}
                 {reminders.filter(reminder => reminder !== null && reminder !== undefined).map((reminder) => (
-                  <li class="reminder_item_container" key={reminder.id}>
-                    <div class="reminder_left_side_container">
-                      <div class="reminder_title_container">
-                        <input type="checkbox" class="reminder_checkbox"></input>
-                        <span class="reminder_title">{reminder.title}</span>
+                  <li className="reminder_item_container" key={reminder.id}>
+                    <div className="reminder_left_side_container">
+                      <div className="reminder_title_container">
+                        <input type="checkbox" className="reminder_checkbox"></input>
+                        <span className="reminder_title">{reminder.title}</span>
                       </div>
-                      <p class="reminder_description">{reminder.description}</p>
+                      <p className="reminder_description">{reminder.description}</p>
                     </div>
-                    <p class="reminder_date">
+                    <p className="reminder_date">
                       <span>Due Date: </span>
                       {dayjs(reminder.date).format('MM/DD/YYYY')}
                     </p>
-                    <IconButton class="edit_reminder_button" onClick={() => { setReminderTitle(reminder.title); setReminderDescription(reminder.description); setReminderDate(dayjs(dayjs(reminder.date))); handleClickOpenEditReminder(reminder.id); }}>
+                    <IconButton className="edit_reminder_button" onClick={() => { setReminderTitle(reminder.title); setReminderDescription(reminder.description); setReminderDate(dayjs(dayjs(reminder.date))); handleClickOpenEditReminder(reminder.id); }}>
                       <EditIcon />
                     </IconButton>
                     <Dialog open={openEditReminder} onClose={handleCloseEditReminder}>
@@ -340,12 +624,22 @@ function DesktopReminder() {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="Date"
-                            value={reminderDate}
+                            value={reminderDate ? dayjs(reminderDate) : null}
                             onChange={(newValue) => {
                               setReminderDate(newValue);
                             }}
                           />
                         </LocalizationProvider>
+                        <DialogContentText>
+                          Recurrence
+                        </DialogContentText>
+                        <select
+                          value={reminderRecurrence} onChange={handleDropdownChange}>
+                          <option value="none">Select Reminder Recurrence</option>
+                          <option value="daily">Daily</option>
+                          <option value="weekly">Weekly</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
                       </DialogContent>
                       <DialogActions>
                         <Button onClick={handleCloseEditReminder}>Cancel</Button>
@@ -361,21 +655,21 @@ function DesktopReminder() {
             </DialogContent>
           </Dialog>
         </div>
-        <div class="reminder_container">
-          <ul class="reminder_list">
+        <div className="reminder_container">
+          <ul className="reminder_list">
             {/* I had an error that that some reminder is returning null since I was implementing localstorage, so this is a go around for such errors */}
             {reminders.filter(reminder => reminder !== null && reminder !== undefined).map((reminder) => (
-              <li class="reminder_item_container" key={reminder.id}>
-                <div class="reminder_left_side_container">
-                  <div class="reminder_title_container">
-                    <input type="checkbox" class="reminder_checkbox"></input>
-                    <span class="reminder_title">{reminder.title}</span>
+              <li className="reminder_item_container" key={reminder.id}>
+                <div className="reminder_left_side_container">
+                  <div className="reminder_title_container">
+                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <span className="reminder_title">{reminder.title}</span>
                   </div>
-                  <p class="reminder_description">{reminder.description}</p>
+                  <p className="reminder_description">{reminder.description}</p>
                 </div>
-                <p class="reminder_date">
+                <p className="reminder_date">
                   <span>Due Date: </span>
-                  {reminder.date.format('MM/DD/YYYY')}
+                  {dayjs(reminder.date).format('MM/DD/YYYY')}
                 </p>
               </li>
             ))}
@@ -397,7 +691,7 @@ function DesktopReminder() {
               }
               }
               orientation="landscape"
-              value={reminderDate}
+              value={reminderDate ? dayjs(reminderDate) : null}
               onChange={(selectedDate) => {
                 filterReminderBasedOnDate(selectedDate);
               }} />
@@ -407,15 +701,15 @@ function DesktopReminder() {
           <ul id="filtered_reminder_list">
             {/* I had an error that that some reminder is returning null since I was implementing localstorage, so this is a go around for such errors */}
             {filteredReminders.filter(reminder => reminder != null && reminder != undefined).map((reminder) => (
-              <li class="reminder_item_container" key={reminder.id}>
-                <div class="reminder_left_side_container">
-                  <div class="reminder_title_container">
-                    <input type="checkbox" class="reminder_checkbox"></input>
-                    <span class="reminder_title">{reminder.title}</span>
+              <li className="reminder_item_container" key={reminder.id}>
+                <div className="reminder_left_side_container">
+                  <div className="reminder_title_container">
+                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <span className="reminder_title">{reminder.title}</span>
                   </div>
-                  <p class="reminder_description">{reminder.description}</p>
+                  <p className="reminder_description">{reminder.description}</p>
                 </div>
-                <p class="reminder_date">
+                <p className="reminder_date">
                   <span>Due Date: </span>
                   {dayjs(reminder.date).format('MM/DD/YYYY')}
                 </p>
