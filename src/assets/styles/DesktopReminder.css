@@ -38,6 +38,7 @@ body {
     border-radius: 32px;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 }
 
 #pet_profile_wrapper {

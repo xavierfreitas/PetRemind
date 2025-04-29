@@ -89,14 +89,18 @@
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 120px;
+    box-shadow: 2px 2px 10px black;
+    width: 30%;
 }
 
 #petcard_petname {
+    padding: 0 10px;
     font-family: 'Pacifico';
     font-size: clamp(16px, 2vw, 32px);
-    white-space: nowrap;
+    white-space: normal;
+    width: 100%;
+    display: inline-block;
+    word-break: break-word;
 }
 
 #petcard_petage {
@@ -104,9 +108,9 @@
 }
 
 .petcenter-container .pet-icon {
-    margin: 10px 20px 0px 20px;
-    width: 60px; 
-    height: 60px;
+    margin: 10px auto;
+    max-width: 100px; 
+    max-height: 100px;
     object-fit: cover; /* so image doesn't stretch/distort */
     border-radius: 50%; /* round image outline */
 }
@@ -128,11 +132,9 @@
     right: 5px;
     background: #ecd3c7;
     border: none;
-    font-size: 50px;
+    font-size: 25px;
     cursor: pointer;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,14 +175,25 @@
     max-width: 100%;
 }
 
+#img-prev {
+    max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    border-radius: 100%;
+}
 #img-prev img {
-    max-width: 30vw;
     max-height: 30vh;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 #petimgselect-button {
-    justify-self: center;
-    align-self: center;
+    display: block;
+    margin: 10px auto;
+    width: fit-content;
+    max-width: 25vw;
+    overflow: hidden;
+    text-align: center;
 }
