@@ -1,7 +1,5 @@
 
 .medical-page-container {
-    width: 1920px;
-    height: 1080px;
     background-color: #dbc1a7; /* Beige background from Figma */
     display: flex;
     flex-direction: column;
