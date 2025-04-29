@@ -23,12 +23,13 @@ import TextField from '@mui/material/TextField';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { colors, Select } from "@mui/material";
 import Switch from '@mui/material/Switch';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { db } from "../hosting/firebase";
 import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 import emailjs from "emailjs-com";
 import weekday from 'dayjs/plugin/weekday';
+import { useUser } from "../context/UserContext";
 
 import dogImage2 from "../assets/images/dog_2.jpg";
 import petImage from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
@@ -40,6 +41,18 @@ emailjs.init("NDPI8T0TZIJkB0OGV");
 dayjs.extend(weekday);
 
 function DesktopReminder() {
+  const { user, loading } = useUser(); // get user from context, get loading state too
+  
+    // if loading show a loading message
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // if user is not logged in, redirect to landing page
+    if (!user) {
+        return <Navigate to="/" />;
+    }
+
   // Use for navigation to other pages
   const navigate = useNavigate();
 

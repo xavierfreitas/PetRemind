@@ -112,24 +112,17 @@ const LandingPage = () => {
             top of important pet care tasks like feeding, vet visits, grooming, and exercise 
             with smart reminders tailored to your pet's schedule. Whether you're a first-time 
             pet owner or a seasoned pro, this simple and intuitive platform will ensure our little 
-            friends gets the love and care they deserve—on time, every time.
+            friends get the love and care they deserve—on time, every time.
             </p>
             <div className="googleSignIn">
-                    { user ? (
-                        <div>
-                            <p>Welcome back, {user.displayName}</p>
-                            <img src={user.photoURL} />
-                        </div>
-                    ) : (
-                        <p id="cta">
-                            <span
-                            onClick={handleSignIn}
-                            style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
-                            >
-                            Create an account or sign in!
-                            </span>
-                        </p>
-                    )}
+                <p id="cta">
+                    <span
+                    onClick={handleSignIn}
+                    style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                    >
+                    Sign in through Google!
+                    </span>
+                </p>
             </div>
         </div>
 
