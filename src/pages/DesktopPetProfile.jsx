@@ -273,7 +273,7 @@ const PetProfile = () => {
                 <div className="otherPets">
                     <img src="./src/assets/images/dog_3.jpeg" alt="morePet" />
                     <img src="./src/assets/images/247c14e67e1d68913412f29d51559c3b.jpg" alt="morePet" />
-                    <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={()=> navigate("/addpet")}><AddIcon /> </IconButton>
+                    <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={()=> navigate("/petcenter")}><AddIcon /> </IconButton>
                     
                 </div>
                 <h3 id="petCareHeader">Pet Care</h3>
