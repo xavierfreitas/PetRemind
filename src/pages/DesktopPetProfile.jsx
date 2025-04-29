@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ProfilePopup from "./PetProfilePopup";
 import DescPopup from "./taskDescPopup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "./DesktopPetProfile.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { firestore } from "../firebase";
@@ -17,6 +18,18 @@ import petImage2 from "../assets/images/dog_3.jpeg";
 import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
 
 const PetProfile = () => {
+    const { user, loading } = useUser(); // get user from context, get loading state too
+    
+    // if loading show a loading message
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // if user is not logged in, redirect to landing page
+    if (!user) {
+        return <Navigate to="/" />;
+    }
+    
     const [taskList, setTaskList] = useState([]);
 
     const navigate = useNavigate();

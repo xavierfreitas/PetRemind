@@ -23,12 +23,13 @@ import TextField from '@mui/material/TextField';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { colors, Select } from "@mui/material";
 import Switch from '@mui/material/Switch';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { db } from "../hosting/firebase";
-import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 import emailjs from "emailjs-com";
 import weekday from 'dayjs/plugin/weekday';
+import PetsIcon from "@mui/icons-material/Pets";
 
 import dogImage2 from "../assets/images/dog_2.jpg";
 import petImage from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
@@ -40,10 +41,22 @@ emailjs.init("NDPI8T0TZIJkB0OGV");
 dayjs.extend(weekday);
 
 function DesktopReminder() {
+  const { user, loading } = useUser(); // get user from context, get loading state too
+
+  // if loading show a loading message
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // if user is not logged in, redirect to landing page
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
   // Use for navigation to other pages
   const navigate = useNavigate();
 
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
 
   // https://react.dev/learn/updating-arrays-in-state
   // Storing reminders
@@ -249,6 +262,28 @@ function DesktopReminder() {
   useEffect(() => {
     const fetchPets = async () => {
       try {
+        const updateUser = doc(db, "reminders", user.uid);
+
+        await setDoc(updateUser, {}, { merge: true })
+
+        const updatePetsCollection = collection(db, "pets");
+        const updatePetsQuery = query(updatePetsCollection, where("ownerId", "==", user?.uid));
+        const updatePetsDocs = await getDocs(updatePetsQuery);
+
+        const updatedPetIds = [];
+        for (const petDoc of updatePetsDocs.docs) {
+          const petId = petDoc.id;
+          updatedPetIds.push(petId);
+          console.log("petID: ", petId);
+
+          const newSaveDoc = doc(db, "reminders", user.uid, "pets", petId);
+          const existingPetDoc = await getDoc(newSaveDoc)
+
+          if (!existingPetDoc.exists()) {
+            await setDoc(newSaveDoc, { updatedPetIds }, { merge: true });
+          }
+        }
+
         const petsCollection = collection(db, "reminders", user?.uid, "pets");
         const petsDocs = await getDocs(petsCollection);
 
@@ -262,8 +297,8 @@ function DesktopReminder() {
           if (petsInfoDoc.exists()) {
             const petInfo = petsInfoDoc.data();
 
-            console.log("PETINFO ID", petInfo.ownerID);
-            if (petInfo.ownerID === user?.uid) {
+            console.log("PETINFO ID", petInfo.ownerId);
+            if (petInfo.ownerId === user?.uid) {
               petsList.push({
                 id: petId,
                 ...petData,
@@ -435,7 +470,13 @@ function DesktopReminder() {
         <div id="pet_profile_container">
           <div id="pet_profile_wrapper">
             <div id="pet_profile_img">
-              <img src={dogImage2} id="dog_img"></img>
+              {savedPet.find(pet => pet.id === selectedPetID)?.picture ? (
+                <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture}
+                  id="dog_img"
+                  alt="pet_img"></img>
+              ) : (
+                <PetsIcon id="dog_img" />
+              )}
             </div>
             <div id="pet_profile_info">
               <div id="pet_profile_info_name">
@@ -463,28 +504,14 @@ function DesktopReminder() {
                 key={pet.id}
                 onClick={() => setSelectedPetID(pet.id)}
               >
-                <img src={petImage2} className="additional_pet_img"></img>
+                {pet.picture ? (
+                  <img src={pet.picture} className="additional_pet_img"></img>
+                ) : (
+                  <PetsIcon className="additional_pet_img" />
+                )}
                 <p className="additional_pet_name">{pet.name}</p>
               </div>
             ))}
-            {/*
-            <div className="additional_pet">
-              <img src={petImage} className="additional_pet_img"></img>
-              <p className="additional_pet_name">Bella</p>
-            </div>
-            <div className="additional_pet">
-              <img src={petImage2} className="additional_pet_img"></img>
-              <p className="additional_pet_name">Luna</p>
-            </div>
-            <div className="additional_pet">
-              <img src={petImage3} className="additional_pet_img"></img>
-              <p className="additional_pet_name">Felix</p>
-            </div>
-            <div className="additional_pet">
-              <img src={petImage4} className="additional_pet_img"></img>
-              <p className="additional_pet_name">Zoe</p>
-            </div>
-            */}
             <div className="additional_pet">
               <IconButton id="add_pet_button" onClick={addPet}>
                 <AddIcon id="add_pet_icon" />
