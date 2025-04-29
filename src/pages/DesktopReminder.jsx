@@ -23,7 +23,8 @@ import TextField from '@mui/material/TextField';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { colors } from "@mui/material";
 import Switch from '@mui/material/Switch';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 import dogImage2 from "../assets/images/dog_2.jpg";
 import petImage from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
@@ -34,6 +35,18 @@ import petImage4 from "../assets/images/dog_3.jpeg";
 localStorage.clear();
 
 function DesktopReminder() {
+  const { user, loading } = useUser(); // get user from context, get loading state too
+  
+    // if loading show a loading message
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // if user is not logged in, redirect to landing page
+    if (!user) {
+        return <Navigate to="/" />;
+    }
+
   // Use for navigation to other pages
   const navigate = useNavigate();
 

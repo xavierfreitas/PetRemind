@@ -55,18 +55,20 @@
 }
 
 /* pitch to customer */
-#mainpitch {
+.landingpage-container #mainpitch {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
     font-size: 1.85rem;
     padding: 20px;
     width: 150%;
 }
 
-#mainpitch span {
+.landingpage-container #mainpitch span {
     font-weight: bold;
 }
 
 /* sign-up text*/
-#cta {
+.landingpage-container #cta {
     font-weight: bold;
     font-size: 2.25rem;
     margin-top: 20px;
@@ -74,19 +76,19 @@
     transition: 0.25s ease-in-out;
 }
 
-#cta:hover {
+.landingpage-container #cta:hover {
     transform: scale(1.25);
     cursor: pointer;
     text-shadow: 0 0 10px white;
 }
 
 /* styling for the sliders on sides */
-#slider1 {
+.landingpage-container #slider1 {
     grid-area: leftslide;
     transform: translate(-8vw, -200px);
 }
 
-#slider2 {
+.landingpage-container #slider2 {
     grid-area: rightslide;
     transform: translate(8vw, -200px)
 }
@@ -101,7 +103,7 @@
 }
 
 .slider-track {
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -129,13 +131,6 @@
     border-radius: 20px;
     padding: 10px;
 }
-
-/** COMMENT FOR TESTING PURPOSES **/
-/**
-.sidebar {
-}
-**/
-
 
 @keyframes moveUp {
     0% {
