@@ -21,6 +21,14 @@ h3 {
     border: none;
 }
 
+.dateButton:hover {
+    background-color: #A0B2A1;
+}
+.dateButton:active {
+    color: black;
+    background-color: black;
+}
+
 #goToMed {
     color: antiquewhite;
     background-color: #B0C4B1;

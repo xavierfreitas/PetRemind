@@ -29,9 +29,9 @@ const DescPopup = ({ task }) => {
             <Button id="openMoreInfoButton" onClick={handleOpen}>More Info</Button>
             <Dialog id="taskDescriptionDialog"open={open} onClose={handleClose}>
                 {/* Show the task name and the the corresponding description for aforementioned task */}
-                <DialogTitle>{task.taskName}</DialogTitle>
+                <DialogTitle>{task.title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{task.taskDesc}</DialogContentText>
+                    <DialogContentText>{task.description}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button id="closeButton" onClick={handleClose}>Close</Button>
