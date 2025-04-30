@@ -286,6 +286,10 @@ li {
         max-height: 150px;
     }
 
+    #additional_pet_container {
+        min-height: 200px;
+    }
+
     .reminder_container {
         height: 53%;
     }
