@@ -9,25 +9,3 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-
-.app-container {
-  display: flex;
-  width: 100%;
-}
-
-.main-content {
-  flex: 1;
-  margin-left: 250px;
-  background-color: #f5f5dc;
-  min-height: 100vh;
-}
-
-/* Make sure links are appropriately styled */
-a {
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}

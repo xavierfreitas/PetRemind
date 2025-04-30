@@ -1,4 +1,4 @@
-.navbar_container {
+.navbar-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,80 +10,103 @@
     z-index: 100;
     background-color: #F7E1D7;
     border: 2px solid black;
+    color: black !important;
 }
 
-.navbar_left {
+.navbar-left {
     font-size: clamp(1.5rem, 2vw, 2.5rem);
     display: flex;
     justify-content: flex-start;
     padding-right: 1rem;
-    border-right: 3px solid black;
+    display: none;
 }
 
-.navbar_right {
+.navbar-right {
     text-align: center;
     font-size: clamp(1rem, 2vw, 2.5rem);
     font-family: 'Outfit';
     font-weight: bold;
     display: flex;
     gap: clamp(0.25rem, 1vw, 2rem);
+    margin-top: 3px;
 }
 
-.navbar_link_logo {
+.navbar-link-logo {
     font-size: clamp(1.5rem, 2vw, 3rem);
-    display: none;
 }
 
-.navbar_link_logo:hover {
+.navbar-link-logo:hover {
     text-decoration: underline;
     transform: scale(1.2);
     color: black;
 }
 
-.navbar_link {
+.navbar-link {
     text-decoration: none;
     color: black;
     padding: 0px 10px;
     transition: transform 0.5s ease-in-out;
 }
 
-.navbar_link:hover {
+.navbar-link:hover {
     text-decoration: underline;
     transform: scale(1.2);
     color: black;
 }
 
-#navbar_signout {
-    border-left: 3px solid black;
+.divider {
+    font-family: 'Outfit';
+    font-weight: bold;
+    color: black !important; /* weird bug where it was blue due to bootstrap coloring */
+}
+
+.divider:hover {
+    cursor: default;
+}
+
+#navbar-signout {
     cursor: pointer;
 }
 
 @media only screen and (min-width: 600px) {
-    .navbar_container {
+    .navbar-container {
         justify-content: space-between;
     }
     
-    #navbar_link_logo {
-        display: block;
-    }
-    
-    .navbar_right {
+    .navbar-right {
         display: flex;
         gap: 0.5rem;
     }
     
-    .navbar_link_logo {
+    .navbar-link-logo {
         display: block;
         font-family: 'Pacifico';
         text-decoration: none;
         color: black;
         margin-left: 1rem;
-        margin-right: 1rem;
+        margin-right: 2rem;
         transition: transform 0.5s ease-in-out;
     }
     
-    .navbar_link {
+    .navbar-link {
         text-decoration: none;
         color: black;
+    }
+
+    .navbar-left {
+        display: flex;
+    }
+
+    .navbar-back-icon {
+        display: flex;
+        color: black;
+        margin: 0.5rem 0px 0px 0.5rem;
+        transition: transform 0.5s ease-in-out;
+        font-size: clamp(1.5rem, 2vw, 2.5rem) !important; /* !important to override MUI styling */
+    }
+
+    .navbar-back-icon:hover {
+        cursor: pointer;
+        transform: scale(1.2);
     }
 }

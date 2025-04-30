@@ -1,7 +1,6 @@
 import React from "react";
 import "../assets/styles/DesktopFeatures.css";
 
-import collaboratorsIcon from "../assets/icons/business.png";
 import reminderIcon from "../assets/icons/reminder.png";
 import statisticsIcon from "../assets/icons/bar-chart.png";
 import medicalIcon from "../assets/icons/hospital.png";
@@ -38,16 +37,6 @@ const DesktopFeatures = () => {
             <img src={medicalIcon} alt="Medical Information icon" />
           </div>
           <h3 className="feature-title">Medical Information</h3>
-          <p className="feature-description">
-            PetRemind is not restricted to a single user. We support multiple users per pet, so families can each collaborate for their pet
-          </p>
-        </div>
-        
-        <div className="feature-card">
-          <div className="feature-icon">
-            <img src={collaboratorsIcon} alt="Multiple Collaborators icon" />
-          </div>
-          <h3 className="feature-title">Multiple Collaborators</h3>
           <p className="feature-description">
             PetRemind is not restricted to a single user. We support multiple users per pet, so families can each collaborate for their pet
           </p>
