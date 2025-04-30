@@ -1,15 +1,37 @@
 .navbar_container {
-    width: 1920px;
-    height: 70px;
-
-    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5vh;
+    z-index: 100;
+    background-color: #F7E1D7;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: space-between;
+    border: 2px dotted white;
+}
+
+.navbar_left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar_right {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar_link_logo {
+    font-family: 'Pacifico';
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .navbar_link {
-    float: right;
     text-decoration: none;
     color: black;
     margin-left: 20px;

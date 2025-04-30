@@ -34,10 +34,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    min-width: 1920px;
-    max-width: 1920px;
-    min-height: 978px;
-    max-height: 978px;
 }
 
 #petProfile {
