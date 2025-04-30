@@ -472,10 +472,10 @@ function DesktopReminder() {
             <div id="pet_profile_img">
               {savedPet.find(pet => pet.id === selectedPetID)?.picture ? (
                 <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture}
-                  id="dog_img"
+                  id="pet_profile_img"
                   alt="pet_img"></img>
               ) : (
-                <PetsIcon id="dog_img" />
+                <PetsIcon id="pet_profile_img" />
               )}
             </div>
             <div id="pet_profile_info">
@@ -483,7 +483,7 @@ function DesktopReminder() {
                 <h3 id="pet_profile_info_name_h3">{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3>
               </div>
               <div id="pet_profile_info_breed">
-                <p>{savedPet.find(pet => pet.id === selectedPetID)?.type || "Pet Type"}</p>
+                <p>{savedPet.find(pet => pet.id === selectedPetID)?.species || "Pet Species"}</p>
               </div>
               <div id="pet_profile_info_additional_info">
                 <p>{savedPet.find(pet => pet.id === selectedPetID)?.description || "Pet Description"}</p>
@@ -494,7 +494,6 @@ function DesktopReminder() {
                 <Switch defaultChecked id="email_reminder_switch"></Switch>
                 <label for="email_reminder_checkbox">Email Reminder</label>
                 <p>Send you an email reminder.</p>
-                <p>{user?.email}</p>
               </div>
             </div>
           </div>
