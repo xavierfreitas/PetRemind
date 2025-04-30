@@ -11,7 +11,7 @@
     padding: 1rem;
     box-sizing: border-box;
     text-align: center;
-    font-family: "Arial", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: clamp(0.5rem, 2vw, 1.25rem);
 }
 
@@ -156,6 +156,7 @@
     width: clamp(60px, 25vw, 100px);
     height: clamp(60px, 25vw, 100px);
     border-radius: 50%;
+    border: 3px solid black;
     object-fit: cover;
     margin: 0 auto 0.25rem;
 }
@@ -164,7 +165,7 @@
     margin: 0 auto;
     padding: 0 5px;
     font-family: 'Pacifico';
-    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-size: clamp(1.25rem, 2vw, 2rem);
     white-space: normal;
     width: 100%;
     display: inline-block;

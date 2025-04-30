@@ -30,7 +30,11 @@ function App() {
         <Route path="/" element={<DesktopLanding />} />
         <Route path="/authlanding" element={<DesktopHome />} />
         <Route path="/petcenter" element={<DesktopPetCenter />} />
+<<<<<<< HEAD
         <Route path="/petprofile" element={< DesktopPetProfile/>} /> 
+=======
+        <Route path="/petprofile/" element={< DesktopPetProfile/>} /> 
+>>>>>>> origin/truong-branch
         <Route path="/reminder" element={< DesktopReminder/>} />
         <Route path="/medicalinfo" element={< DesktopMedicalInfo/>} />
         <Route path="/features" element={< DesktopFeatures/>} /> 

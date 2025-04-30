@@ -3,7 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "../styles/DesktopPetCenter.css";
 
-import PetsIcon from "@mui/icons-material/Pets";
+import PetIcon from "../assets/images/default_pet_icon.svg";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, MenuItem } from "@mui/material";
@@ -126,11 +126,17 @@ const DesktopPetCenter = () => {
         }
 
         try {
+            // check if user chose a picture
+            const pictureUrl = petInfo.picture && petInfo.picture.trim()
+                ? petInfo.picture
+                : PetIcon; // default icon if no picture chosen
+
             // create new pet document in Firestore
             const petsCol = collection(db, "pets");
             const newPetRef = doc(petsCol);  // auto-ID
             const petPayload = {
             ...petInfo,
+            picture: pictureUrl,
             ownerId:   user.uid,
             createdAt: serverTimestamp()
             };
@@ -230,7 +236,7 @@ const DesktopPetCenter = () => {
                                 <div
                                     key={pet.id} 
                                     className="pet-card"
-                                    onClick={() => navigate(`/petprofile/${pet.id}`, { state: { pet } })} // click to go to pet profile
+                                    onClick={() => navigate(`/petprofile`, { state: { pet } })} // click to go to pet profile *Preston had to change this to navigate better
                                     style={{ cursor: "pointer" }}
                                     >
                                     {/* delete button */}
@@ -245,7 +251,7 @@ const DesktopPetCenter = () => {
                                     {pet.picture && pet.picture.trim() !== "" ? (
                                         <img src={pet.picture} alt={pet.name} className="pet-icon" />
                                     ) : (
-                                        <PetsIcon className="pet-icon" /> /* if no pet icon is chosen, use default */
+                                        <img src={PetIcon} alt={pet.name} className="pet-icon" /> /* if no pet icon is chosen, use default */
                                     )}
                                     {/* pet name and age */}
                                     <p id="petcard_petname">{pet.name}</p>
@@ -309,6 +315,7 @@ const DesktopPetCenter = () => {
                         fullWidth
                         margin="normal"
                         required
+                        slotProps={{ htmlInput: { maxLength: 22 } }}
                     />
                     <TextField
                         label="Pet Age (years)"
