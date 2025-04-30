@@ -83,7 +83,7 @@ const AuthLanding = () => {
                     className="profile-pic"
                 />
                 )}
-                <h1 className="title">Welcome back <br></br><span>{user?.displayName || "User"}</span>!</h1>
+                <h1 className="title">Welcome back <br></br><span>{user?.displayName || user?.name || "User"}</span>!</h1>
             </div>
 
             <div className="content">
