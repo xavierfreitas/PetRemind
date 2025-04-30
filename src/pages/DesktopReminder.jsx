@@ -146,14 +146,17 @@ function DesktopReminder() {
       return;
     }
 
+
     const userData = userDoc.data();
 
     const lastEmailSentDate = userData?.lastEmailSentDate;
     console.log("lastEmailSentDate: ", lastEmailSentDate);
 
+    const yesterdayDate = dayjs().subtract(1, "day").format("YYYY-MM-DD");
     if (!lastEmailSentDate) {
-      console.log("lastEmailSentDate is undefined. Skipping email.");
-      return;
+      await setDoc(userDocRef, { lastEmailSentDate: yesterdayDate });
+
+      console.log("lastEmailSentDate is undefined. Auto send.");
     }
 
     console.log("todayDate: ", todayDate);
