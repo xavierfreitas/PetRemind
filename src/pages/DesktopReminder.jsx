@@ -146,14 +146,17 @@ function DesktopReminder() {
       return;
     }
 
+
     const userData = userDoc.data();
 
     const lastEmailSentDate = userData?.lastEmailSentDate;
     console.log("lastEmailSentDate: ", lastEmailSentDate);
 
+    const yesterdayDate = dayjs().subtract(1, "day").format("YYYY-MM-DD");
     if (!lastEmailSentDate) {
-      console.log("lastEmailSentDate is undefined. Skipping email.");
-      return;
+      await setDoc(userDocRef, { lastEmailSentDate: yesterdayDate });
+
+      console.log("lastEmailSentDate is undefined. Auto send.");
     }
 
     console.log("todayDate: ", todayDate);
@@ -682,7 +685,7 @@ function DesktopReminder() {
               <li className="reminder_item_container" key={reminder.id}>
                 <div className="reminder_left_side_container">
                   <div className="reminder_title_container">
-                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <input type="checkbox" className="reminder_checkbox" onClick={() => deleteReminder(reminder.id)}></input>
                     <span className="reminder_title">{reminder.title}</span>
                   </div>
                   <p className="reminder_description">{reminder.description}</p>
@@ -724,7 +727,7 @@ function DesktopReminder() {
               <li className="reminder_item_container" key={reminder.id}>
                 <div className="reminder_left_side_container">
                   <div className="reminder_title_container">
-                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <input type="checkbox" className="reminder_checkbox" onClick={() => deleteReminder(reminder.id)}></input>
                     <span className="reminder_title">{reminder.title}</span>
                   </div>
                   <p className="reminder_description">{reminder.description}</p>
