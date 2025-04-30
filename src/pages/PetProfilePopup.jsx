@@ -8,6 +8,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import MenuItem  from "@mui/material/MenuItem";
 
 const ProfilePopup = ({ addTask, taskType }) => {
 
@@ -15,6 +19,7 @@ const ProfilePopup = ({ addTask, taskType }) => {
     const [open, setOpen] = useState(false);
     const [taskName, setTaskName] = useState("");
     const [taskDesc, setTaskDesc] = useState("");
+    const [whichDays, setWhichDays] = useState([]);
 
     const handleOpen = () => {
         setOpen(true);
@@ -25,18 +30,20 @@ const ProfilePopup = ({ addTask, taskType }) => {
         setOpen(false);
         setTaskName("");
         setTaskDesc("");
+        setWhichDays([]);
     };
 
     //adds task to the list / map
     const submitNewTask = () => {
-        if (taskName && taskDesc) {
-            addTask(taskType, taskName, taskDesc);
+        if (taskName && taskDesc && whichDays.length > 0) {
+            addTask(taskType, taskName, taskDesc, whichDays);
             handleClose();
         }
     };
     return (
         //Link used to figure out how to create dialog box
         //https://mui.com/material-ui/react-dialog/?srsltid=AfmBOooV0-npiKT5Ltc-owK0Wj_irXp39L0u2M0MdwTj-tV2WnMDG-Ps
+        //link use to figuroe out how to create dropdown / spinner for days of the week https://mui.com/material-ui/react-menu/
         //Dialog button appears when add task is clicked so that the user can input their task name as well as task description. (takes in the task type from the button selected)
         <React.Fragment>
             <Button id="openAddTaskButton" onClick={handleOpen}>Add Task</Button>
@@ -65,6 +72,27 @@ const ProfilePopup = ({ addTask, taskType }) => {
                         multiline
                         minRows={5}
                     />
+                    </div>
+                    <div id="selectedDaysContainer">
+                        <FormControl fullWidth>
+                            <InputLabel>Days of the Week</InputLabel>
+                            <Select
+                                multiple
+                                value={whichDays}
+                                onChange={(e) => setWhichDays(e.target.value)}
+                                label = "Days of the Week"
+                                >
+                                    <MenuItem value="Monday">Monday</MenuItem>
+                                    <MenuItem value="Tuesday">Tuesday</MenuItem>
+                                    <MenuItem value="Wednesday">Wednesday</MenuItem>
+                                    <MenuItem value="Thursday">Thursday</MenuItem>
+                                    <MenuItem value="Friday">Friday</MenuItem>
+                                    <MenuItem value="Saturday">Saturday</MenuItem>
+                                    <MenuItem value="Sunday">Sunday</MenuItem>
+                                    <MenuItem value="Everyday">Everyday</MenuItem>
+                                </Select>
+
+                        </FormControl>
                     </div>
                     </div>
                 </DialogContent>
