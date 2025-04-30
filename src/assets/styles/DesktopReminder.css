@@ -45,8 +45,8 @@ body {
 }
 
 #pet_profile_img {
-    width: 130px;
-    height: 130px;
+    min-width: 130px;
+    min-height: 130px;
     border-radius: 28px;
     background-color: black;
 }
@@ -265,6 +265,7 @@ li {
 
     #pet_profile_container {
         height: 35%;
+        min-height: 35%;
         border: 2px dotted white;
 
         padding: 20px;
@@ -277,14 +278,17 @@ li {
     }
         
     #pet_profile_img {
-        width: 150px;
-        height: 150px;
+        min-width: 150px;
+        min-height: 150px;
     }
 
     .reminder_container {
-        height: 45%;
+        height: 53%;
     }
 
+    #enable_reminder_container {
+        margin-left: 40px;
+    }
     #right_side_container {
         width: 48%;
         height: auto;
