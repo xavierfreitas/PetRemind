@@ -55,9 +55,13 @@ const AuthLanding = () => {
     useEffect(() => {
         dupeSlides("slider1");
         dupeSlides("slider2");
-        dupeSlides("slider1");
-        dupeSlides("slider2");
-    }, []);
+
+        // only dupe again if a smaller screen
+        if (window.matchMedia("(max-width: 899px)").matches) {
+            dupeSlides("slider1");
+            dupeSlides("slider2");
+        }
+  }, []);
 
     return (
     <div className="authlanding-container container-fluid">

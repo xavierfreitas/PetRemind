@@ -8,15 +8,16 @@
   
   .features-title {
     text-align: center;
-    font-family: 'Satisfy', cursive; 
+    font-family: 'Pacifico', cursive; 
+    margin-top: 2.5rem;
     font-size: 3rem;
     color: black;
-    margin-bottom: 40px;
+    margin-bottom: 4rem;
   }
   
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 40px;
     max-width: 1200px;
     margin: 0 auto;
@@ -50,15 +51,17 @@
   }
   
   .feature-title {
+    font-family: 'Pacifico';
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: clamp(1.25rem, 2vw, 2.5rem);
     margin-bottom: 10px;
   }
   
   .feature-description {
-    font-size: 0.9rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(0.8rem, 1.5vw, 1.5rem);
     line-height: 1.5;
-    color: #333;
+    color: black;
   }
   
   @media (max-width: 900px) {

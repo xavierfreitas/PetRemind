@@ -1,16 +1,7 @@
 :root {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  --primary-color: #8B5E3C; /* dark brown */
-  --secondary-color: #DDBEA9; /* light beige */
-  --accent-color: #222; /* for text */
-  --button-color: #d99a6c;
-  --button-hover: #b6754e;
-
-  color: var(--accent-color);
-  background-color: var(--secondary-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
