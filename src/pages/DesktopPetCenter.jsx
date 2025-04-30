@@ -236,7 +236,7 @@ const DesktopPetCenter = () => {
                                 <div
                                     key={pet.id} 
                                     className="pet-card"
-                                    onClick={() => navigate(`/petprofile/${pet.id}`, { state: { pet } })} // click to go to pet profile
+                                    onClick={() => navigate(`/petprofile`, { state: { pet } })} // click to go to pet profile *Preston had to change this to navigate better
                                     style={{ cursor: "pointer" }}
                                     >
                                     {/* delete button */}
