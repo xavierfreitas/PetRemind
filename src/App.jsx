@@ -25,7 +25,6 @@ import MobileReminder from './pages/MobileReminder.jsx';
 function App() {
   return (
     <Router>
-      <Navbar />
       <Routes>
         <Route path="/" element={<DesktopLanding />} />
         <Route path="/authlanding" element={<DesktopHome />} />

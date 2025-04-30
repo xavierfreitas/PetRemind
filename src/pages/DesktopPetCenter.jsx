@@ -209,21 +209,21 @@ const DesktopPetCenter = () => {
     };
 
     return (
-        <div className="petcenter-container container-fluid col-8 justify-content-center">
+        <div className="petcenter-container container-fluid">
             <div id={petCount === 0 ? "no-pets" : "pets-exist"}>
                 <div className="headers">
                     {petCount === 0 ? (
-                        <h1 className="title">
+                        <h1 className="title1">
                             <span>Oh no! </span>It looks like you don't have a pet registered with us.
                         </h1>
                     ) : (
-                        <h1 className="title">Your Pets: {petCount} / {MAX_PETS}</h1>
+                        <h1 className="title2">Your Pets:<br></br>{petCount} / {MAX_PETS}</h1>
                     )}
                 </div>
 
                 <div className="content">
                     {petCount === 0 ? (
-                        <p>Add a pet to start keeping track of their needs!</p>
+                        <p id="keep-track-text">Add a pet to start keeping track of their needs!</p>
                     ) : (
                         <div className="pet-list">
                             {petList.map((pet, index) => (
@@ -254,10 +254,13 @@ const DesktopPetCenter = () => {
                             ))}
                         </div>
                     )}
-                    <AddCircleOutlineIcon 
-                        className="add-pet-icon"
-                        onClick={handleClickOpen}
-                    />
+                    {/* add pet button, only show if not maxed on pets */}
+                    {petCount < MAX_PETS && (
+                        <AddCircleOutlineIcon 
+                            className="add-pet-icon"
+                            onClick={handleClickOpen}
+                        />
+                    )}
                 </div>
             </div>
             {/* modal for adding pets */}

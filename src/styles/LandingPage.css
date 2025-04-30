@@ -2,45 +2,61 @@
 /* 'Pacifico' and 'Outfit' fonts */
 
 .landingpage-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 0px 20px;
-    font-family: "Arial", sans-serif;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 2fr 2fr 1fr;
-    grid-template-areas: 
-    "leftslide headers rightslide"
-    "leftslide maincont rightslide"
-    "leftslide maincont rightslide";
+    font-family: "Outfit", sans-serif;
     --slide-count: 5;
     --gap: 7px;
     --time: 15s
 }
 
 .landingpage-container .headers {
-    grid-area: headers;
     justify-self: center;
     align-self: center;
+    margin: 15px auto;
 }
 
 .landingpage-container .title {
+    color: rgb(33, 33, 33);
     font-family: 'Pacifico';
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: bold;
     margin-bottom: 0px;
 }
 
 .landingpage-container .title span {
-    font-size: 5.25rem;
+    font-size: clamp(3rem, 6vw, 5.5rem);
     color: #000;
 }
 
 .landingpage-container .subtitle {
+    color: rgb(33, 33, 33);
     font-family: 'Pacifico';
-    font-size: 2.25rem;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
     font-style: italic;
     margin-top: 3px;
     margin-bottom: 20px;
+}
+
+.landingpage-container .center-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 850px;
+    padding: 0 1rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 1;
 }
 
 .landingpage-container .content {
@@ -50,15 +66,18 @@
     justify-content: center;
     font-family: 'Outfit';
     max-width: 600px;
-    margin: 0 auto;
-    grid-area: maincont;
+    margin: 5% auto;
 }
 
 /* pitch to customer */
 .landingpage-container #mainpitch {
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 2em;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     font-weight: 500;
-    font-size: 1.85rem;
+    font-size: clamp(1rem, 2vw, 1.85rem);
     padding: 20px;
     width: 150%;
 }
@@ -69,8 +88,12 @@
 
 /* sign-up text*/
 .landingpage-container #cta {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 0.25em 0.5em;
+    border-radius: 0.5em;
     font-weight: bold;
-    font-size: 2.25rem;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
     margin-top: 20px;
     color: white;
     transition: 0.25s ease-in-out;
@@ -79,18 +102,54 @@
 .landingpage-container #cta:hover {
     transform: scale(1.25);
     cursor: pointer;
-    text-shadow: 0 0 10px white;
+    text-shadow: 0 0 4px white;
 }
 
 /* styling for the sliders on sides */
 .landingpage-container #slider1 {
-    grid-area: leftslide;
-    transform: translate(-8vw, -200px);
+    position: fixed;
+    top: 0px;
+    left: 5px;
+    width: 20%;
+    transform: translateY(-50px);
 }
 
 .landingpage-container #slider2 {
-    grid-area: rightslide;
-    transform: translate(8vw, -200px)
+    position: fixed;
+    top: 0px;
+    right: 5px;
+    width: 20%;
+    transform: translateY(-50px);
+}
+
+@media (min-width: 600px) {
+    .landingpage-container #slider1 {
+        width: 15%;
+    }
+
+    .landingpage-container #slider2 {
+        width: 15%;
+    }
+}
+
+@media (min-width: 900px) {
+    .landingpage-container #slider1 {
+        width: 25%;
+    }
+
+    .landingpage-container #slider2 {
+        width: 25%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .landingpage-container #slider1 {
+        width: 20%;
+    }
+
+    .landingpage-container #slider2 {
+        width: 20%;
+    }
 }
 
 .sliders {
@@ -103,6 +162,7 @@
 }
 
 .slider-track {
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
