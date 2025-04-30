@@ -10,9 +10,15 @@ import "./DesktopPetProfile.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from "../hosting/firebase";
 import PetsIcon from "@mui/icons-material/Pets";
+
 import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 
+
+
+import petImage1 from "../assets/images/dog_2.jpg";
+import petImage2 from "../assets/images/dog_3.jpeg";
+import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
 
 const PetProfile = () => {
     const [taskList, setTaskList] = useState([]);
