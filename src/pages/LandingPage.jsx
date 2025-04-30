@@ -81,9 +81,9 @@ const LandingPage = () => {
         dupeSlides("slider2");
     }, []);
 
+    /* START FROM HERE, ADD LOGIC FOR THE ADDED PET PICS!!!!!!! */
     return (
     <div className="landingpage-container container-fluid">
-
         <div className="slider-container sliders" id="slider1">
             <div className="slider-track">
                 <div className="slide"><img src={petImage1} alt="Bird" /></div>
@@ -94,28 +94,30 @@ const LandingPage = () => {
             </div>
         </div>
 
-        <div className="headers">
-            <h1 className="title">Welcome to <span>PetRemind!</span></h1>
-            <h2 className="subtitle">Where pet needs are never forgotten</h2>
-        </div>
+        <div className="center-content">
+            <div className="headers">
+                <h1 className="title">Welcome to <span>PetRemind!</span></h1>
+                <h2 className="subtitle">Where pet needs are never forgotten</h2>
+            </div>
 
-        <div className="content">
-            <p id="mainpitch">
-            Life gets busy, but your pet's needs never stop. <span>PetRemind</span> helps you stay on 
-            top of important pet care tasks like feeding, vet visits, grooming, and exercise 
-            with smart reminders tailored to your pet's schedule. Whether you're a first-time 
-            pet owner or a seasoned pro, this simple and intuitive platform will ensure our little 
-            friends get the love and care they deserve—on time, every time.
-            </p>
-            <div className="googleSignIn">
-                <p id="cta">
-                    <span
-                    onClick={handleSignIn}
-                    style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
-                    >
-                    Sign in through Google!
-                    </span>
+            <div className="content">
+                <p id="mainpitch">
+                Life gets busy, but your pet's needs never stop. <span>PetRemind</span> helps you stay on 
+                top of important pet care tasks like feeding, vet visits, grooming, and exercise 
+                with smart reminders tailored to your pet's schedule. Whether you're a first-time 
+                pet owner or a seasoned pro, this simple and intuitive platform will ensure our little 
+                friends get the love and care they deserve—on time, every time.
                 </p>
+                <div className="googleSignIn">
+                    <p id="cta">
+                        <span
+                        onClick={handleSignIn}
+                        style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                        >
+                        Sign in through Google!
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
 

@@ -3,8 +3,6 @@ import './App.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from "./components/sidebar.jsx";
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,7 +22,6 @@ import MobileReminder from './pages/MobileReminder.jsx';
 function App() {
   return (
     <Router>
-      <Navbar />
       <Routes>
         <Route path="/" element={<DesktopLanding />} />
         <Route path="/authlanding" element={<DesktopHome />} />

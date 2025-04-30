@@ -1,12 +1,5 @@
 /* Resize the page to 1920x978 and remove any default margin and padding */
 body {
-    width: 1920px;
-    height: 978px;
-    max-width: 1920px;
-    max-height: 978px;
-    min-width: 1920px;
-    min-height: 978px;
-    
     margin: 0;
     padding: 0;
 }

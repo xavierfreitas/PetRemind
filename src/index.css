@@ -2,7 +2,6 @@
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  overflow: hidden;
 
   --primary-color: #8B5E3C; /* dark brown */
   --secondary-color: #DDBEA9; /* light beige */
@@ -34,28 +33,11 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-color: transparent;
 }
 
-/* center main content */
-.container {
-  text-align: center;
-  max-width: 900px;
-  padding: 2rem;
-}
-
-/* header styling */
-h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-h2 {
-  font-size: 1.8rem;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--accent-color);
+@media (min-width: 900px) {
+  body {
+    overflow: hidden;
+  }
 }
