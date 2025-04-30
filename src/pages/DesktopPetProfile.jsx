@@ -38,7 +38,8 @@ const PetProfile = () => {
         setWDay(day);
     };
 
-    //Truong and I collaboarted with this page (used truongs code) we brainstromed with one another due to the simliarites of our pages (gather the same data)
+    //Truong and I (preston) collaboarted with this page (used truongs code) we brainstromed with one another due to the simliarites of our pages (gather the same data)
+    // we fetch from the database to make sure the accurate pets is accounted for and thus, corresponding tasks information are beind gatherd and then displayed from firebase
     useEffect(() => {
         const fetchPets = async () => {
             try {
@@ -104,7 +105,9 @@ const PetProfile = () => {
         }
     }, [user?.uid]);
 
-    
+    //Truong and I (preston) collaboarted with this page (used truongs code) we brainstromed with one another due to the simliarites of our pages (gather the same data)
+    // we fetch from the database to make sure the accurate pets and corresponding tasks information are obtained, this checks that the tasks are actually for the correct pet that is assinged and not a random pet
+    // similar functionlity to the fetching pets, but in this case for the tasks
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -133,6 +136,8 @@ const PetProfile = () => {
         setTaskList(taskList.concat({ taskName, taskDesc, whichDays }));
     };
     */
+
+    //adds a task based on the list checking the user ID and pet ID to make sure that the tasks is being correctly added to the database and is stored and tracked correctly
     const addTask = async (taskType, taskName, taskDesc, whichDays) => { //based off of group decided naming convention
 
         try {
@@ -165,6 +170,8 @@ const PetProfile = () => {
     } */
 
 
+    //Removes tasks from the list based on the delete icon that was clicked, also handles the checkbox to remove the task (and behaves the same way)
+    //only deletes the task that is from that day, not the same task on the other days
     const removeTask = async (taskToRemove) => {
         try {
             if (!user?.uid || !selectedPetID) {
@@ -191,16 +198,16 @@ const PetProfile = () => {
         }
     };
 
-    const { id: routePetId } = useParams(); 
-    
+    const { id: routePetId } = useParams();
+
     // Use selectedPetID for medical info instead of a separate activePetId
     // This fixes the issue of medical info not changing between pets
-    
+
     const [pet, setPet] = useState(null);
-    
+
     const [loading, setLoading] = useState(false);
     const [savingMedical, setSavingMedical] = useState(false);
-    
+
     const [notification, setNotification] = useState({
         open: false,
         message: "",
@@ -220,7 +227,7 @@ const PetProfile = () => {
         veterinarian: "",
         allergies: ""
     });
-    const [editedMedicalInfo, setEditedMedicalInfo] = useState({...medicalInfo});
+    const [editedMedicalInfo, setEditedMedicalInfo] = useState({ ...medicalInfo });
 
     const showNotification = (message, severity = "success") => {
         setNotification({
@@ -229,9 +236,9 @@ const PetProfile = () => {
             severity
         });
     };
-    
+
     const handleCloseNotification = () => {
-        setNotification({...notification, open: false});
+        setNotification({ ...notification, open: false });
     };
 
     // When the medical info modal is opened, fetch fresh data for the currently selected pet
@@ -246,14 +253,14 @@ const PetProfile = () => {
             console.log("No pet ID provided for fetching medical info");
             return;
         }
-        
+
         console.log("Fetching medical info for pet ID:", petId);
         setLoading(true);
-        
+
         try {
             const petDocRef = doc(db, "pets", petId);
             const petDocSnap = await getDoc(petDocRef);
-            
+
             if (petDocSnap.exists()) {
                 const petData = {
                     id: petDocSnap.id,
@@ -261,18 +268,18 @@ const PetProfile = () => {
                 };
                 console.log("Pet data fetched:", petData);
                 setPet(petData);
-                
+
                 const medInfoDocRef = doc(db, "medinfo", petId);
                 const medInfoDocSnap = await getDoc(medInfoDocRef);
-                
+
                 if (medInfoDocSnap.exists()) {
                     const medData = medInfoDocSnap.data();
                     console.log("Medical info fetched:", medData);
-                    
-                    const allergiesString = Array.isArray(medData.allergies) 
+
+                    const allergiesString = Array.isArray(medData.allergies)
                         ? medData.allergies.join(", ")
                         : medData.allergies || "None";
-                    
+
                     const newMedInfo = {
                         healthOverview: medData.healthOverview || "Your pet is generally healthy with no major concerns.",
                         upcomingAppointments: medData.upcomingAppointments || "No upcoming appointments scheduled.",
@@ -284,7 +291,7 @@ const PetProfile = () => {
                         veterinarian: medData.clinic || "",
                         allergies: allergiesString
                     };
-                    
+
                     setMedicalInfo(newMedInfo);
                     setEditedMedicalInfo(newMedInfo); // Also update edited info
                 } else {
@@ -300,7 +307,7 @@ const PetProfile = () => {
                         veterinarian: "",
                         allergies: ""
                     };
-                    
+
                     setMedicalInfo(defaultMedInfo);
                     setEditedMedicalInfo(defaultMedInfo);
                 }
@@ -327,7 +334,7 @@ const PetProfile = () => {
         if (isEditingMedical) {
             saveMedicalInfoToFirebase();
         } else {
-            setEditedMedicalInfo({...medicalInfo});
+            setEditedMedicalInfo({ ...medicalInfo });
         }
         setIsEditingMedical(!isEditingMedical);
     };
@@ -345,11 +352,11 @@ const PetProfile = () => {
             const docRef = doc(db, "medinfo", selectedPetID);
             console.log("Using Firestore document reference:", docRef.path);
             const docSnap = await getDoc(docRef);
-            
+
             const allergiesArray = editedMedicalInfo.allergies === "None" || !editedMedicalInfo.allergies
                 ? []
                 : editedMedicalInfo.allergies.split(",").map(a => a.trim());
-            
+
             const dataToSave = {
                 petId: selectedPetID, // Store the pet ID in the document for reference
                 ownerId: user?.uid, // Store the owner ID for security
@@ -364,9 +371,9 @@ const PetProfile = () => {
                 allergies: allergiesArray,
                 updated_at: serverTimestamp()
             };
-            
+
             console.log("Data being saved to Firestore:", dataToSave);
-            
+
             if (docSnap.exists()) {
                 await updateDoc(docRef, dataToSave);
                 console.log("Document updated successfully");
@@ -377,8 +384,8 @@ const PetProfile = () => {
                 });
                 console.log("New document created successfully");
             }
-            
-            setMedicalInfo({...editedMedicalInfo});
+
+            setMedicalInfo({ ...editedMedicalInfo });
             showNotification("Medical information saved successfully", "success");
         } catch (error) {
             console.error("Error saving medical info:", error);
@@ -400,7 +407,7 @@ const PetProfile = () => {
     // Handle pet selection - update selectedPetID and also reset medical info
     const handlePetSelection = (petId) => {
         setSelectedPetID(petId);
-        
+
         // Reset medical info when changing pets to prevent showing previous pet's data
         setMedicalInfo({
             healthOverview: "",
@@ -414,17 +421,17 @@ const PetProfile = () => {
             allergies: ""
         });
     };
- 
+
     return (
         <div id="container">
-            <div id="leftSideContainer">
+            <div id="leftSideContainer">  {/*Hold all information on left side of view*/}
                 <div id="profileContainer">
                     <div id="profile">
                         <div id="petProfile">
                             <div>
-                                <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture} alt="myPet" />
+                                <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture} alt="myPet" /> {/*Gathers the unique pet image for each pet based on its id*/}
                             </div>
-                            <div id="petInfo">
+                            <div id="petInfo"> {/*Hold all info about pet, Name, Species, Description*/}
                                 <div id="petNameContainer"><h3>{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3></div>
                                 <div id="petSpeciesContainer"><h6>Species: {savedPet.find(pet => pet.id === selectedPetID)?.species || "Pet Species"},     Age: {savedPet.find(pet => pet.id === selectedPetID)?.age || "Pet age"}</h6></div>
                                 <div id="petDescriptionContainer"><p>{savedPet.find(pet => pet.id === selectedPetID)?.description || "Pet Description"}</p></div>
@@ -435,7 +442,7 @@ const PetProfile = () => {
 
                 <div id="bottomRowContainer">
                     <div id="weeklySchedule">
-                        <h3 id="weeklySchedHeader">Weekly Schedule</h3>
+                        <h3 id="weeklySchedHeader">Weekly Schedule</h3> {/*Below are the buttons to navigate and view the tasks for each specific day that it was added for*/}
                         <div id="calenderButtons">
                             <div id="dateButtonContainer">
                                 <button
@@ -484,14 +491,14 @@ const PetProfile = () => {
                         </div>
 
                         <h3>Daily Tasks</h3>
-                        <div id="taskListContainer">
+                        <div id="taskListContainer"> {/* This is so that the task can dynamically update based on the tasks that are added into the list*/}
                             <ul className="listOfTasks">
                                 {taskList
                                     .filter(task => task.weekdays.includes(wDay)) //changed based on firetstore update
                                     .map((task) => (
                                         <li key={task.id} className="taskItem">
                                             <div>
-                                            <input type="checkbox" className="reminder_checkbox" onClick={() => removeTask(task)}></input>
+                                                <input type="checkbox" className="reminder_checkbox" onClick={() => removeTask(task)}></input>
                                                 {task.title}</div>
                                             <div className="descPopupContainer">
                                                 <DescPopup task={task} />
@@ -508,7 +515,7 @@ const PetProfile = () => {
             </div>
 
 
-            <div id="rightSideContainer">
+            <div id="rightSideContainer">  {/*Hold all info regarding the right side of the view*/}
                 <div className="otherPets">
                     {savedPet.map((pet) => (
                         <div className={`additional_pet ${pet.id === selectedPetID ? 'selected' : ''}`}
@@ -522,7 +529,7 @@ const PetProfile = () => {
                     <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={() => navigate("/petcenter")}><AddIcon /> </IconButton>
 
                 </div>
-                <h3 id="petCareHeader">Pet Care</h3>
+                <h3 id="petCareHeader">Pet Care</h3>  {/*Section to which tasks can be added from (buttons appear here)*/}
                 <div id="petCare">
                     <div id="feedingSched" className="taskBoxes">
                         <div>
@@ -582,19 +589,21 @@ const PetProfile = () => {
                     </div>
                 </div>
             </div>
+            
+             {/*Rahul's Section*/}
             {showMedicalModal && (
                 <div className="medical-modal-overlay">
                     <div className="medical-modal">
                         <div className="medical-modal-header">
                             <h2>Medical Information for {savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet"}</h2>
-                            <button 
-                                className="close-modal-btn" 
+                            <button
+                                className="close-modal-btn"
                                 onClick={() => setShowMedicalModal(false)}
                             >
                                 <CloseIcon />
                             </button>
                         </div>
-                        
+
                         <div className="medical-modal-content">
                             {loading ? (
                                 <div className="loading-container">
@@ -604,8 +613,8 @@ const PetProfile = () => {
                             ) : (
                                 <>
                                     <div className="edit-buttons">
-                                        <button 
-                                            className="edit-info-btn" 
+                                        <button
+                                            className="edit-info-btn"
                                             onClick={toggleMedicalEditMode}
                                             disabled={savingMedical}
                                         >
@@ -619,7 +628,7 @@ const PetProfile = () => {
                                             )}
                                         </button>
                                     </div>
-                                    
+
                                     <div className="medical-content">
                                         <div className="medical-left-column">
                                             <div className="info-section">
@@ -678,11 +687,11 @@ const PetProfile = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        
+
                                         {/* Right Side - Key Info */}
                                         <div className="medical-right-column">
                                             <h3>Key Info</h3>
-                                            
+
                                             <div className="key-info-item">
                                                 {isEditingMedical ? (
                                                     <div className="edit-key-info">
@@ -699,7 +708,7 @@ const PetProfile = () => {
                                                     <div className="key-info-text">Weight: {medicalInfo.weight}</div>
                                                 )}
                                             </div>
-                                            
+
                                             <div className="key-info-item">
                                                 {isEditingMedical ? (
                                                     <div className="edit-key-info">
@@ -716,7 +725,7 @@ const PetProfile = () => {
                                                     <div className="key-info-text">Age: {medicalInfo.age}</div>
                                                 )}
                                             </div>
-                                            
+
                                             <div className="key-info-item">
                                                 {isEditingMedical ? (
                                                     <div className="edit-key-info">
@@ -733,7 +742,7 @@ const PetProfile = () => {
                                                     <div className="key-info-text">Vaccination Status: {medicalInfo.vaccinationStatus}</div>
                                                 )}
                                             </div>
-                                            
+
                                             <div className="key-info-item">
                                                 {isEditingMedical ? (
                                                     <div className="edit-key-info">
@@ -750,7 +759,7 @@ const PetProfile = () => {
                                                     <div className="key-info-text">Veterinarian/Clinic: {medicalInfo.veterinarian}</div>
                                                 )}
                                             </div>
-                                            
+
                                             <div className="key-info-item">
                                                 {isEditingMedical ? (
                                                     <div className="edit-key-info">
@@ -768,7 +777,7 @@ const PetProfile = () => {
                                                     <div className="key-info-text">Allergies: {medicalInfo.allergies}</div>
                                                 )}
                                             </div>
-                                            
+
                                             <button className="set-reminders-btn" onClick={() => navigate("/reminder")}>
                                                 Set Reminders 🔔
                                             </button>
@@ -797,7 +806,7 @@ const PetProfile = () => {
                 </Alert>
             </Snackbar>
         </div>
-        
+
     );
 };
 export default PetProfile;

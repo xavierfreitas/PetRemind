@@ -1,265 +1,268 @@
 body {
-    background-color: #DDBEA9;
+  background-color: #DDBEA9;
 
 }
 
 h2,
 p,
 h3 {
-    color: black;
+  color: black;
 }
 
 .dateButton {
-    color: antiquewhite;
-    background-color: #B0C4B1;
-    border: none;
-    width: 60px;
-    border-radius: 2px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  color: antiquewhite;
+  background-color: #B0C4B1;
+  border: none;
+  width: 60px;
+  border-radius: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-
+/*Makes it easer for users to see what they are selecting*/
 .dateButton:hover {
-    background-color: wheat;
+  background-color: wheat;
 }
 
 .dateButton:active {
-    color: black;
-    background-color: wheat;
+  color: black;
+  background-color: wheat;
 }
 
 .dateButton.active {
-    border: black 2px solid;
+  border: black 2px solid;
 }
 
 #openAddTaskButton:hover {
-    background-color: wheat;
+  background-color: wheat;
 
 }
+
+/*Correct image sizing*/
 #petProfileImg {
-    width: 80px;
-    height: 80px;
-    border-radius: 28px;
-    background-color: black;
+  width: 80px;
+  height: 80px;
+  border-radius: 28px;
+  background-color: black;
 }
 
 .otherPetImg {
-    height: 80px;
-    width: 80px;
-    background-color: black;
+  height: 80px;
+  width: 80px;
+  background-color: black;
 }
+
 #goToMed {
-    color: antiquewhite;
-    background-color: #B0C4B1;
+  color: antiquewhite;
+  background-color: #B0C4B1;
 
 }
 
 #rightSideContainer {
-    display: flex;
-    flex-direction: column;
-    max-width: 98vw;
-    height: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 98vw;
+  height: auto;
 }
 
 #leftSideContainer {
-    display: flex;
-    flex-direction: column;
-    max-width: 98vw;
-    height: auto;
-    
+  display: flex;
+  flex-direction: column;
+  max-width: 98vw;
+  height: auto;
+
 }
 
 #container {
-    margin-top: 40px;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  margin-top: 40px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #profileContainer {
   margin-top: 50px;
-    width: 100%;
+  width: 100%;
 }
 
 #petProfile {
-    background-color: #F7E1D7;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    max-width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: auto;
+  background-color: #F7E1D7;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: auto;
 
 }
 
 #petDescriptionContainer {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 #petProfile img {
-    max-width: 20vw;
-    max-height: 20vh;
-    border-radius: 12%;
-    padding: 5%;
+  max-width: 20vw;
+  max-height: 20vh;
+  border-radius: 12%;
+  padding: 5%;
 }
 
 
 #petInfo {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #petCareHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
 #weeklySchedHeader {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 #calenderButtons {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 
 #weeklySchedule {
-    width: 100%;
+  width: 100%;
 }
 
 
 
-
+/*Scrollable if not all tasks can be seen*/
 #taskListContainer {
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #F7E1D7;
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #F7E1D7;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 12px;
 }
 
 /*using list because easier to remove stuff*/
 ul.listOfTasks {
-    list-style-type: none;
-    padding: 0px;
-    margin-top: 1vw;
+  list-style-type: none;
+  padding: 0px;
+  margin-top: 1vw;
 
 }
 
 .listOfTasks {
-    width: 100%;
-    min-height: 50vh;
-    align-items: center;
-    flex-direction: column;
-    display: flex;
-    
+  width: 100%;
+  min-height: 50vh;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+
 }
 
 .taskItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: black;
-    background-color: whitesmoke;
-    border-radius: 12px;
-    width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  background-color: whitesmoke;
+  border-radius: 12px;
+  width: 95%;
 }
 
 .descPopupContainer {
-    margin-left: auto;
-    align-items: center;
-    display: flex;
+  margin-left: auto;
+  align-items: center;
+  display: flex;
 }
 
 #petCare {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-color:#F7E1D7;
-;
-    width: 100%;
-    height: fit-content;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F7E1D7;
+  width: 100%;
+  height: fit-content;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  border-radius: 12px;
 }
-
+/*Orientation for white space where tasks can be added from*/
 .addTaskContainer {
-    margin-left: auto;
-    align-items: center;
-    display: flex;
-    background-color: whitesmoke;
-    border-radius: 12px;
+  margin-left: auto;
+  align-items: center;
+  display: flex;
+  background-color: whitesmoke;
+  border-radius: 12px;
 }
 
 .addTaskDesc {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/*used or readibility of adding tasks*/
 .taskBoxes {
-    display: flex;
-    justify-content: space-between;
-    background-color: whitesmoke;
-    margin-bottom: 5px;
-    padding-left: 10px;
-    border-radius: 12px;
-    width: 95%;
-   
+  display: flex;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  border-radius: 12px;
+  width: 95%;
+
 }
 
-
+/*Used to make sure pet images are sized properly*/
 .otherPets {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F7E1D7;
-    width: 100%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F7E1D7;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 12px;
 
 }
 
 
 
 
-#addPetBox{
-    color: black;
-    background-color: #B0C4B1;
+#addPetBox {
+  color: black;
+  background-color: #B0C4B1;
 
-    box-shadow: none;
+  box-shadow: none;
 }
 
 
 
 
 #bottomRowContainer {
-    display: flex;
+  display: flex;
 
 }
 
-
+/*Date buttons can not overflow*/
 #dateButtonContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: #F7E1D7;
-    width: 100%;
-    border-radius: 1vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #F7E1D7;
+  width: 100%;
+  border-radius: 1vh;
 
 }
 
@@ -269,43 +272,52 @@ ul.listOfTasks {
 #openMoreInfoButton,
 #openAddTaskButton,
 #subTaskButton,
-#medInfoButton{
-    text-transform: none;
-    color: antiquewhite;
-    background-color: #B0C4B1;
-    border-radius: 2px;
-    margin: 20px;
-    max-width: 100px;
+#medInfoButton {
+  text-transform: none;
+  color: antiquewhite;
+  background-color: #B0C4B1;
+  border-radius: 2px;
+  margin: 20px;
+  max-width: 100px;
 
 }
+
+/*Makes it easier for useres to see what buttons that they are on*/
 #medInfoButton:hover {
-    background-color: wheat;
-}
-#subTaskButton:hover{
-    background-color: wheat;
+  background-color: wheat;
 }
 
+#subTaskButton:hover {
+  background-color: wheat;
+}
 
 
+/*distinct color differnce from confirm, sub button*/
 #cancelButton {
-    text-transform: none;
-    color: antiquewhite;
-    background-color: #EDAFB8;
+  text-transform: none;
+  color: antiquewhite;
+  background-color: #EDAFB8;
 
 }
 
+/*Makes it easier for user to see what buttons they are currently on*/
 #cancelButton:hover {
   background-color: wheat;
 }
 
+/*distinct color differnce from confirm, sub button*/
 #closeButton {
-    text-transform: none;
-    color: antiquewhite;
-    background-color: #EDAFB8;
+  text-transform: none;
+  color: antiquewhite;
+  background-color: #EDAFB8;
 }
+
+/*Makes it easier for user to see what buttons they are currently on*/
 #closeButton:hover {
   background-color: wheat;
 }
+
+/*Ensures that the popup design does not limit itself*/
 #taskDescriptionDialog .MuiDialog-paper {
   width: 50%;
   height: 50%;
@@ -340,276 +352,278 @@ ul.listOfTasks {
 /*THIS IS FOR DESKTOP*/
 @media only screen and (min-width: 600px) {
 
-    #container {
-        width: 100vw;
-        height: 100vh;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
+  #container {
+    width: 100vw;
+    height: 100vh;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 
-    #rightSideContainer {
-        display: flex;
-        flex-direction: column;
-        width: 48%;
-        min-width: 600px;
-        height: auto;
+  #rightSideContainer {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    min-width: 600px;
+    height: auto;
 
-    }
+  }
 
-    #leftSideContainer {
-        display: flex;
-        flex-direction: column;
-        width: 48%;
-        min-width: 600px;
-        height: auto;
+  #leftSideContainer {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    min-width: 600px;
+    height: auto;
 
-    }
+  }
 
-    #profilePic {
-        width: 100px;
-        height: 100px;
-        border-radius: 28px;
-    }
+  #profilePic {
+    width: 100px;
+    height: 100px;
+    border-radius: 28px;
+  }
 
-    .otherPets {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #F7E1D7;
-        width: 100%;
-        overflow: hidden;
-
-
-    }
-
-    #bottomRowContainer {
-        width: 100%;
-    }
-
-    #calenderButtons {
-        width: 100%;
-    }
-
-    #dateButtonContainer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        background-color: #F7E1D7;
-        padding: 5px;
-
-    }
-
-    #weeklySchedule {
-        /*background-color: green;*/
-        width: 100%;
-
-    }
-    
-
-    #taskListContainer {
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        background-color:  #F7E1D7;
-        max-width: 100%;
-        min-width: 100%;
-        height: 60%;
-        border-radius: 12px;
-
-    }
-
-    /*using list because easier to remove stuff*/
-    ul.listOfTasks {
-        list-style-type: none;
-        padding: 0px;
-    }
+  .otherPets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F7E1D7;
+    width: 100%;
+    overflow: hidden;
 
 
-    .dateButton {
-        color: antiquewhite;
-        background-color: #B0C4B1;
-        border: none;
-        width: 90px;
-        border-radius: 4px;
-    }
+  }
+
+  #bottomRowContainer {
+    width: 100%;
+  }
+
+  #calenderButtons {
+    width: 100%;
+  }
+
+  #dateButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #F7E1D7;
+    padding: 5px;
+
+  }
+
+  #weeklySchedule {
+    /*background-color: green;*/
+    width: 100%;
+
+  }
+
+
+  #taskListContainer {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #F7E1D7;
+    max-width: 100%;
+    min-width: 100%;
+    height: 60%;
+    border-radius: 12px;
+
+  }
+
+  /*using list because easier to remove stuff*/
+  ul.listOfTasks {
+    list-style-type: none;
+    padding: 0px;
+  }
+
+
+  .dateButton {
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    border: none;
+    width: 90px;
+    border-radius: 4px;
+  }
 }
 
 /*RAHUL MADE THIS  MED INFO*/
 .medical-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .medical-modal {
-    background-color: #F7E1D7; 
-    border-radius: 10px;
-    width: 90%;
-    max-width: 1200px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border: 2px solid #B0C4B1; 
-  }
-  
-  .medical-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 2px solid #B0C4B1;
-  }
-  
-  .medical-modal-header h2 {
-    color: black;
-    margin: 0;
-  }
-  
-  .close-modal-btn {
-    color: #EDAFB8 !important; /* Matches your cancel button color */
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-  }
-  
-  .medical-modal-content {
-    padding: 20px;
-  }
-  
-  .edit-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .edit-info-btn {
-    color: antiquewhite;
-    background-color: #B0C4B1;
-    padding: 10px;
-    border-radius: 5px;
-    min-width: 100px;
-    max-width: 100px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .edit-icon-btn {
-    color: black;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.medical-modal {
+  background-color: #F7E1D7;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid #B0C4B1;
+}
+
+.medical-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 2px solid #B0C4B1;
+}
+
+.medical-modal-header h2 {
+  color: black;
+  margin: 0;
+}
+
+.close-modal-btn {
+  color: #EDAFB8 !important;
+  /* Matches your cancel button color */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.medical-modal-content {
+  padding: 20px;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.edit-info-btn {
+  color: antiquewhite;
+  background-color: #B0C4B1;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 100px;
+  max-width: 100px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-icon-btn {
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.medical-content {
+  display: flex;
+  gap: 30px;
+}
+
+.medical-left-column {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medical-right-column {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #F7E1D7;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #B0C4B1;
+}
+
+.medical-right-column h3 {
+  color: black;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #B0C4B1;
+  padding-bottom: 5px;
+}
+
+.info-section {
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 15px;
+  border: 2px solid #B0C4B1;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: black;
+}
+
+.info-value {
+  color: black;
+}
+
+.key-info-item {
+  background-color: whitesmoke;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #B0C4B1;
+}
+
+.key-info-text {
+  color: black;
+}
+
+.edit-key-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit-key-info label {
+  font-weight: bold;
+  color: black;
+}
+
+.edit-input,
+.edit-textarea {
+  padding: 8px;
+  border: 1px solid #B0C4B1;
+  border-radius: 5px;
+  width: 100%;
+  background-color: white;
+}
+
+.edit-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.set-reminders-btn {
+  margin-top: 20px;
+  align-self: flex-end;
+  color: antiquewhite;
+  background-color: #B0C4B1;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 150px;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
   .medical-content {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .medical-left-column {
-    flex: 3;
-    display: flex;
     flex-direction: column;
-    gap: 20px;
   }
-  
-  .medical-right-column {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background-color: #F7E1D7;
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #B0C4B1;
-  }
-  
-  .medical-right-column h3 {
-    color: black;
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #B0C4B1;
-    padding-bottom: 5px;
-  }
-  
-  .info-section {
-    background-color: whitesmoke;
-    border-radius: 10px;
-    padding: 15px;
-    border: 2px solid #B0C4B1;
-  }
-  
-  .info-label {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: black;
-  }
-  
-  .info-value {
-    color: black;
-  }
-  
-  .key-info-item {
-    background-color: whitesmoke;
-    padding: 12px 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #B0C4B1;
-  }
-  
-  .key-info-text {
-    color: black;
-  }
-  
-  .edit-key-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .edit-key-info label {
-    font-weight: bold;
-    color: black;
-  }
-  
-  .edit-input, .edit-textarea {
-    padding: 8px;
-    border: 1px solid #B0C4B1;
-    border-radius: 5px;
-    width: 100%;
-    background-color: white;
-  }
-  
-  .edit-textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-  
-  .set-reminders-btn {
-    margin-top: 20px;
-    align-self: flex-end;
-    color: antiquewhite;
-    background-color: #B0C4B1;
-    padding: 10px;
-    border-radius: 5px;
-    min-width: 150px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  @media (max-width: 1200px) {
-    .medical-content {
-      flex-direction: column;
-    }
-  }
+}
 
 .loading-spinner {
   display: flex;
@@ -741,16 +755,16 @@ ul.listOfTasks {
   .medical-modal {
     width: 95%;
   }
-  
+
   .medical-content {
     flex-direction: column;
   }
-  
+
   .medical-left-column,
   .medical-right-column {
     width: 100%;
   }
-  
+
   .medical-right-column {
     margin-top: 20px;
   }
