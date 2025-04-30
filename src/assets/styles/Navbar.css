@@ -1,88 +1,89 @@
 .navbar_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 5vh;
+    height: 4rem;
     z-index: 100;
     background-color: #F7E1D7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dotted white;
+    border: 2px solid black;
 }
 
 .navbar_left {
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
     display: flex;
     justify-content: flex-start;
+    padding-right: 1rem;
+    border-right: 3px solid black;
 }
 
 .navbar_right {
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 2.5rem);
+    font-family: 'Outfit';
+    font-weight: bold;
     display: flex;
-    gap: 5px;
+    gap: clamp(0.25rem, 1vw, 2rem);
 }
 
 .navbar_link_logo {
-    font-family: 'Pacifico';
-    text-decoration: none;
-    color: black;
-    font-size: 1.5rem;
-    margin-left: 5px;
-    margin-right: 5px;
+    font-size: clamp(1.5rem, 2vw, 3rem);
+    display: none;
 }
 
-#navbar_link_logo {
-    display: none;
+.navbar_link_logo:hover {
+    text-decoration: underline;
+    transform: scale(1.2);
+    color: black;
 }
 
 .navbar_link {
     text-decoration: none;
     color: black;
-    margin-left: 5px;
-    margin-right: 5px;
+    padding: 0px 10px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.navbar_link:hover {
+    text-decoration: underline;
+    transform: scale(1.2);
+    color: black;
+}
+
+#navbar_signout {
+    border-left: 3px solid black;
+    cursor: pointer;
 }
 
 @media only screen and (min-width: 600px) {
     .navbar_container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5vh;
-        z-index: 100;
-        background-color: #F7E1D7;
-        display: flex;
-        align-items: center;
         justify-content: space-between;
-        border: 2px dotted white;
     }
     
     #navbar_link_logo {
         display: block;
     }
-    .navbar_left {
-        display: flex;
-        justify-content: flex-start;
-    }
     
     .navbar_right {
         display: flex;
-        gap: 10px;
+        gap: 0.5rem;
     }
     
     .navbar_link_logo {
+        display: block;
         font-family: 'Pacifico';
         text-decoration: none;
         color: black;
-        font-size: 1.5rem;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        transition: transform 0.5s ease-in-out;
     }
     
     .navbar_link {
         text-decoration: none;
         color: black;
-        margin-left: 10px;
-        margin-right: 10px;
     }
 }
