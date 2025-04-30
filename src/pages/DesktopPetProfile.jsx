@@ -426,7 +426,7 @@ const PetProfile = () => {
                             </div>
                             <div id="petInfo">
                                 <div id="petNameContainer"><h3>{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3></div>
-                                <div id="petSpeciesContainer"><h6>Species: {savedPet.find(pet => pet.id === selectedPetID)?.species || "Pet Species"}</h6></div>
+                                <div id="petSpeciesContainer"><h6>Species: {savedPet.find(pet => pet.id === selectedPetID)?.species || "Pet Species"},     Age: {savedPet.find(pet => pet.id === selectedPetID)?.age || "Pet age"}</h6></div>
                                 <div id="petDescriptionContainer"><p>{savedPet.find(pet => pet.id === selectedPetID)?.description || "Pet Description"}</p></div>
                             </div>
                         </div>
@@ -491,7 +491,7 @@ const PetProfile = () => {
                                     .map((task) => (
                                         <li key={task.id} className="taskItem">
                                             <div>
-                                                <input type="checkbox" />
+                                            <input type="checkbox" className="reminder_checkbox" onClick={() => removeTask(task)}></input>
                                                 {task.title}</div>
                                             <div className="descPopupContainer">
                                                 <DescPopup task={task} />

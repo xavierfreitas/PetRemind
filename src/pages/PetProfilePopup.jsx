@@ -52,9 +52,9 @@ const ProfilePopup = ({ addTask, taskType }) => {
                 <DialogContent>
                     <div id="textFieldContainer">
                     {/*field for user to enter task name */}
-                    <div>
+                    <div id="taskNameTextField">
                     <TextField
-                        label="Task Name"
+                        label="Task Name*"
                         value={taskName}
                         onChange={(e) => setTaskName(e.target.value)}
                         fullWidth
@@ -64,7 +64,7 @@ const ProfilePopup = ({ addTask, taskType }) => {
                     {/*field for user to enter their task description*/}
                     <div id="descriptionTextField">
                     <TextField
-                        label="Task Description"
+                        label="Task Description*"
                         value={taskDesc}
                         onChange={(e) => setTaskDesc(e.target.value)}
                         fullWidth
@@ -75,7 +75,7 @@ const ProfilePopup = ({ addTask, taskType }) => {
                     </div>
                     <div id="selectedDaysContainer">
                         <FormControl fullWidth>
-                            <InputLabel>Days of the Week</InputLabel>
+                            <InputLabel>Days of the Week*</InputLabel>
                             <Select
                                 multiple
                                 value={whichDays}
@@ -89,7 +89,6 @@ const ProfilePopup = ({ addTask, taskType }) => {
                                     <MenuItem value="Friday">Friday</MenuItem>
                                     <MenuItem value="Saturday">Saturday</MenuItem>
                                     <MenuItem value="Sunday">Sunday</MenuItem>
-                                    <MenuItem value="Everyday">Everyday</MenuItem>
                                 </Select>
 
                         </FormControl>
