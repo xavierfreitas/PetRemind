@@ -5,12 +5,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ProfilePopup from "./PetProfilePopup";
 import DescPopup from "./taskDescPopup";
-import { useNavigate, Navigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 import "./DesktopPetProfile.css"
 import DeleteIcon from '@mui/icons-material/Delete';
-import { firestore } from "../firebase";
-import { collection, doc, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../hosting/firebase";
+import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import { useUser } from "../context/UserContext";
+
 
 
 import petImage1 from "../assets/images/dog_2.jpg";
@@ -18,21 +19,13 @@ import petImage2 from "../assets/images/dog_3.jpeg";
 import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
 
 const PetProfile = () => {
-    const { user, loading } = useUser(); // get user from context, get loading state too
-    
-    // if loading show a loading message
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    // if user is not logged in, redirect to landing page
-    if (!user) {
-        return <Navigate to="/" />;
-    }
-    
     const [taskList, setTaskList] = useState([]);
 
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
+    const [selectedPetID, setSelectedPetID] = useState(null);
+    const [savedPet, setSavedPet] = useState([]);
+
 
     const [wDay, setWDay] = useState("");
 
@@ -41,37 +34,97 @@ const PetProfile = () => {
     };
 
     useEffect(() => {
-        getExistingTasks();
-    }, []);
+        const fetchPets = async () => {
+            try {
+                const petsCollection = collection(db, "pets");
+                const petsDocs = await getDocs(petsCollection);
 
-    const getExistingTasks = async () => { //Completed with help
-        try {
-            const getTasks = collection(firestore, "tasks");
-            const taskSnapshot = await getDocs(getTasks);
-            const taskList = taskSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-            setTaskList(taskList);
-        } catch (error) {
-            console.error("TASKS DID NOT GET LOADED CORRECTLY", error);
+                const petsList = [];
+                for (const document of petsDocs.docs) {
+                    const petData = document.data();
+                    const petId = document.id;
+
+                    const petsInfoDoc = await getDoc(doc(db, "pets", petId));
+
+                    if (petsInfoDoc.exists()) {
+                        const petInfo = petsInfoDoc.data();
+
+                        console.log("PETINFO ID", petInfo.ownerID);
+                        if (petInfo.ownerID === user?.uid) {
+                            petsList.push({
+                                id: petId,
+                                ...petData,
+                                ...petInfo,
+                            });
+                        }
+                    }
+                }
+
+                setSavedPet(petsList);
+
+                if (petsList.length > 0) {
+                    console.log("PETSLIST MORE THAN 1")
+                    setSelectedPetID(petsList[0].id);
+                }
+                console.log("USER ID VALID FROM FETCH PETS,", user?.uid, "PET ID VALID FROM FETCH PETS,", selectedPetID);
+            } catch (error) {
+                console.log("Fetch pet error: ", error);
+            }
         }
-    };
+
+        if (user?.uid) {
+            fetchPets();
+        }
+    }, [user?.uid]);
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                console.log("USER ID VALID FROM FETCH TASKS,", user?.uid, "PET ID VALID FROM FETCH TASKS,", selectedPetID);
+                if (!user?.uid || !selectedPetID) {
+                    return;
+                }
+                const tasksCollection = collection(db, "tasks", user?.uid, "pets", selectedPetID, "tasksList");
+                const tasksDocs = await getDocs(tasksCollection);
+
+                const tasksList = tasksDocs.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                setTaskList(tasksList);
+            } catch (error) {
+                console.error("TASKS DID NOT GET LOADED CORRECTLY", error);
+            }
+        }
+        fetchTasks();
+    }, [user?.uid, selectedPetID]);
+
+
     /*THIS IS PRE Firestore const addTask = (taskType, taskName, taskDesc, whichDays) => { 
         setTaskList(taskList.concat({ taskName, taskDesc, whichDays }));
     };
     */
     const addTask = async (taskType, taskName, taskDesc, whichDays) => { //based off of group decided naming convention
-        const newTask = {
-            title: taskName,
-            description: taskDesc,
-            type: taskType,
-            weekdays: whichDays,
-            userID: "testerID",
-            petId: "testerPetID",
-        };
 
         try {
-            const addedDoc = await addDoc(collection(firestore, "tasks"), newTask);
-            const taskWithId = { ...newTask, id: addedDoc.id };
-            setTaskList(taskList.concat(taskWithId));
+            console.log("USER ID VALID FROM ADD TASK,", user?.uid, "PET ID VALID FROM ADD TASK,", selectedPetID);
+            if (!user?.uid || !selectedPetID) {
+                return;
+            }
+
+            const newTask = {
+                title: taskName,
+                description: taskDesc,
+                type: taskType,
+                weekdays: whichDays,
+            };
+            const taskDoc = await addDoc(collection(db, "tasks", user.uid, "pets", selectedPetID, "tasksList"), newTask);
+            const updatedTask = {
+                id: taskDoc.id,
+                ...newTask,
+            };
+            setTaskList([...taskList, updatedTask]); //change this probably
         } catch (error) {
             console.error("TASK DID NOT GET ADDED CORRECTLY", error);
         }
@@ -83,11 +136,28 @@ const PetProfile = () => {
         setTaskList(taskList.filter(task => task !== taskToRemove));
     } */
 
+
     const removeTask = async (taskToRemove) => {
         try {
-            const taskDoc = doc(firestore, "tasks", taskToRemove.id);
-            await deleteDoc(taskDoc);
-            setTaskList(taskList.filter(task => task.id !== taskToRemove.id));
+            if (!user?.uid || !selectedPetID) {
+                return;
+            }
+            const specDayTaskDelete = taskToRemove.weekdays.filter(day => day !== wDay);
+            const taskDoc = doc(db, "tasks", user?.uid, "pets", selectedPetID, "tasksList", taskToRemove.id);
+            if (specDayTaskDelete.length === 0) {
+                await deleteDoc(taskDoc);
+                setTaskList(taskList.filter(task => task.id !== taskToRemove.id));
+            } else {
+                await updateDoc(taskDoc, { weekdays: specDayTaskDelete });
+                setTaskList(
+                    taskList.map(task =>
+                        task.id === taskToRemove.id
+                            ? { ...task, weekdays: specDayTaskDelete }
+                            : task
+                    )
+                );
+            }
+
         } catch (error) {
             console.error("TASK DID NOT GET DELETED CORRECTLY", error);
         }
@@ -95,7 +165,7 @@ const PetProfile = () => {
 
     return (
         <div id="container">
-            <div id="rightSideContainer">
+            <div id="leftSideContainer">
                 <div id="profileContainer">
                     <div id="profile">
                         <div id="petProfile">
@@ -165,8 +235,8 @@ const PetProfile = () => {
                             <ul className="listOfTasks">
                                 {taskList
                                     .filter(task => task.weekdays.includes(wDay)) //changed based on firetstore update
-                                    .map((task, index) => (
-                                        <li key={index} className="taskItem">
+                                    .map((task) => (
+                                        <li key={task.id} className="taskItem">
                                             <div>
                                                 <input type="checkbox" />
                                                 {task.title}</div>
@@ -185,10 +255,17 @@ const PetProfile = () => {
             </div>
 
 
-            <div id="leftSideContainer">
+            <div id="rightSideContainer">
                 <div className="otherPets">
-                    <img src={petImage2} alt="morePet" />
-                    <img src={petImage3} alt="morePet" />
+                    {savedPet.map((pet) => (
+                        <div className={`additional_pet ${pet.id === selectedPetID ? 'selected' : ''}`}
+                            key={pet.id}
+                            onClick={() => setSelectedPetID(pet.id)}
+                        >
+                            <img src={petImage2} className="additional_pet_img"></img>
+                            <p className="additional_pet_name">{pet.name}</p>
+                        </div>
+                    ))}
                     <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={() => navigate("/petcenter")}><AddIcon /> </IconButton>
 
                 </div>
@@ -209,7 +286,7 @@ const PetProfile = () => {
                         <div>
                             <h3>Exercise Schedule</h3>
                             <div className="taskBoxDescription">
-                                <p>Add to your pet's enrichment and exercise schedule here! </p>
+                                <p>Add to your pet's exercise schedule here! </p>
                             </div>
                         </div>
                         <div className="addTaskContainer">
@@ -247,7 +324,7 @@ const PetProfile = () => {
                             </div>
                         </div>
                         <div className="addTaskContainer">
-                            <button className="dateButton" id="goToMed" onClick={() => navigate("/medicalInfo")}>+</button>
+                            <IconButton id="medInfoButton" color="primary" aria-label="Go to Med Info" onClick={() => navigate("/medicalinfo")}> <AddIcon /> </IconButton>
                         </div>
                     </div>
                 </div>
