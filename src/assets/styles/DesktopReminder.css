@@ -47,6 +47,8 @@ body {
 #pet_profile_img {
     min-width: 130px;
     min-height: 130px;
+    max-width: 130px;
+    max-height: 130px;
     border-radius: 28px;
     background-color: black;
 }
@@ -280,6 +282,8 @@ li {
     #pet_profile_img {
         min-width: 150px;
         min-height: 150px;
+        max-width: 150px;
+        max-height: 150px;
     }
 
     .reminder_container {
