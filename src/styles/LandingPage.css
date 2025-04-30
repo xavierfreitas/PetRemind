@@ -10,7 +10,7 @@
     text-align: center;
     padding: 0px 20px;
     font-family: "Outfit", sans-serif;
-    --slide-count: 5;
+    --slide-count: 8;
     --gap: 7px;
     --time: 15s
 }
@@ -120,16 +120,6 @@
     right: 5px;
     width: 20%;
     transform: translateY(-50px);
-}
-
-@media (min-width: 600px) {
-    .landingpage-container #slider1 {
-        width: 15%;
-    }
-
-    .landingpage-container #slider2 {
-        width: 15%;
-    }
 }
 
 @media (min-width: 900px) {
