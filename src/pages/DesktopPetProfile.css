@@ -408,3 +408,324 @@ ul.listOfTasks {
         border-radius: 4px;
     }
 }
+
+/*RAHUL MADE THIS  MED INFO*/
+.medical-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .medical-modal {
+    background-color: #F7E1D7; 
+    border-radius: 10px;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 2px solid #B0C4B1; 
+  }
+  
+  .medical-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 2px solid #B0C4B1;
+  }
+  
+  .medical-modal-header h2 {
+    color: black;
+    margin: 0;
+  }
+  
+  .close-modal-btn {
+    color: #EDAFB8 !important; /* Matches your cancel button color */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .medical-modal-content {
+    padding: 20px;
+  }
+  
+  .edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .edit-info-btn {
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    max-width: 100px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit-icon-btn {
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .medical-content {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .medical-left-column {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .medical-right-column {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #F7E1D7;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #B0C4B1;
+  }
+  
+  .medical-right-column h3 {
+    color: black;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #B0C4B1;
+    padding-bottom: 5px;
+  }
+  
+  .info-section {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 15px;
+    border: 2px solid #B0C4B1;
+  }
+  
+  .info-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: black;
+  }
+  
+  .info-value {
+    color: black;
+  }
+  
+  .key-info-item {
+    background-color: whitesmoke;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #B0C4B1;
+  }
+  
+  .key-info-text {
+    color: black;
+  }
+  
+  .edit-key-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .edit-key-info label {
+    font-weight: bold;
+    color: black;
+  }
+  
+  .edit-input, .edit-textarea {
+    padding: 8px;
+    border: 1px solid #B0C4B1;
+    border-radius: 5px;
+    width: 100%;
+    background-color: white;
+  }
+  
+  .edit-textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+  
+  .set-reminders-btn {
+    margin-top: 20px;
+    align-self: flex-end;
+    color: antiquewhite;
+    background-color: #B0C4B1;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 150px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 1200px) {
+    .medical-content {
+      flex-direction: column;
+    }
+  }
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: #555;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 16px;
+}
+
+.saving-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.edit-info-btn {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.edit-info-btn:hover {
+  background-color: #303f9f;
+}
+
+.edit-info-btn:disabled {
+  background-color: #9fa8da;
+  cursor: not-allowed;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.edit-textarea:focus,
+.edit-input:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.info-value {
+  background-color: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 4px;
+  min-height: 24px;
+  line-height: 1.5;
+}
+
+.allergy-tag {
+  display: inline-block;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 10px;
+  border-radius: 16px;
+  margin: 4px;
+  font-size: 14px;
+}
+
+.MuiSnackbar-root {
+  z-index: 9999;
+}
+
+.MuiAlert-standardSuccess {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.MuiAlert-standardError {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.MuiAlert-standardWarning {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.MuiAlert-standardInfo {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+
+@media (max-width: 768px) {
+  .medical-modal {
+    width: 95%;
+  }
+  
+  .medical-content {
+    flex-direction: column;
+  }
+  
+  .medical-left-column,
+  .medical-right-column {
+    width: 100%;
+  }
+  
+  .medical-right-column {
+    margin-top: 20px;
+  }
+}
