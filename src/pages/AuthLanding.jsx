@@ -15,6 +15,12 @@ import petImage7 from "../assets/images/guineapig.jpg";
 import petImage8 from "../assets/images/dogandcat.jpg";
 import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
+import petImage11 from "../assets/images/ferret.jpg";
+import petImage12 from "../assets/images/froggy.jpg";
+import petImage13 from "../assets/images/lizard_2.jpg";
+import petImage14 from "../assets/images/bunny.jpg";
+import petImage15 from "../assets/images/snake.jpg";
+import petImage16 from "../assets/images/turtle.jpg";
 
 const AuthLanding = () => {
     const { user, loading } = useUser(); // get user from context, get loading state too
@@ -49,58 +55,66 @@ const AuthLanding = () => {
     useEffect(() => {
         dupeSlides("slider1");
         dupeSlides("slider2");
+        dupeSlides("slider1");
+        dupeSlides("slider2");
     }, []);
 
     return (
     <div className="authlanding-container container-fluid">
-        <div className="row justify-content-center">
-            <div className="slider-container sliders" id="slider1">
-                <div className="slider-track">
-                    <div className="slide"><img src={petImage1} alt="Bird" /></div>
-                    <div className="slide"><img src={petImage2} alt="Fish" /></div>
-                    <div className="slide"><img src={petImage3} alt="Dog" /></div>
-                    <div className="slide"><img src={petImage4} alt="Cat playing" /></div>
-                    <div className="slide"><img src={petImage5} alt="Rabbit" /></div>
-                </div>
+        <div className="slider-container sliders" id="slider1">
+            <div className="slider-track">
+                <div className="slide"><img src={petImage1} alt="Bird" /></div>
+                <div className="slide"><img src={petImage11} alt="Ferret" /></div>
+                <div className="slide"><img src={petImage2} alt="Fish" /></div>
+                <div className="slide"><img src={petImage3} alt="Dog" /></div>
+                <div className="slide"><img src={petImage4} alt="Cat playing" /></div>
+                <div className="slide"><img src={petImage12} alt="Frog" /></div>
+                <div className="slide"><img src={petImage5} alt="Rabbit" /></div>
+                <div className="slide"><img src={petImage13} alt="Lizard" /></div>
             </div>
-            <div className="col-6 page-center">
-                <div className="welcome-container">
-                    {user?.photoURL && (
-                    <img
-                        src={user.photoURL}
-                        alt="Profile"
-                        className="profile-pic"
-                    />
-                    )}
-                    <h1 className="title">Welcome back <br></br><span>{user?.displayName || "User"}</span>!</h1>
-                </div>
+        </div>
+        <div className="page-center">
 
-                <div className="content">
-                    <nav className="bottom-navbar">
-                        <ul>
-                            {[
-                            { path: "/reminder", label: "Reminders" },
-                            { path: "/petcenter", label: "Pet Center" },
-                            { path: "/features", label: "Features" }
-                            ].map((tab) => (
-                            <li key={tab.path} className={location.pathname === tab.path ? "active" : ""}>
-                                <Link to={tab.path} style={{ textDecoration: "none", color: "inherit" }}>
-                                <StarIcon className="nav-icon" /><span>{tab.label}</span>
-                                </Link>
-                            </li>
-                            ))}
-                        </ul>
-                    </nav>
-                </div>
+            <div className="welcome-container">
+                {user?.photoURL && (
+                <img
+                    src={user.photoURL}
+                    alt="Profile"
+                    className="profile-pic"
+                />
+                )}
+                <h1 className="title">Welcome back <br></br><span>{user?.displayName || "User"}</span>!</h1>
             </div>
-            <div className="slider-container sliders" id="slider2">
-                <div className="slider-track">
-                    <div className="slide"><img src={petImage6} alt="Kitty" /></div>
-                    <div className="slide"><img src={petImage7} alt="Guinea Pig" /></div>
-                    <div className="slide"><img src={petImage8} alt="Dog and a cat" /></div>
-                    <div className="slide"><img src={petImage9} alt="Lizard" /></div>
-                    <div className="slide"><img src={petImage10} alt="2 Dogs" /></div>
-                </div>
+
+            <div className="content">
+                <nav className="bottom-navbar">
+                    <ul>
+                        {[
+                        { path: "/reminder", label: "Reminders" },
+                        { path: "/petcenter", label: "Pet Center" },
+                        { path: "/features", label: "Features" }
+                        ].map((tab) => (
+                        <li key={tab.path} className={location.pathname === tab.path ? "active" : ""}>
+                            <Link to={tab.path} style={{ textDecoration: "none", color: "inherit" }}>
+                            <StarIcon className="nav-icon" /><span>{tab.label}</span>
+                            </Link>
+                        </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+        <div className="slider-container sliders" id="slider2">
+            <div className="slider-track">
+                <div className="slide"><img src={petImage8} alt="Dog and a cat" /></div>
+                <div className="slide"><img src={petImage16} alt="Turtle" /></div>
+                <div className="slide"><img src={petImage7} alt="Guinea Pig" /></div>
+                <div className="slide"><img src={petImage15} alt="Snake" /></div>
+                <div className="slide"><img src={petImage6} alt="Kitty" /></div>
+                <div className="slide"><img src={petImage9} alt="Lizard" /></div>
+                <div className="slide"><img src={petImage10} alt="2 Dogs" /></div>
+                <div className="slide"><img src={petImage14} alt="Bunny" /></div>
             </div>
         </div>
     </div>

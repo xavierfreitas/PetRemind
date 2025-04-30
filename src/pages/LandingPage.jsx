@@ -18,6 +18,12 @@ import petImage7 from "../assets/images/guineapig.jpg"
 import petImage8 from "../assets/images/dogandcat.jpg";
 import petImage9 from "../assets/images/lizard.jpg";
 import petImage10 from "../assets/images/2dogs.jpg";
+import petImage11 from "../assets/images/ferret.jpg";
+import petImage12 from "../assets/images/froggy.jpg";
+import petImage13 from "../assets/images/lizard_2.jpg";
+import petImage14 from "../assets/images/bunny.jpg";
+import petImage15 from "../assets/images/snake.jpg";
+import petImage16 from "../assets/images/turtle.jpg";
 
 const LandingPage = () => {
     const { user, setUser } = useUser();
@@ -86,18 +92,22 @@ const LandingPage = () => {
     useEffect(() => {
         dupeSlides("slider1");
         dupeSlides("slider2");
+        dupeSlides("slider1");
+        dupeSlides("slider2");
     }, []);
 
-    /* START FROM HERE, ADD LOGIC FOR THE ADDED PET PICS!!!!!!! */
     return (
     <div className="landingpage-container container-fluid">
         <div className="slider-container sliders" id="slider1">
             <div className="slider-track">
                 <div className="slide"><img src={petImage1} alt="Bird" /></div>
+                <div className="slide"><img src={petImage11} alt="Ferret" /></div>
                 <div className="slide"><img src={petImage2} alt="Fish" /></div>
                 <div className="slide"><img src={petImage3} alt="Dog" /></div>
                 <div className="slide"><img src={petImage4} alt="Cat playing" /></div>
+                <div className="slide"><img src={petImage12} alt="Frog" /></div>
                 <div className="slide"><img src={petImage5} alt="Rabbit" /></div>
+                <div className="slide"><img src={petImage13} alt="Lizard" /></div>
             </div>
         </div>
 
@@ -130,11 +140,14 @@ const LandingPage = () => {
 
         <div className="slider-container sliders" id="slider2">
             <div className="slider-track">
-                <div className="slide"><img src={petImage6} alt="Kitty" /></div>
-                <div className="slide"><img src={petImage7} alt="Guinea Pig" /></div>
                 <div className="slide"><img src={petImage8} alt="Dog and a cat" /></div>
+                <div className="slide"><img src={petImage16} alt="Turtle" /></div>
+                <div className="slide"><img src={petImage7} alt="Guinea Pig" /></div>
+                <div className="slide"><img src={petImage15} alt="Snake" /></div>
+                <div className="slide"><img src={petImage6} alt="Kitty" /></div>
                 <div className="slide"><img src={petImage9} alt="Lizard" /></div>
                 <div className="slide"><img src={petImage10} alt="2 Dogs" /></div>
+                <div className="slide"><img src={petImage14} alt="Bunny" /></div>
             </div>
         </div>
 
