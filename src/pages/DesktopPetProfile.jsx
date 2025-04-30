@@ -9,14 +9,10 @@ import { useNavigate } from "react-router-dom";
 import "./DesktopPetProfile.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from "../hosting/firebase";
-import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import PetsIcon from "@mui/icons-material/Pets";
+import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 
-
-
-import petImage1 from "../assets/images/dog_2.jpg";
-import petImage2 from "../assets/images/dog_3.jpeg";
-import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
 
 const PetProfile = () => {
     const [taskList, setTaskList] = useState([]);
@@ -33,10 +29,33 @@ const PetProfile = () => {
         setWDay(day);
     };
 
+    //Truong and I collaboarted with this page (used truongs code) we brainstromed with one another due to the simliarites of our pages (gather the same data)
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const petsCollection = collection(db, "pets");
+                const updateUser = doc(db, "tasks", user.uid);
+
+                await setDoc(updateUser, {}, { merge: true })
+
+                const updatePetsCollection = collection(db, "pets");
+                const updatePetsQuery = query(updatePetsCollection, where("ownerId", "==", user?.uid));
+                const updatePetsDocs = await getDocs(updatePetsQuery);
+
+                const updatedPetIds = [];
+                for (const petDoc of updatePetsDocs.docs) {
+                    const petId = petDoc.id;
+                    updatedPetIds.push(petId);
+                    console.log("petID: ", petId);
+
+                    const newSaveDoc = doc(db, "tasks", user.uid, "pets", petId);
+                    const existingPetDoc = await getDoc(newSaveDoc)
+
+                    if (!existingPetDoc.exists()) {
+                        await setDoc(newSaveDoc, { updatedPetIds }, { merge: true });
+                    }
+                }
+
+                const petsCollection = collection(db, "tasks", user?.uid, "pets");
                 const petsDocs = await getDocs(petsCollection);
 
                 const petsList = [];
@@ -49,8 +68,8 @@ const PetProfile = () => {
                     if (petsInfoDoc.exists()) {
                         const petInfo = petsInfoDoc.data();
 
-                        console.log("PETINFO ID", petInfo.ownerID);
-                        if (petInfo.ownerID === user?.uid) {
+                        console.log("PETINFO ID", petInfo.ownerId);
+                        if (petInfo.ownerId === user?.uid) {
                             petsList.push({
                                 id: petId,
                                 ...petData,
@@ -66,7 +85,6 @@ const PetProfile = () => {
                     console.log("PETSLIST MORE THAN 1")
                     setSelectedPetID(petsList[0].id);
                 }
-                console.log("USER ID VALID FROM FETCH PETS,", user?.uid, "PET ID VALID FROM FETCH PETS,", selectedPetID);
             } catch (error) {
                 console.log("Fetch pet error: ", error);
             }
@@ -76,6 +94,7 @@ const PetProfile = () => {
             fetchPets();
         }
     }, [user?.uid]);
+
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -170,11 +189,17 @@ const PetProfile = () => {
                     <div id="profile">
                         <div id="petProfile">
                             <div>
-                                <img src={petImage1} alt="myPet" />
+                                {savedPet.find(pet => pet.id === selectedPetID)?.picture ? (
+                                    <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture}
+                                        alt="myPet"></img>
+                                ) : (
+                                    <PetsIcon id="pet_profile_img" />
+                                )}
                             </div>
                             <div id="petInfo">
-                                <div id="petNameContainer"><h2>Name of Pet</h2></div>
-                                <div id="petDescriptionContainer"><p>PUT ADDITIONAL INFORMATION ABOUT PETS HERE</p></div>
+                                <div id="petNameContainer"><h3>{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3></div>
+                                <div id="petSpeciesContainer"><h6>Species: {savedPet.find(pet => pet.id === selectedPetID)?.species || "Pet Species"}</h6></div>
+                                <div id="petDescriptionContainer"><p>{savedPet.find(pet => pet.id === selectedPetID)?.description || "Pet Description"}</p></div>
                             </div>
                         </div>
                     </div>
@@ -262,7 +287,11 @@ const PetProfile = () => {
                             key={pet.id}
                             onClick={() => setSelectedPetID(pet.id)}
                         >
-                            <img src={petImage2} className="additional_pet_img"></img>
+                            {pet.picture ? (
+                                <img src={pet.picture} className="additional_pet_img"></img>
+                            ) : (
+                                <PetsIcon className="additional_pet_img" />
+                            )}
                             <p className="additional_pet_name">{pet.name}</p>
                         </div>
                     ))}
