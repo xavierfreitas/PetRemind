@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Outfit:wght@300;400;500;600&display=swap');
+/* 'Pacifico' and 'Outfit' fonts */
+
+.authlanding-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 100vw;
+    min-height: 100vh;
+    text-align: center;
+    padding: 0px 20px;
+    font-family: "Arial", sans-serif;
+    --slide-count: 5;
+    --gap: 7px;
+    --time: 15s;
+}
+
+.authlanding-container .welcome-container {
+    min-width: 45vw;
+    justify-self: center;
+    align-self: center;
+    animation: fadeIn 2.5s ease;
+}
+
+.authlanding-container .profile-pic {
+    margin-top: 15px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px black;
+    animation: fadeIn 2.5s ease;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.authlanding-container .title {
+    font-family: 'Pacifico';
+    font-size: 4.5rem;
+    font-weight: bold;
+    margin-bottom: 4vh;
+}
+
+.authlanding-container .title span {
+    font-size: 5.75rem;
+    color: #000;
+}
+
+.authlanding-container .subtitle {
+    font-family: 'Pacifico';
+    font-size: 2.25rem;
+    font-style: italic;
+    margin-top: 3px;
+    margin-bottom: 20px;
+}
+
+.authlanding-container .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit';
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* styling for center nav-bar */
+.authlanding-container .bottom-navbar {
+    background-color: #ecd3c7;
+    border: 2px solid black;
+    border-radius: 100em;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.authlanding-container .bottom-navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.authlanding-container .bottom-navbar li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    background-color: #e2c5b7;
+    font-size: 14px;
+    width: 7em;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 50em;
+    border: 2px solid black;
+    transition: background-color 0.3s ease;
+}
+
+.authlanding-container .bottom-navbar li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.authlanding-container .bottom-navbar li.active {
+    background: rgba(150, 120, 255, 0.2);
+    padding: 10px;
+}
+
+.authlanding-container .bottom-navbar li:hover {
+    background-color: #dbb195;
+    transform: scale(1.05);
+}
+
+.authlanding-container .bottom-navbar .nav-icon {
+    display: block;
+    margin: auto;
+}
+
+.authlanding-container .bottom-navbar li a span {
+    font-family: 'Outfit';
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* styling for auth page sliders starts here */
+.authlanding-container .slider-track {
+    margin: 0;
+}
+.authlanding-container #slider1 {
+    position: fixed;
+    top: 0px;
+    left: 15px;
+    width: 25%;
+    transform: translateY(-50px);
+}
+
+.authlanding-container #slider2 {
+    position: fixed;
+    top: 0px;
+    right: 15px;
+    width: 25%;
+    transform: translateY(-50px);
+}
+
+/*** rest of slider logic is on landingpage.css***/

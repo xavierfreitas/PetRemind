@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Outfit:wght@300;400;500;600&display=swap');
+/* 'Pacifico' and 'Outfit' fonts */
+
+.petcenter-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: "Arial", sans-serif;
+    font-size: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.petcenter-container #no-pets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80vw;
+    max-width: 850px;
+    aspect-ratio: 1/1;
+    margin: auto auto;
+    padding: 1rem 1rem 0;
+    background-color: #ecd3c7;
+    border-radius: 50%;
+    box-shadow: 0 0 1em white;
+    box-sizing: border-box;
+}
+
+.petcenter-container #pets-exist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.petcenter-container .headers {
+    min-width: 40vw;
+    justify-self: center;
+    align-self: center;
+}
+
+.petcenter-container .title1 {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Pacifico';
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: bold;
+}
+
+.petcenter-container .title2 {
+    max-width: 100%;
+    margin: 0 auto 15px auto;
+    text-align: center;
+    font-family: 'Pacifico';
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: bold;
+}
+
+.petcenter-container .title1 span {
+    color: #000;
+}
+
+.petcenter-container .subtitle {
+    font-family: 'Pacifico';
+    font-size: 2.25rem;
+    font-style: italic;
+    margin-top: 3px;
+    margin-bottom: 20px;
+}
+
+.petcenter-container .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit';
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.petcenter-container #keep-track-text {
+    font-family: 'Outfit';
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-top: 0.5rem;
+}
+
+.petcenter-container img {
+    display: block;
+    width: 90%;
+    border-radius: 10px;
+    object-fit: cover;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 2em white; /* glow effect on images */
+}
+
+.petcenter-container img:hover {
+    box-shadow: 0 0 4em white; /* stronger glow on hover */
+}
+
+/* styling for pet creation UI */
+.petcenter-container .pet-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.petcenter-container .pet-card {
+    width: 100%;
+    flex: 0 1 100%;
+    max-width: 250px;
+    max-height: 250px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 3px solid black;
+    background: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+    text-align: center;
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+.petcenter-container .pet-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transform: scale(1.15);
+}
+
+/* scaling styling for pet cards on dif screens */
+@media (min-width: 320px) {
+    .petcenter-container .pet-card {
+        flex: 0 1 calc(25% - 16px);
+    }
+}
+
+@media (min-width: 900px) {
+    .petcenter-container .pet-card {
+        flex: 0 1 calc(30% - 24px);
+    }
+}
+
+@media (min-width: 1200px) {
+    .petcenter-container .pet-list {
+        gap: 24px;
+    }
+}
+
+.petcenter-container .pet-icon {
+    width: clamp(60px, 25vw, 100px);
+    height: clamp(60px, 25vw, 100px);
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 0.25rem;
+}
+
+#petcard_petname {
+    margin: 0 auto;
+    padding: 0 5px;
+    font-family: 'Pacifico';
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    white-space: normal;
+    width: 100%;
+    display: inline-block;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    overflow: visible;
+    text-overflow: ellipsis;
+    text-align: center;
+    line-height: 1.4;
+}
+
+#petcard_petage {
+    font-size: 1.25rem;
+}
+
+.petcenter-container .add-pet-icon {
+    font-size: clamp(4rem, 8vw, 7rem) !important;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out !important;
+}
+
+.petcenter-container .add-pet-icon:hover {
+    transform: scale(1.2);
+}
+
+.petcenter-container .delete-pet {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #e2c8bc;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease-in-out;
+}
+
+.petcenter-container .delete-pet:hover {
+    background: rgb(189, 167, 141);
+}
+
+/* styling for MUI pet creation modal */
+.petcenter-container .MuiDialog-paper {
+    backdrop-filter: blur(5px);
+    background-color: #e9d8d0 !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    max-width: 500px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.petcenter-container .MuiDialogTitle-root {
+    font-family: 'Pacifico', sans-serif;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.petcenter-container .MuiDialogActions-root {
+    display: flex;
+    justify-content: center;
+}
+
+.petcenter-container .MuiButton-root {
+    padding: 10px 20px;
+}
+
+.petcenter-container .image-preview {
+    margin-top: 10px;
+    max-width: 100%;
+}
+
+#img-prev {
+    max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    border-radius: 100%;
+}
+#img-prev img {
+    max-height: 30vh;
+}
+
+#petimgselect-button {
+    display: block;
+    margin: 10px auto;
+    width: fit-content;
+    max-width: 25vw;
+    overflow: hidden;
+    text-align: center;
+}
