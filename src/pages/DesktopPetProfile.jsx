@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
-import { useEffect } from "react";
 import ProfilePopup from "./PetProfilePopup";
 import DescPopup from "./taskDescPopup";
 import { useNavigate } from "react-router-dom";

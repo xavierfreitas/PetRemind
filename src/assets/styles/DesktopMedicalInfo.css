@@ -1,4 +1,3 @@
-
 .medical-page-container {
     background-color: #dbc1a7; /* Beige background from Figma */
     display: flex;
@@ -100,7 +99,7 @@
   }
   
   .key-info-item {
-    background-color: #e8e2d6;
+    background-color: #B0C4B1;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 12px 15px;
@@ -129,7 +128,7 @@
   }
   
   .set-reminders-btn {
-    background-color: #e8e2d6;
+    background-color: #B0C4B1;
     border: 1px solid #000;
     border-radius: 5px;
     padding: 8px 16px;
