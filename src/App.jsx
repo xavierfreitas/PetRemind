@@ -3,17 +3,14 @@ import './App.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from "./components/Navbar.jsx";
-import Sidebar from "./components/sidebar.jsx";
+import Navbar from "./components/Navbar.jsx"; // Make sure this path is correct
 
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  useLocation,
+  Route
 } from "react-router-dom";
 
-import LandingPage from './pages/LandingPage.jsx';
 import DesktopLanding from "./pages/LandingPage.jsx";
 import DesktopHome from "./pages/AuthLanding.jsx"
 import DesktopPetCenter from "./pages/DesktopPetCenter.jsx"
@@ -28,16 +25,15 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <Sidebar />
       <Routes>
-        <Route path="/" element={< LandingPage/>} />
         <Route path="/" element={<DesktopLanding />} />
         <Route path="/authlanding" element={<DesktopHome />} />
         <Route path="/petcenter" element={<DesktopPetCenter />} />
-        <Route path="/petprofile" element={< DesktopPetProfile/>} /> 
-        <Route path="/reminder" element={< DesktopReminder/>} />
-        <Route path="/medicalinfo" element={< DesktopMedicalInfo/>} />
-        <Route path="/features" element={< DesktopFeatures/>} /> 
+        <Route path="/petprofile" element={<DesktopPetProfile />} />
+        <Route path="/petprofile/:id" element={<DesktopPetProfile />} /> 
+        <Route path="/reminder" element={<DesktopReminder />} />
+        <Route path="/medicalinfo" element={<DesktopMedicalInfo />} />
+        <Route path="/features" element={<DesktopFeatures />} /> 
       </Routes>
     </Router>
   );
