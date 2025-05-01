@@ -1,6 +1,7 @@
 import React from "react";
 import "../assets/styles/MobileReminder.css";
 
+// Please ignore, testing purposes only
 function MobileReminder() {
     return (
         <div className="container">
