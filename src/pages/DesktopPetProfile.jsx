@@ -20,7 +20,7 @@ import { useUser } from "../context/UserContext";
 import petImage1 from "../assets/images/dog_2.jpg";
 import petImage2 from "../assets/images/dog_3.jpeg";
 import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
-//fixing commit issue
+
 const PetProfile = () => {
     const [taskList, setTaskList] = useState([]);
     const navigate = useNavigate();
