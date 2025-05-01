@@ -57,7 +57,7 @@
 .divider {
     font-family: 'Outfit';
     font-weight: bold;
-    color: black !important; /* weird bug where it was blue due to bootstrap coloring */
+    color: black !important; /* to prevent weird bug where it was blue due to bootstrap coloring */
 }
 
 .divider:hover {

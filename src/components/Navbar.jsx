@@ -43,7 +43,7 @@ function Navbar() {
       </div>
       <div className="navbar-right">
         <Link className="navbar-link" to="/authlanding">Home</Link>
-        <Link className="navbar-link" to="/petprofile/:petID">Pet Profiles</Link>
+        <Link className="navbar-link" to="/petprofile/">Pet Profiles</Link>
         <Link className="navbar-link" to="/reminder">Reminder</Link>
         <Link className="navbar-link" to="/features">Features</Link>
         <a className="divider">|</a>

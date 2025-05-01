@@ -18,7 +18,7 @@ const DesktopFeatures = () => {
           </div>
           <h3 className="feature-title">Reminders</h3>
           <p className="feature-description">
-            PetRemind prompts users with constant reminders about everyday tasks, such as feeding, exercise, vet visits, etc
+            PetRemind prompts users with consistent reminders about their everyday pet tasks, such as feeding, exercise, vet visits, etc.
           </p>
         </div>
         

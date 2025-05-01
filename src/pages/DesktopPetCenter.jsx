@@ -232,11 +232,12 @@ const DesktopPetCenter = () => {
                         <p id="keep-track-text">Add a pet to start keeping track of their needs!</p>
                     ) : (
                         <div className="pet-list">
+                            {/* mapping each user pet into pet cards */}
                             {petList.map((pet, index) => (
                                 <div
                                     key={pet.id} 
                                     className="pet-card"
-                                    onClick={() => navigate(`/petprofile/${pet.id}`, { state: { pet } })} // click to go to pet profile
+                                    onClick={() => navigate(`/petprofile/`, { state: { pet } })} // click to go to pet profile
                                     style={{ cursor: "pointer" }}
                                     >
                                     {/* delete button */}

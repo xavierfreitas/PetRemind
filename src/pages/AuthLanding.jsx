@@ -93,6 +93,7 @@ const AuthLanding = () => {
             <div className="content">
                 <nav className="bottom-navbar">
                     <ul>
+                        {/* mapping each path into own navbar item */}
                         {[
                         { path: "/reminder", label: "Reminders" },
                         { path: "/petcenter", label: "Pet Center" },

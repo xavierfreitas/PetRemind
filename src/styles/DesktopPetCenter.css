@@ -34,7 +34,7 @@
 .petcenter-container #pets-exist {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 4px;
     padding: 1rem 0;
 }
 
@@ -55,7 +55,7 @@
 
 .petcenter-container .title2 {
     max-width: 100%;
-    margin: 0 auto 15px auto;
+    margin: 0 auto 5px auto;
     text-align: center;
     font-family: 'Pacifico';
     font-size: clamp(2.5rem, 5vw, 4rem);
@@ -114,10 +114,9 @@
 }
 
 .petcenter-container .pet-card {
-    width: 100%;
-    flex: 0 1 100%;
-    max-width: 250px;
-    max-height: 250px;
+    width: clamp(125px, 20vw, 300px);
+    max-width: 300px;
+    max-height: 200px;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 3px solid black;
@@ -131,19 +130,6 @@
 .petcenter-container .pet-card:hover {
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
     transform: scale(1.15);
-}
-
-/* scaling styling for pet cards on dif screens */
-@media (min-width: 320px) {
-    .petcenter-container .pet-card {
-        flex: 0 1 calc(25% - 16px);
-    }
-}
-
-@media (min-width: 900px) {
-    .petcenter-container .pet-card {
-        flex: 0 1 calc(30% - 24px);
-    }
 }
 
 @media (min-width: 1200px) {
