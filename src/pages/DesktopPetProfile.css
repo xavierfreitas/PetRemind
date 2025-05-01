@@ -484,9 +484,6 @@ ul.listOfTasks {
     background-color: #F7E1D7;
     width: 100%;
     overflow: hidden;
-
-
-  }
   }
 
   #bottomRowContainer {
@@ -505,7 +502,6 @@ ul.listOfTasks {
     background-color: #F7E1D7;
     padding: 5px;
 
-  }
   }
 
   #weeklySchedule {
@@ -526,7 +522,6 @@ ul.listOfTasks {
     border-radius: 12px;
 
   }
-  }
 
   /*using list because easier to remove stuff*/
   ul.listOfTasks {
@@ -542,7 +537,6 @@ ul.listOfTasks {
     width: 90px;
     border-radius: 4px;
   }
-}
 
 /*RAHUL MADE THIS  MED INFO*/
 .medical-modal-overlay {

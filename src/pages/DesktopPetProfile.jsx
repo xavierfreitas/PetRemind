@@ -347,15 +347,12 @@ const PetProfile = () => {
     const saveMedicalInfoToFirebase = async () => {
         console.log("Attempting to save medical info for petId:", selectedPetID);
         if (!selectedPetID) {
-        console.log("Attempting to save medical info for petId:", selectedPetID);
-        if (!selectedPetID) {
             showNotification("No pet ID available for saving", "error");
             return;
         }
 
         setSavingMedical(true);
         try {
-            const docRef = doc(db, "medinfo", selectedPetID);
             const docRef = doc(db, "medinfo", selectedPetID);
             console.log("Using Firestore document reference:", docRef.path);
             const docSnap = await getDoc(docRef);
@@ -813,7 +810,6 @@ const PetProfile = () => {
                 </Alert>
             </Snackbar>
         </div>
-
     );
 };
 
