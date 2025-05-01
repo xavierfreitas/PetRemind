@@ -2,46 +2,54 @@
 /* 'Pacifico' and 'Outfit' fonts */
 
 .authlanding-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
     text-align: center;
-    padding: 0px 20px;
-    font-family: "Arial", sans-serif;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 2fr 2fr 1fr;
-    grid-template-areas: 
-    "leftslide headers rightslide"
-    "leftslide maincont rightslide"
-    "leftslide maincont rightslide";
-    --slide-count: 5;
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(0.5rem, 2vw, 1.25rem);
+    --slide-count: 8;
     --gap: 7px;
-    --time: 15s
+    --time: 15s;
 }
 
-.authlanding-container .headers {
+.authlanding-container .welcome-container {
     min-width: 45vw;
-    grid-area: headers;
     justify-self: center;
     align-self: center;
+    animation: fadeIn 2.5s ease;
+}
+
+.authlanding-container .profile-pic {
+    margin-top: 15px;
+    width: clamp(60px, 8vw, 100px);
+    height: clamp(60px, 8vw, 100px);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px black;
+    animation: fadeIn 2.5s ease;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 .authlanding-container .title {
     font-family: 'Pacifico';
-    font-size: 4.5rem;
+    font-size: clamp(1.75rem, 5vw, 4rem);
     font-weight: bold;
     margin-bottom: 4vh;
 }
 
 .authlanding-container .title span {
-    font-size: 5.75rem;
+    font-size: clamp(2rem, 6vw, 5.75rem);
     color: #000;
-}
-
-.authlanding-container .subtitle {
-    font-family: 'Pacifico';
-    font-size: 2.25rem;
-    font-style: italic;
-    margin-top: 3px;
-    margin-bottom: 20px;
 }
 
 .authlanding-container .content {
@@ -52,41 +60,50 @@
     font-family: 'Outfit';
     max-width: 600px;
     margin: 0 auto;
-    grid-area: maincont;
 }
 
 /* styling for center nav-bar */
 .authlanding-container .bottom-navbar {
-    background-color: #ecd3c7;
-    border-radius: 20px;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
+    margin: clamp(0.5rem, 2vw, 2rem) auto;
+    background-color: #ecd3c7;
+    border: 2px solid black;
+    border-radius: 100em;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
 .authlanding-container .bottom-navbar ul {
     list-style: none;
     display: flex;
-    gap: 20px;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
     padding: 0;
     margin: 0;
+    width: 100%;
 }
 
 .authlanding-container .bottom-navbar li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 14px;
     cursor: pointer;
-    padding: 10px;
-    transition: 0.3s ease;
-    border-radius: 15px;
-    transition: background-color 0.3s;
+    background-color: #e2c5b7;
+    font-size: 14px;
+    width: 7em;
+    margin: 10px auto;
+    padding: clamp(4px, 1vw, 10px);
+    border-radius: 50em;
+    border: 2px solid black;
+    transition: background-color 0.3s ease;
 }
 
 .authlanding-container .bottom-navbar li a {
@@ -104,7 +121,7 @@
 }
 
 .authlanding-container .bottom-navbar li:hover {
-    background-color: rgb(189, 167, 141);
+    background-color: #dbb195;
     transform: scale(1.05);
 }
 
@@ -116,20 +133,49 @@
 .authlanding-container .bottom-navbar li a span {
     font-family: 'Outfit';
     font-weight: bold;
-    font-size: 1rem;
+    font-size: clamp(0.7rem, 2vw, 1rem);
 }
 
-/* styling for sliders (auth page specificly) starts here */
-#slider1 {
-    margin-left: 15px;
-    grid-area: leftslide;
-    transform: translate(-7vw, -370px);
+/* styling for auth page sliders starts here */
+.authlanding-container .slider-track {
+    margin: 0;
 }
 
-#slider2 {
-    margin-right: 15px;
-    grid-area: rightslide;
-    transform: translate(7vw, -370px)
+.authlanding-container #slider1 {
+    position: fixed;
+    padding-left: 0;
+    top: 0px;
+    left: 5px;
+    width: 20%;
+}
+
+.authlanding-container #slider2 {
+    position: fixed;
+    top: 0px;
+    right: 5px;
+    width: 20%;
+}
+
+@media (min-width: 900px) {
+    .authlanding-container #slider1 {
+        transform: translateY(-50px);
+        width: 25%;
+    }
+
+    .authlanding-container #slider2 {
+        transform: translateY(-50px);
+        width: 25%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .authlanding-container #slider1 {
+        width: 20%;
+    }
+
+    .authlanding-container #slider2 {
+        width: 20%;
+    }
 }
 
 /*** rest of slider logic is on landingpage.css***/

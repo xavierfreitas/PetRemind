@@ -1,46 +1,102 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/DesktopPetCenter.css";
-import PetsIcon from "@mui/icons-material/Pets";
+
+import PetIcon from "../assets/images/default_pet_icon.svg";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from "@mui/material";
-import petCenterBackground from "../assets/images/petcenter_background.png";
-import landingPageBackground from "../assets/images/landingpage_background.png";
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, MenuItem } from "@mui/material";
+
+import { db } from "../hosting/firebase";
+import { doc, getDoc, setDoc, collection, updateDoc, arrayUnion, serverTimestamp, arrayRemove, deleteDoc } from "firebase/firestore";
 
 
 const DesktopPetCenter = () => {
+    const MAX_PETS = 5;
+    const navigate = useNavigate();
+    const { user, loading } = useUser(); // get user from context, get loading state too
+
+    // state variables
     const [petCount, setPetCount] = useState(0);
     const [open, setOpen] = useState(false);
     const [petInfo, setPetInfo] = useState({
         picture: "",
         name: "",
         age: "",
-        type: "",
+        species: "",
+        description: "",
     });
     const [petList, setPetList] = useState([]);
 
-    // fetch pet count from localStorage and update state on component mount
-    useEffect(() => {
-        const storedPetCount = parseInt(localStorage.getItem("petCount") || "0");
-        setPetCount(storedPetCount);
-    }, []);
+    // different options for pet species
+    const speciesOptions = [
+        "Bird",
+        "Cat",
+        "Dog",
+        "Ferret",
+        "Fish",
+        "Frog",
+        "Guinea Pig",
+        "Hamster",
+        "Hedgehog",
+        "Horse",
+        "Lizard",
+        "Mouse",
+        "Rabbit",
+        "Snake",
+        "Tarantula",
+        "Tortoise",
+        "Turtle",
+        "Other"
+    ];
 
+    // check if modal form is complete (except for picture + description)
+    const isFormComplete = petInfo.name && petInfo.age && petInfo.species
 
-    // fetch pet list from localStorage and update state on component mount
+    // upon mount:
     useEffect(() => {
-        const storedPets = JSON.parse(localStorage.getItem("pets")) || [];
-        setPetList(storedPets);
-    }, []);
+        if (!user?.uid) return;
 
-    // set and unset PetCenter background
-    useEffect(() => {
-        document.body.style.backgroundImage = `url(${petCenterBackground})`;
-    
-        return () => {
-            document.body.style.backgroundImage = `url(${landingPageBackground})`;
+        const loadPetsFromFirestore = async () => {
+            try {
+                // get user's doc
+                const userRef  = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+                if (!userSnap.exists()) return;
+
+                const { petIDs = [] } = userSnap.data();
+
+                // fetch each pet by ID
+                const petDocs = await Promise.all(
+                    petIDs.map(id => getDoc(doc(db, "pets", id)))
+                );
+
+                // build pet array
+                const pets = petDocs
+                    .filter(snap => snap.exists())
+                    .map(snap => ({ id: snap.id, ...snap.data() }));
+
+                // set state
+                setPetList(pets);
+                setPetCount(pets.length);
+
+                // sync back to localStorage
+                localStorage.setItem("pets", JSON.stringify(pets));
+                localStorage.setItem("petCount", String(pets.length));
+            } catch (err) {
+                console.error("Failed to load pets:", err);
+            }
         };
-    }, []);
+
+        loadPetsFromFirestore();
+    }, [user]);
+
+    // if loading show a loading message
+    if (loading) { return <div>Loading...</div>; }
+
+    // if user is not logged in, redirect to landing page
+    if (!user) { return <Navigate to="/" />; }
 
     // opening modal
     const handleClickOpen = () => {
@@ -50,7 +106,7 @@ const DesktopPetCenter = () => {
     // closing the modal and clear prompts
     const handleClose = () => {
         setOpen(false);
-        setPetInfo({ picture: "", name: "", age: "", type: "" });
+        setPetInfo({ picture: "", name: "", age: "", species: "", description: "" });
     };
 
     // handle modal user input
@@ -63,25 +119,87 @@ const DesktopPetCenter = () => {
     };
 
     // add pet function
-    const handleAddPet = () => {
-        const newPet = { ...petInfo }; // create a new pet object
-        const updatedPets = [...petList, newPet]; // add new pet to list
-        const newPetCount = updatedPets.length; // update count with new list
-        
-        setPetList(updatedPets);
-        setPetCount(newPetCount);
-        localStorage.setItem("pets", JSON.stringify(updatedPets));
-        localStorage.setItem("petCount", newPetCount.toString());
-        
-        handleClose();
+    const handleAddPet = async () => {
+        if (petList.length >= MAX_PETS) {
+            alert(`You can only have up to ${MAX_PETS} pets.`);
+            return;
+        }
+
+        try {
+            // check if user chose a picture
+            const pictureUrl = petInfo.picture && petInfo.picture.trim()
+                ? petInfo.picture
+                : PetIcon; // default icon if no picture chosen
+
+            // create new pet document in Firestore
+            const petsCol = collection(db, "pets");
+            const newPetRef = doc(petsCol);  // auto-ID
+            const petPayload = {
+            ...petInfo,
+            picture: pictureUrl,
+            ownerId:   user.uid,
+            createdAt: serverTimestamp()
+            };
+
+            await setDoc(newPetRef, petPayload);
+
+            // update user's petIDs array in Firestore
+            const userRef = doc(db, "users", user.uid);
+            await updateDoc(userRef, {
+                petIDs: arrayUnion(newPetRef.id)
+            });
+
+            // update local state and localStorage
+            const newEntry = { id: newPetRef.id, ...petPayload };
+            const updated = [...petList, newEntry];
+            const newPetCount = updated.length;
+
+            setPetList(updated);
+            setPetCount(newPetCount);
+            localStorage.setItem("pets", JSON.stringify(updated));
+            localStorage.setItem("petCount", newPetCount.toString());
+        } catch (err) {
+            console.error("Error adding pet: ", err);
+            alert("Something went wrong. Please try again.");
+        } finally {
+            // close modal
+            handleClose();
+        }
     };
 
     // delete pet function
-    const handleDeletePet = (index) => {
-        const updatedPets = petList.filter((_, i) => i !== index); // remove pet by index
-        setPetList(updatedPets);
-        setPetCount(updatedPets.length);
-        localStorage.setItem("pets", JSON.stringify(updatedPets)); // save updated list
+    const handleDeletePet = async (index) => {
+        // check if user REALLY wants to delete pet
+        const petName = petList[index]?.name || "this pet";
+        if (!window.confirm(`Are you sure you want to delete ${petName}?`)) {
+            return; // user cancelled
+        }
+
+        // get the petID from the petList
+        const petToDelete = petList[index];
+        const petId = petToDelete.id;
+
+        try {
+            // remove petID from user's petIDs array
+            const userRef = doc(db, "users", user.uid);
+            await updateDoc(userRef, {
+            petIDs: arrayRemove(petId),
+            });
+
+            // delete pet's own doc
+            const petRef = doc(db, "pets", petId);
+            await deleteDoc(petRef);
+
+            // update local state and localStorage
+            const updated = petList.filter((_, i) => i !== index);
+            setPetList(updated);
+            setPetCount(updated.length);
+            localStorage.setItem("pets", JSON.stringify(updated));
+            localStorage.setItem("petCount", String(updated.length));
+        } catch (err) {
+            console.error("Error deleting pet:", err);
+            alert("Could not delete pet. Please try again.");
+        }
     };
 
     // picture selection function
@@ -98,53 +216,72 @@ const DesktopPetCenter = () => {
 
     return (
         <div className="petcenter-container container-fluid">
-            <div className="headers">
-                {petCount === 0 ? (
-                    <h1 className="title">
-                        <span>Oh no! </span>It looks like you don't have a pet registered with us.
-                    </h1>
-                ) : (
-                    <h1 className="title">Your Pets:</h1>
-                )}
-            </div>
+            <div id={petCount === 0 ? "no-pets" : "pets-exist"}>
+                <div className="headers">
+                    {petCount === 0 ? (
+                        <h1 className="title1">
+                            <span>Oh no! </span>It looks like you don't have a pet registered with us.
+                        </h1>
+                    ) : (
+                        <h1 className="title2">Your Pets:<br></br>{petCount} / {MAX_PETS}</h1>
+                    )}
+                </div>
 
-            <div className="content">
-                {petCount === 0 ? (
-                    <p>Add a pet to start keeping track of their needs!</p>
-                ) : (
-                    <div className="pet-list">
-                        {petList.map((pet, index) => (
-                            <div key={index} className="pet-card">
-                                {/* delete button */}
-                                <HighlightOffIcon className="delete-pet" onClick={() => handleDeletePet(index)}></HighlightOffIcon>
-                                {pet.picture ? (
-                                    <img src={pet.picture} alt={pet.name} className="pet-icon" />
-                                ) : (
-                                    <PetsIcon className="pet-icon" /> /* if no pet icon is chosen */
-                                )}
-                                <p id="petcard_petname">{pet.name}</p>
-                                <p id="petcard_petage">({pet.age} yrs)</p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                <AddCircleOutlineIcon 
-                    className="add-pet-icon"
-                    onClick={handleClickOpen}
-                />
+                <div className="content">
+                    {petCount === 0 ? (
+                        <p id="keep-track-text">Add a pet to start keeping track of their needs!</p>
+                    ) : (
+                        <div className="pet-list">
+                            {/* mapping each user pet into pet cards */}
+                            {petList.map((pet, index) => (
+                                <div
+                                    key={pet.id} 
+                                    className="pet-card"
+                                    onClick={() => navigate(`/petprofile/`, { state: { pet } })} // click to go to pet profile
+                                    style={{ cursor: "pointer" }}
+                                    >
+                                    {/* delete button */}
+                                    <HighlightOffIcon 
+                                        className="delete-pet" 
+                                        onClick={e => {
+                                            e.stopPropagation(); // prevent click from going to pet profile
+                                            handleDeletePet(index);
+                                        }}
+                                    />
+                                    {/* pet picture */}
+                                    {pet.picture && pet.picture.trim() !== "" ? (
+                                        <img src={pet.picture} alt={pet.name} className="pet-icon" />
+                                    ) : (
+                                        <img src={PetIcon} alt={pet.name} className="pet-icon" /> /* if no pet icon is chosen, use default */
+                                    )}
+                                    {/* pet name and age */}
+                                    <p id="petcard_petname">{pet.name}</p>
+                                    <p id="petcard_petage">({pet.age} yrs)</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {/* add pet button, only show if not maxed on pets */}
+                    {petCount < MAX_PETS && (
+                        <AddCircleOutlineIcon 
+                            className="add-pet-icon"
+                            onClick={handleClickOpen}
+                        />
+                    )}
+                </div>
             </div>
-
             {/* modal for adding pets */}
             <Dialog
                 open={open}
                 onClose={handleClose}
                 sx={{
-                    "& .MuiDialog-paper": {
-                        backgroundColor: "#ffffff", // custom background color
-                        borderRadius: "15px", // rounded corners
+                    "& .MuiDialog-paper": { // modal styling
+                        backgroundColor: "#f7e1d7",
+                        borderRadius: "25px", // rounded corners
+                        border: "2px solid rgb(0, 0, 0)", // border color
                         padding: "20px",
                         boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // slight shadow
-                        maxWidth: "500px", // Max width for the modal
+                        maxWidth: "500px", // max width for the modal
                         justifyContent: "center",
                         alignItems: "center",
                     }
@@ -156,9 +293,9 @@ const DesktopPetCenter = () => {
                 <DialogContent sx={{ padding: "10px 0" }}>
                     <input
                         type="file"
-                        accept="image/*" // Accept only images
+                        accept="image/*" // only accept images
                         onChange={handleImageChange}
-                        style={{ display: "none" }} // Hide the file input
+                        style={{ display: "none" }} // hide file input
                         id="pet-image-upload"
                     />
                     <label htmlFor="pet-image-upload" id="petimgselect-button">
@@ -168,7 +305,7 @@ const DesktopPetCenter = () => {
                     </label>
                     {petInfo.picture && (
                         <div className="image-preview" id="img-prev">
-                            <img src={petInfo.picture} alt="Pet Preview" style={{ width: "100%", borderRadius: "8px", marginTop: "10px" }} />
+                            <img src={petInfo.picture} alt="Pet Preview"/>
                         </div>
                     )}
                     <TextField
@@ -178,30 +315,58 @@ const DesktopPetCenter = () => {
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
+                        required
+                        slotProps={{ htmlInput: { maxLength: 22 } }}
                     />
                     <TextField
-                        label="Pet Age"
+                        label="Pet Age (years)"
                         name="age"
                         value={petInfo.age}
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
                         type="number"
+                        required
                     />
                     <TextField
-                        label="Pet Type"
-                        name="type"
-                        value={petInfo.type}
+                        select
+                        label="Pet Species"
+                        name="species"
+                        value={petInfo.species}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="normal"
+                        required
+                    >
+                        {speciesOptions.map((species) => (
+                            <MenuItem key={species} value={species}>
+                                {species}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Short Description"
+                        name="description"
+                        value={petInfo.description}
                         onChange={handleInputChange}
                         fullWidth
                         margin="normal"
                     />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button onClick={handleClose} color="primary" sx={{ padding: "10px 20px" }}>
+                    <Button 
+                        onClick={handleClose} 
+                        color="primary" 
+                        sx={{ padding: "10px 20px" }}
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleAddPet} color="primary" sx={{ padding: "10px 20px" }}>
+                    <Button 
+                        onClick={handleAddPet} 
+                        color="primary" 
+                        sx={{ padding: "10px 20px" }} 
+                        disabled={!isFormComplete}
+                    >
                         Add Pet
                     </Button>
                 </DialogActions>

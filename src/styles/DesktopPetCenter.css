@@ -2,39 +2,67 @@
 /* 'Pacifico' and 'Outfit' fonts */
 
 .petcenter-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
     text-align: center;
-    padding: 0px 20px;
-    font-family: "Arial", sans-serif;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 2fr 2fr 1fr;
-    grid-template-areas: 
-    "leftslide headers rightslide"
-    "leftslide maincont rightslide"
-    "leftslide maincont rightslide";
-    --slide-count: 5;
-    --gap: 7px;
-    --time: 15s
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.petcenter-container #no-pets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80vw;
+    max-width: 850px;
+    aspect-ratio: 1/1;
+    margin: auto auto;
+    padding: 1rem 1rem 0;
+    background-color: #ecd3c7;
+    border-radius: 50%;
+    box-shadow: 0 0 1em white;
+    box-sizing: border-box;
+}
+
+.petcenter-container #pets-exist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 1rem 0;
 }
 
 .petcenter-container .headers {
-    min-width: 45vw;
-    grid-area: headers;
+    min-width: 40vw;
     justify-self: center;
     align-self: center;
 }
 
-.petcenter-container .title {
-    max-width: 70%;
-    margin: auto;
+.petcenter-container .title1 {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
     font-family: 'Pacifico';
-    font-size: 3rem;
+    font-size: clamp(1.9rem, 5vw, 3rem);
     font-weight: bold;
-    margin-bottom: 2vh;
 }
 
-.petcenter-container .title span {
-    font-size: 4rem;
+.petcenter-container .title2 {
+    max-width: 100%;
+    margin: 0 auto 5px auto;
+    text-align: center;
+    font-family: 'Pacifico';
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: bold;
+}
+
+.petcenter-container .title1 span {
     color: #000;
 }
 
@@ -52,87 +80,114 @@
     align-items: center;
     justify-content: center;
     font-family: 'Outfit';
-    max-width: 600px;
+    max-width: 900px;
     margin: 0 auto;
-    grid-area: maincont;
 }
 
-.petcenter-container .content p {
+.petcenter-container #keep-track-text {
     font-family: 'Outfit';
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-top: 0.5rem;
 }
 
 .petcenter-container img {
+    display: block;
     width: 90%;
     border-radius: 10px;
     object-fit: cover;
-    display: block;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 0 2em white; /* glow effect on images */
 }
 
 .petcenter-container img:hover {
-    box-shadow: 0 0 4em white; /* stronger glow for hover */
+    box-shadow: 0 0 4em white; /* stronger glow on hover */
 }
 
 /* styling for pet creation UI */
 .petcenter-container .pet-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
     justify-content: center;
+    gap: 16px;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
 
 .petcenter-container .pet-card {
-    position: relative; /* needed for absolute positioning of delete button */
+    width: clamp(125px, 20vw, 300px);
+    max-width: 300px;
+    max-height: 200px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 3px solid black;
     background: #f5f5f5;
-    padding: 10px;
-    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
     text-align: center;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 120px;
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+.petcenter-container .pet-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transform: scale(1.15);
+}
+
+@media (min-width: 1200px) {
+    .petcenter-container .pet-list {
+        gap: 24px;
+    }
+}
+
+.petcenter-container .pet-icon {
+    width: clamp(60px, 25vw, 100px);
+    height: clamp(60px, 25vw, 100px);
+    border-radius: 50%;
+    border: 3px solid black;
+    object-fit: cover;
+    margin: 0 auto 0.25rem;
 }
 
 #petcard_petname {
+    margin: 0 auto;
+    padding: 0 5px;
     font-family: 'Pacifico';
-    font-size: clamp(16px, 2vw, 32px);
-    white-space: nowrap;
+    font-size: clamp(1.25rem, 2vw, 2rem);
+    white-space: normal;
+    width: 100%;
+    display: inline-block;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    overflow: visible;
+    text-overflow: ellipsis;
+    text-align: center;
+    line-height: 1.4;
 }
 
 #petcard_petage {
     font-size: 1.25rem;
 }
 
-.petcenter-container .pet-icon {
-    margin: 10px 20px 0px 20px;
-    width: 60px; 
-    height: 60px;
-    object-fit: cover; /* so image doesn't stretch/distort */
-    border-radius: 50%; /* round image outline */
-}
-
 .petcenter-container .add-pet-icon {
-    font-size: 80px !important;
-    margin-top: 15px;
+    font-size: clamp(4rem, 8vw, 7rem) !important;
+    margin-top: 0.5rem;
     cursor: pointer;
     transition: transform 0.3s ease-in-out !important;
 }
 
 .petcenter-container .add-pet-icon:hover {
-    transform: scale(1.2); /* Slightly enlarge on hover */
+    transform: scale(1.2);
 }
 
 .petcenter-container .delete-pet {
     position: absolute;
     top: 5px;
     right: 5px;
-    background: #ecd3c7;
+    background: #e2c8bc;
     border: none;
-    font-size: 50px;
+    font-size: 25px;
     cursor: pointer;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -146,11 +201,11 @@
 /* styling for MUI pet creation modal */
 .petcenter-container .MuiDialog-paper {
     backdrop-filter: blur(5px);
-    background-color: #ffffff !important; /* Custom background */
-    border-radius: 15px !important; /* round corners */
+    background-color: #e9d8d0 !important;
+    border-radius: 15px !important;
     padding: 20px !important;
-    max-width: 500px !important; /* limiting width */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important; /* slight shadow */
+    max-width: 500px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 .petcenter-container .MuiDialogTitle-root {
@@ -173,14 +228,25 @@
     max-width: 100%;
 }
 
+#img-prev {
+    max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    border-radius: 100%;
+}
 #img-prev img {
-    max-width: 30vw;
     max-height: 30vh;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 #petimgselect-button {
-    justify-self: center;
-    align-self: center;
+    display: block;
+    margin: 10px auto;
+    width: fit-content;
+    max-width: 25vw;
+    overflow: hidden;
+    text-align: center;
 }

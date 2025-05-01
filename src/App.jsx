@@ -3,12 +3,13 @@ import './App.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from "./components/sidebar.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useLocation,
 } from "react-router-dom";
 
 import DesktopLanding from "./pages/LandingPage.jsx";
@@ -29,7 +30,7 @@ function App() {
         <Route path="/" element={<DesktopLanding />} />
         <Route path="/authlanding" element={<DesktopHome />} />
         <Route path="/petcenter" element={<DesktopPetCenter />} />
-        <Route path="/petprofile" element={< DesktopPetProfile/>} /> 
+        <Route path="/petprofile/" element={< DesktopPetProfile/>} /> 
         <Route path="/reminder" element={< DesktopReminder/>} />
         <Route path="/medicalinfo" element={< DesktopMedicalInfo/>} />
         <Route path="/features" element={< DesktopFeatures/>} /> 

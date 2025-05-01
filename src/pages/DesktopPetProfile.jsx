@@ -7,7 +7,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import ProfilePopup from "./PetProfilePopup";
 import DescPopup from "./taskDescPopup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "./DesktopPetProfile.css";
 import { db } from "../firebase/config";
 import { 
@@ -18,7 +19,23 @@ import {
   serverTimestamp 
 } from "firebase/firestore";
 
+import petImage1 from "../assets/images/dog_2.jpg";
+import petImage2 from "../assets/images/dog_3.jpeg";
+import petImage3 from "../assets/images/247c14e67e1d68913412f29d51559c3b.jpg";
+
 const PetProfile = () => {
+    const { user, loading } = useUser(); // get user from context, get loading state too
+    
+    // if loading show a loading message
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // if user is not logged in, redirect to landing page
+    if (!user) {
+        return <Navigate to="/" />;
+    }
+    
     // Get petId from route parameters
     const { id: routePetId } = useParams(); 
     
@@ -219,7 +236,7 @@ const PetProfile = () => {
                                 {pet && pet.picture ? (
                                     <img src={pet.picture} alt={pet.name} />
                                 ) : (
-                                    <img src="./src/assets/images/dog_2.jpg" alt="myPet" />
+                                    <img src={petImage1} alt="myPet" />
                                 )}
                             </div>
                             <div id="petInfo">
@@ -271,8 +288,8 @@ const PetProfile = () => {
 
             <div id="leftSideContainer">
                 <div className="otherPets">
-                    <img src="./src/assets/images/dog_3.jpeg" alt="morePet" />
-                    <img src="./src/assets/images/247c14e67e1d68913412f29d51559c3b.jpg" alt="morePet" />
+                    <img src={petImage2} alt="morePet" />
+                    <img src={petImage3} alt="morePet" />
                     <IconButton id="addPetBox" color="primary" aria-label="add pet" onClick={()=> navigate("/petcenter")}><AddIcon /> </IconButton>
                     
                 </div>

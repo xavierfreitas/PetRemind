@@ -17,11 +17,15 @@
     "@mui/x-date-pickers": "^7.28.0",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.13",
+    "emailjs-com": "^3.2.0",
+    "esbuild": "^0.25.2",
+    "firebase": "^11.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "^3.0.1",
-    "reactjs-popup": "^2.0.6"
+    "reactjs-popup": "^2.0.6",
+    "twilio": "^5.5.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

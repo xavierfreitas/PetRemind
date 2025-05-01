@@ -1,17 +1,112 @@
-.navbar_container {
-    width: 1920px;
-    height: 70px;
-
-    background-color: white;
+.navbar-container {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    z-index: 100;
+    background-color: #F7E1D7;
+    border: 2px solid black;
+    color: black !important;
 }
 
-.navbar_link {
-    float: right;
+.navbar-left {
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 1rem;
+    display: none;
+}
+
+.navbar-right {
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 2.5rem);
+    font-family: 'Outfit';
+    font-weight: bold;
+    display: flex;
+    gap: clamp(0.25rem, 1vw, 2rem);
+    margin-top: 3px;
+}
+
+.navbar-link-logo {
+    font-size: clamp(1.5rem, 2vw, 3rem);
+}
+
+.navbar-link-logo:hover {
+    text-decoration: underline;
+    transform: scale(1.2);
+    color: black;
+}
+
+.navbar-link {
     text-decoration: none;
     color: black;
-    margin-left: 20px;
-    margin-right: 20px;
+    padding: 0px 10px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.navbar-link:hover {
+    text-decoration: underline;
+    transform: scale(1.2);
+    color: black;
+}
+
+.divider {
+    font-family: 'Outfit';
+    font-weight: bold;
+    color: black !important; /* to prevent weird bug where it was blue due to bootstrap coloring */
+}
+
+.divider:hover {
+    cursor: default;
+}
+
+#navbar-signout {
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 600px) {
+    .navbar-container {
+        justify-content: space-between;
+    }
+    
+    .navbar-right {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .navbar-link-logo {
+        display: block;
+        font-family: 'Pacifico';
+        text-decoration: none;
+        color: black;
+        margin-left: 1rem;
+        margin-right: 2rem;
+        transition: transform 0.5s ease-in-out;
+    }
+    
+    .navbar-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    .navbar-left {
+        display: flex;
+    }
+
+    .navbar-back-icon {
+        display: flex;
+        color: black;
+        margin: 0.5rem 0px 0px 0.5rem;
+        transition: transform 0.5s ease-in-out;
+        font-size: clamp(1.5rem, 2vw, 2.5rem) !important; /* !important to override MUI styling */
+    }
+
+    .navbar-back-icon:hover {
+        cursor: pointer;
+        transform: scale(1.2);
+    }
 }
