@@ -81,7 +81,9 @@ function DesktopReminder() {
     const todayDate = dayjs().startOf('day');
     const reminderDate = dayjs(reminder.date).startOf('day');
 
-    if (reminderDate.isSame(todayDate) && (!reminder.lastEmailSentDate || dayjs(reminder.lastEmailSentDate).isBefore(todayDate))) {
+    console.log("RECURRENCE", reminder.recurrence);
+
+    if (reminderDate.isSame(todayDate)) {
       return true;
     }
 
@@ -100,25 +102,25 @@ function DesktopReminder() {
     return false;
   }
 
-  const sendReminderEmail = async (pet, reminders) => {
+  const sendReminderEmail = async (allPetsReminders) => {
     console.log("sendReminderEmail: ");
 
     const serviceID = "service_sqb40x7";
     const templateID = "template_ynl27vn";
 
-    const remindersList = reminders.map(reminder => {
+    const allPetReminders = allPetsReminders.map(reminder => {
       return `
-        <p><strong>Title:</strong> ${reminder.title}</p>
-        <p><strong>Description:</strong> ${reminder.description}</p>
-        <p><strong>Due Date:</strong> ${reminder.date}</p>
-        <hr />
+      <h3>Pet: ${reminder.petName}</h3>
+      <p><strong>Title:</strong> ${reminder.title}</p>
+      <p><strong>Description:</strong> ${reminder.description}</p>
+      <p><strong>Due Date:</strong> ${reminder.date}</p>
+      <hr />
       `;
     }).join("");
 
     const emailContent = {
-      reminders: remindersList,
+      reminders: allPetReminders,
       email: user.email,
-      petName: pet.name,
     };
 
     try {
@@ -134,80 +136,80 @@ function DesktopReminder() {
       console.error("No user logged in");
       return;
     }
-
+  
     const todayDate = dayjs().format("YYYY-MM-DD");
-
-    const localStorageLastSentDate = localStorage.getItem('lastEmailSentDate');
-
-    if (localStorageLastSentDate === todayDate) {
-      console.log("DesktopReminder: checkIfDailyReminderEmail email already sent");
-
-      return;
-    }
-
+  
     const userDocRef = doc(db, 'reminders', user.uid);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      console.error('No user in firestore');
-
       return;
     }
 
-    const userDocData = userDoc.data();
-    const userLastEmailSentDate = userDocData.lastEmailSentDate;
 
-    if (userLastEmailSentDate === todayDate) {
+    const userData = userDoc.data();
+
+    const lastEmailSentDate = userData?.lastEmailSentDate;
+    console.log("lastEmailSentDate: ", lastEmailSentDate);
+
+    const yesterdayDate = dayjs().subtract(1, "day").format("YYYY-MM-DD");
+    if (!lastEmailSentDate) {
+      await setDoc(userDocRef, { lastEmailSentDate: yesterdayDate });
+
+      console.log("lastEmailSentDate is undefined. Auto send.");
+    }
+
+    console.log("todayDate: ", todayDate);
+    
+    // Check if email was already sent today by checking user data
+    if (lastEmailSentDate === todayDate) {
       console.log("Daily email already sent");
-
       return;
-    }
-
-    if (!userLastEmailSentDate) {
-      console.log("Can't find lastEmailSentDate");
     }
 
     const petsCollection = collection(db, "reminders", user.uid, "pets");
     const petsDocs = await getDocs(petsCollection);
-
-    const allRemindersBeingSentToday = [];
+  
     let emailsSentToday = false;
-
+    const allRemindersToSend = [];
+  
     for (const petDoc of petsDocs.docs) {
       const petData = petDoc.data();
       const petId = petDoc.id;
-
-      const petRemindersCollection = collection(db, "reminders", user.uid, "pets", petId, "reminders");
+  
+      const petRemindersCollection = collection(db, "reminders", user.uid, "pets", petId, "remindersList");
       const petReminderDocs = await getDocs(petRemindersCollection);
-
+  
       for (const petReminderDoc of petReminderDocs.docs) {
-        const petReminderData = petReminderDoc.data();
-
-        if (checkIfReminderShouldBeSentToday(petReminderData)) {
-          allRemindersBeingSentToday.push(petReminderData);
+        const reminder = petReminderDoc.data();
+  
+        // Check if reminder should be sent today
+        if (checkIfReminderShouldBeSentToday(reminder)) {
+          allRemindersToSend.push({
+            ...reminder,
+            petName: petData.name || "Unnamed Pet"
+          });
         }
-      }
-
-      if (allRemindersBeingSentToday.length > 0) {
-        await sendReminderEmail(petData, allRemindersBeingSentToday);
-        emailsSentToday = true;
       }
     }
-
-    if (emailsSentToday) {
-      const updatedReminders = reminders.map(reminder => {
-        if (allRemindersBeingSentToday.some(r => r.id === reminder.id)) {
-          return { ...reminder, lastEmailSentDate: todayDate };
-        }
-
-        return reminder;
-      });
-
-      setReminders(updatedReminders);
-      localStorage.setItem("reminders", JSON.stringify(updatedReminders));
-
+  
+    if (allRemindersToSend.length > 0) {
+      // Send the email with all reminders at once
+      await sendReminderEmail(allRemindersToSend);
       await setDoc(userDocRef, { lastEmailSentDate: todayDate }, { merge: true });
+  
+      emailsSentToday = true;
+      console.log("Email sent with reminders.");
+    } else {
+      console.log("No reminders due today.");
+    }
+  
+    // If email was sent, update last email sent date
+    if (emailsSentToday) {
+      await setDoc(userDocRef, { lastEmailSentDate: todayDate }, { merge: true });
+      // Optionally store it in localStorage as well
       localStorage.setItem("lastEmailSentDate", todayDate);
+      console.log("Last email sent date updated");
     }
   }
 
@@ -254,12 +256,6 @@ function DesktopReminder() {
   }, [reminders, reminderDate]);
 
   useEffect(() => {
-    if (user) {
-      checkIfDailyReminderEmail();
-    }
-  }, [user, reminders]);
-
-  useEffect(() => {
     const fetchPets = async () => {
       try {
         const updateUser = doc(db, "reminders", user.uid);
@@ -267,23 +263,20 @@ function DesktopReminder() {
         await setDoc(updateUser, {}, { merge: true })
 
         const updatePetsCollection = collection(db, "pets");
-        const updatePetsQuery = query(updatePetsCollection, where("ownerId", "==", user?.uid));
-        const updatePetsDocs = await getDocs(updatePetsQuery);
+        const updatePetsDocs = await getDocs(updatePetsCollection);
 
-        const updatedPetIds = [];
         for (const petDoc of updatePetsDocs.docs) {
+          const petData = petDoc.data();
           const petId = petDoc.id;
-          updatedPetIds.push(petId);
-          console.log("petID: ", petId);
-
-          const newSaveDoc = doc(db, "reminders", user.uid, "pets", petId);
-          const existingPetDoc = await getDoc(newSaveDoc)
-
-          if (!existingPetDoc.exists()) {
-            await setDoc(newSaveDoc, { updatedPetIds }, { merge: true });
+        
+          if (petData.ownerId === user.uid) {
+            const petDocRef = doc(db, "reminders", user.uid, "pets", petId);
+        
+            // Save only that pet's data, not the whole updatedPetIds array
+            await setDoc(petDocRef, petData, { merge: true });
           }
         }
-
+        
         const petsCollection = collection(db, "reminders", user?.uid, "pets");
         const petsDocs = await getDocs(petsCollection);
 
@@ -349,6 +342,13 @@ function DesktopReminder() {
     fetchReminders();
   }, [user?.uid, selectedPetID]);
 
+  useEffect(() => {
+    if (user && savedPet.length > 0 && reminders.length > 0) {
+      checkIfDailyReminderEmail();
+    }
+  }, [user, savedPet, reminders]);
+  
+
   // Function that add a new reminder based on what the user inputted
   const addReminder = async () => {
     try {
@@ -362,7 +362,6 @@ function DesktopReminder() {
         description: reminderDescription,
         date: reminderDate.toISOString(),
         recurrence: reminderRecurrence,
-        lastEmailSentDate: null,
       }
 
       const remindersDocs = await addDoc(collection(db, "reminders", user?.uid, "pets", selectedPetID, "remindersList"), newReminder);
@@ -398,7 +397,6 @@ function DesktopReminder() {
         description: reminderDescription,
         date: reminderDate.toISOString(),
         recurrence: reminderRecurrence,
-        lastEmailSentDate: dayjs().toISOString(),
       });
 
       // Search for the reminder that matched the id. The matching id means that's the reminder the user selected to be edited
@@ -410,7 +408,6 @@ function DesktopReminder() {
             description: reminderDescription,
             date: reminderDate.toISOString(),
             recurrence: reminderRecurrence,
-            lastEmailSentDate: dayjs(),
           };
         }
 
@@ -688,7 +685,7 @@ function DesktopReminder() {
               <li className="reminder_item_container" key={reminder.id}>
                 <div className="reminder_left_side_container">
                   <div className="reminder_title_container">
-                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <input type="checkbox" className="reminder_checkbox" onClick={() => deleteReminder(reminder.id)}></input>
                     <span className="reminder_title">{reminder.title}</span>
                   </div>
                   <p className="reminder_description">{reminder.description}</p>
@@ -730,7 +727,7 @@ function DesktopReminder() {
               <li className="reminder_item_container" key={reminder.id}>
                 <div className="reminder_left_side_container">
                   <div className="reminder_title_container">
-                    <input type="checkbox" className="reminder_checkbox"></input>
+                    <input type="checkbox" className="reminder_checkbox" onClick={() => deleteReminder(reminder.id)}></input>
                     <span className="reminder_title">{reminder.title}</span>
                   </div>
                   <p className="reminder_description">{reminder.description}</p>
