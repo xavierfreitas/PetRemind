@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "../styles/LandingPage.css";
+import { Link } from "react-router-dom";
+import Sidebar from "../components/sidebar";
+
 
 import { db, auth, provider } from "../hosting/firebase"
 import { signInWithPopup } from "firebase/auth";

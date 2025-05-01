@@ -238,7 +238,7 @@ const PetProfile = () => {
         setNotification({ ...notification, open: false });
     };
 
-    // When the medical info modal is opened, fetch fresh data for the currently selected pet
+    // When the medical info modal is opened, gets data for the currently selected pet
     const handleOpenMedicalModal = async () => {
         await fetchMedicalInfoForPet(selectedPetID);
         setShowMedicalModal(true);
@@ -250,14 +250,14 @@ const PetProfile = () => {
             console.log("No pet ID provided for fetching medical info");
             return;
         }
-
+        
         console.log("Fetching medical info for pet ID:", petId);
         setLoading(true);
-
+        
         try {
             const petDocRef = doc(db, "pets", petId);
             const petDocSnap = await getDoc(petDocRef);
-
+            
             if (petDocSnap.exists()) {
                 const petData = {
                     id: petDocSnap.id,
@@ -265,18 +265,18 @@ const PetProfile = () => {
                 };
                 console.log("Pet data fetched:", petData);
                 setPet(petData);
-
+                
                 const medInfoDocRef = doc(db, "medinfo", petId);
                 const medInfoDocSnap = await getDoc(medInfoDocRef);
-
+                
                 if (medInfoDocSnap.exists()) {
                     const medData = medInfoDocSnap.data();
                     console.log("Medical info fetched:", medData);
-
-                    const allergiesString = Array.isArray(medData.allergies)
+                    
+                    const allergiesString = Array.isArray(medData.allergies) 
                         ? medData.allergies.join(", ")
                         : medData.allergies || "None";
-
+                    
                     const newMedInfo = {
                         healthOverview: medData.healthOverview || "Your pet is generally healthy with no major concerns.",
                         upcomingAppointments: medData.upcomingAppointments || "No upcoming appointments scheduled.",
@@ -288,7 +288,7 @@ const PetProfile = () => {
                         veterinarian: medData.clinic || "",
                         allergies: allergiesString
                     };
-
+                    
                     setMedicalInfo(newMedInfo);
                     setEditedMedicalInfo(newMedInfo); // Also update edited info
                 } else {
@@ -325,8 +325,15 @@ const PetProfile = () => {
             fetchMedicalInfoForPet(selectedPetID);
         }
     }, [selectedPetID, showMedicalModal]);
+    // When selectedPetID changes, fetch medical info if medical modal is open
+    useEffect(() => {
+        if (showMedicalModal && selectedPetID) {
+            fetchMedicalInfoForPet(selectedPetID);
+        }
+    }, [selectedPetID, showMedicalModal]);
 
     const toggleMedicalEditMode = () => {
+        console.log("Toggling medical edit mode, petId:", selectedPetID);
         console.log("Toggling medical edit mode, petId:", selectedPetID);
         if (isEditingMedical) {
             saveMedicalInfoToFirebase();
@@ -340,12 +347,15 @@ const PetProfile = () => {
     const saveMedicalInfoToFirebase = async () => {
         console.log("Attempting to save medical info for petId:", selectedPetID);
         if (!selectedPetID) {
+        console.log("Attempting to save medical info for petId:", selectedPetID);
+        if (!selectedPetID) {
             showNotification("No pet ID available for saving", "error");
             return;
         }
 
         setSavingMedical(true);
         try {
+            const docRef = doc(db, "medinfo", selectedPetID);
             const docRef = doc(db, "medinfo", selectedPetID);
             console.log("Using Firestore document reference:", docRef.path);
             const docSnap = await getDoc(docRef);
@@ -355,6 +365,8 @@ const PetProfile = () => {
                 : editedMedicalInfo.allergies.split(",").map(a => a.trim());
 
             const dataToSave = {
+                petId: selectedPetID, // Store the pet ID in the document for reference
+                ownerId: user?.uid, // Store the owner ID for security
                 petId: selectedPetID, // Store the pet ID in the document for reference
                 ownerId: user?.uid, // Store the owner ID for security
                 healthOverview: editedMedicalInfo.healthOverview || "",
@@ -404,7 +416,7 @@ const PetProfile = () => {
     // Handle pet selection - update selectedPetID and also reset medical info
     const handlePetSelection = (petId) => {
         setSelectedPetID(petId);
-
+        
         // Reset medical info when changing pets to prevent showing previous pet's data
         setMedicalInfo({
             healthOverview: "",
@@ -418,7 +430,7 @@ const PetProfile = () => {
             allergies: ""
         });
     };
-
+ 
     return (
         <div id="container">
             <div id="leftSideContainer">  {/*Hold all information on left side of view*/}
@@ -515,7 +527,7 @@ const PetProfile = () => {
                     {savedPet.map((pet) => (
                         <div className={`additional_pet ${pet.id === selectedPetID ? 'selected' : ''}`}
                             key={pet.id}
-                            onClick={() => handlePetSelection(pet.id)} // Use the new handler
+                            onClick={() => handlePetSelection(pet.id)} // Uses the new handler
                         >
                             <img src={pet.picture} className="additional_pet_img"></img>
                             <p className="additional_pet_name">{pet.name}</p>
@@ -591,8 +603,8 @@ const PetProfile = () => {
                     <div className="medical-modal">
                         <div className="medical-modal-header">
                             <h2>Medical Information for {savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet"}</h2>
-                            <button
-                                className="close-modal-btn"
+                            <button 
+                                className="close-modal-btn" 
                                 onClick={() => setShowMedicalModal(false)}
                             >
                                 <CloseIcon />
