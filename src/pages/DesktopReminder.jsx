@@ -75,13 +75,17 @@ function DesktopReminder() {
   const [openDeleteReminder, setOpenDeleteReminder] = useState(false);
 
   const [savedPet, setSavedPet] = useState([]);
+  // VERY IMPORTANT, selectedPetID is what the page will load information for
   const [selectedPetID, setSelectedPetID] = useState(null);
 
+  const [emailNotificationEnabled, setEmailNotificationEnabled] = useState(false);
+
+  // This will check each reminder's recurrence to see if it need to be notify to the user via email.
   const checkIfReminderShouldBeSentToday = (reminder) => {
     const todayDate = dayjs().startOf('day');
     const reminderDate = dayjs(reminder.date).startOf('day');
 
-    console.log("RECURRENCE", reminder.recurrence);
+    // console.log("RECURRENCE", reminder.recurrence);
 
     if (reminderDate.isSame(todayDate)) {
       return true;
@@ -102,12 +106,15 @@ function DesktopReminder() {
     return false;
   }
 
+  // 
   const sendReminderEmail = async (allPetsReminders) => {
     console.log("sendReminderEmail: ");
 
+    // Important details for EmailJS to link properly to this project
     const serviceID = "service_sqb40x7";
     const templateID = "template_ynl27vn";
 
+    // This is the email content that will be sent and the html of how it would look like on the email sent.
     const allPetReminders = allPetsReminders.map(reminder => {
       return `
       <h3>Pet: ${reminder.petName}</h3>
@@ -131,12 +138,18 @@ function DesktopReminder() {
     }
   }
 
+  // Important check that checks if the daily email notification is already sent, if so, don't send as EmailJS free tier have very limited email notifications sent amount.
   const checkIfDailyReminderEmail = async () => {
     if (!user?.uid) {
       console.error("No user logged in");
       return;
     }
   
+    if (!emailNotificationEnabled) {
+      console.log("EMAIL NOTIFICATIONS ARE NOT ENABLED: NO SEND EMAIL");
+      return;
+    }
+
     const todayDate = dayjs().format("YYYY-MM-DD");
   
     const userDocRef = doc(db, 'reminders', user.uid);
@@ -255,6 +268,7 @@ function DesktopReminder() {
     filterReminderBasedOnDate(reminderDate)
   }, [reminders, reminderDate]);
 
+  // Get all pets from Firebase Firestore 
   useEffect(() => {
     const fetchPets = async () => {
       try {
@@ -302,7 +316,7 @@ function DesktopReminder() {
         }
 
         setSavedPet(petsList);
-
+        // If there is more than one pet, just default the main page to the first one.
         if (petsList.length > 0) {
           console.log("PETSLIST MORE THAN 1")
           setSelectedPetID(petsList[0].id);
@@ -317,6 +331,7 @@ function DesktopReminder() {
     }
   }, [user?.uid], reminders);
 
+  // When just loading in, get all the reminders for the selectedPetID
   useEffect(() => {
     const fetchReminders = async () => {
       try {
@@ -342,11 +357,12 @@ function DesktopReminder() {
     fetchReminders();
   }, [user?.uid, selectedPetID]);
 
+  // If there is at least pet and that pet has atleast a reminder, an email will be check to see if it will be sent.
   useEffect(() => {
     if (user && savedPet.length > 0 && reminders.length > 0) {
       checkIfDailyReminderEmail();
     }
-  }, [user, savedPet, reminders]);
+  }, [user, savedPet, reminders, emailNotificationEnabled]);
   
 
   // Function that add a new reminder based on what the user inputted
@@ -467,6 +483,7 @@ function DesktopReminder() {
         <div id="pet_profile_container">
           <div id="pet_profile_wrapper">
             <div id="pet_profile_img">
+              {/* Getting picture of pet based on selectedPetID, if no picture, display default image */}
               {savedPet.find(pet => pet.id === selectedPetID)?.picture ? (
                 <img src={savedPet.find(pet => pet.id === selectedPetID)?.picture}
                   id="pet_profile_img"
@@ -477,6 +494,7 @@ function DesktopReminder() {
             </div>
             <div id="pet_profile_info">
               <div id="pet_profile_info_name">
+                {/* Getting all important info based on selectedPetID, if info not found, display default info. */}
                 <h3 id="pet_profile_info_name_h3">{savedPet.find(pet => pet.id === selectedPetID)?.name || "Pet Name"}</h3>
               </div>
               <div id="pet_profile_info_breed">
@@ -488,13 +506,17 @@ function DesktopReminder() {
             </div>
             <div id="enable_reminder_container">
               <div id="email_reminder_container">
-                <Switch defaultChecked id="email_reminder_switch"></Switch>
+                <Switch 
+                  checked={emailNotificationEnabled} 
+                  onChange={(e) => setEmailNotificationEnabled(e.target.checked)}
+                  id="email_reminder_switch"></Switch>
                 <label for="email_reminder_checkbox">Email Reminder</label>
                 <p>Send you an email reminder.</p>
               </div>
             </div>
           </div>
           <div id="additional_pet_container">
+            {/* IMPORTANT: Changing selectedPetID, which will cause the page to display all information based on the selectedPetID */}
             {savedPet.map((pet) => (
               <div className={`additional_pet ${pet.id === selectedPetID ? 'selected' : ''}`}
                 key={pet.id}

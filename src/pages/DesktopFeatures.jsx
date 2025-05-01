@@ -38,7 +38,7 @@ const DesktopFeatures = () => {
           </div>
           <h3 className="feature-title">Medical Information</h3>
           <p className="feature-description">
-            PetRemind is not restricted to a single user. We support multiple users per pet, so families can each collaborate for their pet
+            PetRemind is focused on keeping your pets healthy, accordingly, we have made it easy to store and look up any medical information revolving your pets that you might want to note down.
           </p>
         </div>
         
